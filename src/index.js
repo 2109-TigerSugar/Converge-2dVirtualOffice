@@ -1,4 +1,4 @@
-import Phaser from "phaser";
+import Phaser from 'phaser';
 
 class MyGame extends Phaser.Scene {
   constructor() {
@@ -6,15 +6,15 @@ class MyGame extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image("office", "src/assets/office2.png");
-    this.load.image("avatar", "src/assets/maddie.png");
+    this.load.image('office', 'src/assets/office2.png');
+    this.load.image('avatar', 'src/assets/maddie.png');
   }
 
   create() {
     //Kelsey:adding our office background -- feel free to change
-    this.add.image(0, 0, "office").setOrigin(0);
+    this.add.image(0, 0, 'office').setOrigin(0);
     //Kelsey:adding our avatar -- feel free to change
-    this.avatar = this.add.image(200, 300, "avatar"); // Setting position X Y
+    this.avatar = this.add.image(200, 300, 'avatar'); // Setting position X Y
     this.avatar.setScale(0.2); // Setting size scale
     this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
 
@@ -44,11 +44,11 @@ class MyGame extends Phaser.Scene {
 
 const config = {
   type: Phaser.AUTO,
-  parent: "mygame",
+  parent: 'mygame',
   width: 800,
   height: 600,
   physics: {
-    default: "arcade",
+    default: 'arcade',
     arcade: {
       gravity: { y: 300 },
       debug: false,
