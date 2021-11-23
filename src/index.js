@@ -1,4 +1,7 @@
 import Phaser from 'phaser';
+import React from 'react';
+import ReactDOM from "react-dom";
+import App from './components/App';
 
 class MyGame extends Phaser.Scene {
   constructor() {
@@ -58,3 +61,5 @@ const config = {
 };
 
 const game = new Phaser.Game(config);
+
+ReactDOM.render(<App />, document.getElementById("root"));
