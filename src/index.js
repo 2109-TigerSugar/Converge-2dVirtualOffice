@@ -6,8 +6,8 @@ class MyGame extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('office', 'src/assets/office2.png');
-    this.load.image('avatar', 'src/assets/maddie.png');
+    this.load.image('office', './assets/office2.png');
+    this.load.image('avatar', './assets/maddie.png');
   }
 
   create() {

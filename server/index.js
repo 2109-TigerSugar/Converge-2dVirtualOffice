@@ -16,6 +16,19 @@ const createApp = () => {
 
   // static file-serving middleware
   app.use(express.static(path.join(__dirname, '..', 'public')));
+  app.use(express.static(path.join(__dirname, '..', 'src')));
+
+  app.get('/test', (req,res) => {
+    res.send('text');
+  })
+
+  // sends index.html
+  app.get('/', (req, res) => {
+
+    res.sendFile(path.join(__dirname, '..', 'public/index.html'));
+  });
+
+
 
   // any remaining requests with an extension (.js, .css, etc.) send 404
   app.use((req, res, next) => {
@@ -26,11 +39,6 @@ const createApp = () => {
     } else {
       next();
     }
-  });
-
-  // sends index.html
-  app.use('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'public/index.html'));
   });
 
   // error handling endware

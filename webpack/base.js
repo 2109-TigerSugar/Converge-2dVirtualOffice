@@ -6,6 +6,11 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 module.exports = {
   mode: 'development',
   devtool: 'eval-source-map',
+  entry: './src/index.js',
+  output: {
+    path: path.resolve(__dirname, '../public'),
+    filename: 'bundle.js',
+  },
   module: {
     rules: [
       {
@@ -26,15 +31,13 @@ module.exports = {
     ],
   },
   plugins: [
-    new CleanWebpackPlugin({
-      root: path.resolve(__dirname, '../'),
-    }),
+    // new CleanWebpackPlugin({
+    //   root: path.resolve(__dirname, '../'),
+    // }),
     new webpack.DefinePlugin({
       CANVAS_RENDERER: JSON.stringify(true),
       WEBGL_RENDERER: JSON.stringify(true),
     }),
-    new HtmlWebpackPlugin({
-      template: './public/index.html',
-    }),
+    // new HtmlWebpackPlugin({ template: './public/index.html' }),
   ],
 };

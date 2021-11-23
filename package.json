@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "build": "webpack --config webpack/prod.js ",
-    "start": "webpack -w & node ./server"
+    "start": "webpack -w --config webpack/base.js & nodemon ./server"
   },
   "repository": {
     "type": "git",
@@ -37,6 +37,7 @@
   "dependencies": {
     "express": "^4.17.1",
     "morgan": "^1.10.0",
+    "nodemon": "^2.0.15",
     "phaser": "^3.50.0"
   }
 }
