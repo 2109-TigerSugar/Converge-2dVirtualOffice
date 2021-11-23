@@ -1,60 +1,30 @@
-import Phaser from "phaser";
+/** @type {import("../typings/phaser")} */
+/* The above loads the phaser.d.ts file so that VSCode has autocomplete for the Phaser API.
+If you experience problems with autocomplete, try opening the phaser.d.ts file and scrolling up and down in it.
+That may fix the problem -- some weird quirk with VSCode. A new typing file is released with
+every new release of Phaser. Make sure it's up-to-date!
+At some point, the typings will
+be officially added to the official release so that all you'll have to do is do:
+npm install @types/phaser
+But this hasn't happened yet!
+*/
 
-class MyGame extends Phaser.Scene {
+// Bring in all the scenes
+import "phaser";
+import config from "./config/config";
+
+class Game extends Phaser.Game {
   constructor() {
-    super();
-  }
+    // Add the config file to the game
+    super(config);
+    // Add all the scenes
+    // << ADD ALL SCENES HERE >>
 
-  preload() {
-    this.load.image("office", "src/assets/office2.png");
-    this.load.image("avatar", "src/assets/maddie.png");
-  }
-
-  create() {
-    //Kelsey:adding our office background -- feel free to change
-    this.add.image(0, 0, "office").setOrigin(0);
-    //Kelsey:adding our avatar -- feel free to change
-    this.avatar = this.add.image(200, 300, "avatar"); // Setting position X Y
-    this.avatar.setScale(0.2); // Setting size scale
-    this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
-
-    this.keyD = this.input.keyboard.addKey(
-      Phaser.Input.Keyboard.KeyCodes.RIGHT
-    );
-
-    this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
-
-    this.keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
-  }
-  update(delta) {
-    if (this.keyA.isDown) {
-      this.avatar.x -= 2;
-    }
-    if (this.keyD.isDown) {
-      this.avatar.x += 2;
-    }
-    if (this.keyW.isDown) {
-      this.avatar.y -= 2;
-    }
-    if (this.keyS.isDown) {
-      this.avatar.y += 2;
-    }
+    // Start the game with the mainscene
+    // << START GAME WITH MAIN SCENE HERE >>
   }
 }
-
-const config = {
-  type: Phaser.AUTO,
-  parent: "mygame",
-  width: 800,
-  height: 600,
-  physics: {
-    default: "arcade",
-    arcade: {
-      gravity: { y: 300 },
-      debug: false,
-    },
-  },
-  scene: MyGame,
+// Create new instance of game
+window.onload = function () {
+  window.game = new Game();
 };
-
-const game = new Phaser.Game(config);
