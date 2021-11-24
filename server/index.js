@@ -1,7 +1,6 @@
 const path = require("path");
 const express = require("express");
 const morgan = require("morgan");
-const compression = require("compression");
 const PORT = process.envPORT || 8080;
 const app = express();
 const socketio = require("socket.io");
@@ -14,9 +13,6 @@ const createApp = () => {
   // body parsing middleware
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
-
-  // compression middleware
-  app.use(compression());
 
   // static file-serving middleware
   app.use(express.static(path.join(__dirname, "..", "public")));
@@ -54,13 +50,22 @@ const startListening = () => {
   require("./socket")(io);
 };
 
+// async function bootApp() {
+//   try {
+//     await createApp();
+//     await startListening();
+//   } catch (error) {
+//     console.error(error);
+//   }
+// }
+
 async function bootApp() {
-  await createApp();
-  await startListening();
+  try {
+    await createApp();
+    await startListening();
+  } catch (error) {
+    console.error(error);
+  }
 }
 
-if (require.main === module) {
-  bootApp();
-} else {
-  createApp();
-}
+bootApp();
