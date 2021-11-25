@@ -9,15 +9,15 @@ const officeRooms = {
   // }
 };
 
-module.exports = (io) => {
-  io.on("connection", (socket) => {
+module.exports = io => {
+  io.on('connection', socket => {
     console.log(
       `A socket connection to the server has been made: ${socket.id}`
     );
-    socket.on("joinRoom", (roomKey) => {
+    socket.on('joinRoom', roomKey => {
       socket.join(roomKey);
       const roomInfo = officeRooms[roomKey];
-      console.log("roomInfo", roomInfo);
+      console.log('roomInfo', roomInfo);
       roomInfo.employees[socket.id] = {
         rotation: 0,
         x: 400,
@@ -28,23 +28,23 @@ module.exports = (io) => {
       roomInfo.numEmployees = Object.keys(roomInfo.employees).length;
 
       //set initial state HERE
-      socket.emit("setState", roomInfo);
+      socket.emit('setState', roomInfo);
 
       //sending the employees object to the new employee
-      socket.emit("currentEmployees", {
+      socket.emit('currentEmployees', {
         employees: roomInfo.employees,
         numEmployees: roomInfo.numEmployees,
       });
 
       //HERE UPDATE ALL COWORKERS OF THE NEW EMPLOYEE
-      socket.to(roomKey).emit("newEmployee", {
+      socket.to(roomKey).emit('newEmployee', {
         employeeInfo: roomInfo.employees[socket.id],
         numEmployees: roomInfo.numEmployees,
       });
     });
 
     // HERE UPDATE THE EMPLOYEES MOVEMENT DATA
-    socket.on("employeeMovement", function (data) {
+    socket.on('employeeMovement', function (data) {
       const { x, y, roomKey } = data;
       officeRooms[roomKey].employees[socket.id].x = x;
       officeRooms[roomKey].employees[socket.id].y = y;
@@ -52,16 +52,16 @@ module.exports = (io) => {
       //emit a message to all employees about the movement of coworker
       socket
         .to(roomKey)
-        .emit("employeeMoved", officeRooms[roomKey].employees[socket.id]);
+        .emit('employeeMoved', officeRooms[roomKey].employees[socket.id]);
     });
 
-    socket.on("isKeyValid", function (input) {
+    socket.on('isKeyValid', function (input) {
       Object.keys(officeRooms).includes(input)
-        ? socket.emit("keyIsValid", input)
-        : socket.emit("keyNotValid");
+        ? socket.emit('keyIsValid', input)
+        : socket.emit('keyNotValid');
     });
     // get a random code for the room
-    socket.on("getRoomCode", async function () {
+    socket.on('getRoomCode', async function () {
       let key = codeGenerator();
       Object.keys(officeRooms).includes(key) ? (key = codeGenerator()) : key;
       officeRooms[key] = {
@@ -69,12 +69,12 @@ module.exports = (io) => {
         employees: {},
         numEmployees: 0,
       };
-      socket.emit("roomCreated", key);
+      socket.emit('roomCreated', key);
     });
 
     function codeGenerator() {
-      let code = "";
-      let chars = "ABCDEFGHJKLMNPQRSTUVWXYZ0123456789";
+      let code = '';
+      let chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789';
       for (let i = 0; i < 5; i++) {
         code += chars.charAt(Math.floor(Math.random() * chars.length));
       }
