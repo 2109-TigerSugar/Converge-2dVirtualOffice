@@ -34,8 +34,8 @@ window.onload = async function () {
   displayVideo.srcObject = stream;
 
   //Dakota: Get our socket so we have ID to use in peer connection. I added our socket to window in MainScene.js! :o
-  const socket = window.socket;
-
+  const socket = await window.socket;
+  console.log('Socket: ', socket.id);
   //Dakota: Setup new peer object! Yay!
   const peer = new Peer(socket.id);
 
