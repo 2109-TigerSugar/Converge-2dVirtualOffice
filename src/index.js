@@ -1,60 +1,47 @@
-import Phaser from "phaser";
+import Phaser from 'phaser';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './components/App';
+import config from './config/config';
+import MainScene from './scenes/MainScene';
+import Lobby from './scenes/Lobby';
 
-class MyGame extends Phaser.Scene {
+class Game extends Phaser.Game {
   constructor() {
-    super();
-  }
-
-  preload() {
-    this.load.image("office", "src/assets/office2.png");
-    this.load.image("avatar", "src/assets/maddie.png");
-  }
-
-  create() {
-    //Kelsey:adding our office background -- feel free to change
-    this.add.image(0, 0, "office").setOrigin(0);
-    //Kelsey:adding our avatar -- feel free to change
-    this.avatar = this.add.image(200, 300, "avatar"); // Setting position X Y
-    this.avatar.setScale(0.2); // Setting size scale
-    this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
-
-    this.keyD = this.input.keyboard.addKey(
-      Phaser.Input.Keyboard.KeyCodes.RIGHT
-    );
-
-    this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
-
-    this.keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
-  }
-  update(delta) {
-    if (this.keyA.isDown) {
-      this.avatar.x -= 2;
-    }
-    if (this.keyD.isDown) {
-      this.avatar.x += 2;
-    }
-    if (this.keyW.isDown) {
-      this.avatar.y -= 2;
-    }
-    if (this.keyS.isDown) {
-      this.avatar.y += 2;
-    }
+    super(config);
+    // << ADD ALL SCENES HERE >>
+    this.scene.add('MainScene', MainScene);
+    this.scene.add('Lobby', Lobby);
+    // Start the game with the mainscene
+    // << START GAME WITH MAIN SCENE HERE >>
+    this.scene.start('MainScene');
   }
 }
+// Create new instance of game
+window.onload = async function () {
+  window.game = new Game();
 
-const config = {
-  type: Phaser.AUTO,
-  parent: "mygame",
-  width: 800,
-  height: 600,
-  physics: {
-    default: "arcade",
-    arcade: {
-      gravity: { y: 300 },
-      debug: false,
-    },
-  },
-  scene: MyGame,
+  //Dakota: Ask for permission to use webcam :) We await because we have no clue when they will accept it!
+  const stream = await navigator.mediaDevices.getUserMedia({
+    video: true,
+    audio: true,
+  });
+
+  const video = await document.createElement('video');
+  const webcamPanel = document.querySelector('.webcam-panel');
+  const displayVideo = webcamPanel.appendChild(video);
+  displayVideo.autoplay = true;
+  displayVideo.srcObject = stream;
+
+  //Dakota: Get our socket so we have ID to use in peer connection. I added our socket to window in MainScene.js! :o
+  const socket = await window.socket;
+  console.log('Socket: ', socket.id);
+  //Dakota: Setup new peer object! Yay!
+  const peer = new Peer(socket.id);
+
+  peer.on('open', id => {
+    console.log('My peer ID is: ' + id);
+  });
 };
 
-const game = new Phaser.Game(config);
+ReactDOM.render(<App />, document.getElementById('root'));
