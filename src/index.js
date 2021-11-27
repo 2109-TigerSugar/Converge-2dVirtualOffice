@@ -6,6 +6,9 @@ import config from './config/config';
 import MainScene from './scenes/MainScene';
 import Lobby from './scenes/Lobby';
 
+//Create socket to import elsewhere instead of attaching to window
+export const socket = io();
+
 class Game extends Phaser.Game {
   constructor() {
     super(config);
@@ -27,15 +30,16 @@ window.onload = async function () {
     audio: true,
   });
 
-  const video = await document.createElement('video');
+  //Build our webcam
+  const video = document.createElement('video');
   const webcamPanel = document.querySelector('.webcam-panel');
   const displayVideo = webcamPanel.appendChild(video);
   displayVideo.autoplay = true;
-  displayVideo.srcObject = stream;
+  displayVideo.muted = true;
+  if (stream) {
+    displayVideo.srcObject = stream;
+  }
 
-  //Dakota: Get our socket so we have ID to use in peer connection. I added our socket to window in MainScene.js! :o
-  const socket = await window.socket;
-  console.log('Socket: ', socket.id);
   //Dakota: Setup new peer object! Yay!
   const peer = new Peer(socket.id);
 
