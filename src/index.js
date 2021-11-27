@@ -46,6 +46,17 @@ window.onload = async function () {
   peer.on('open', id => {
     console.log('My peer ID is: ' + id);
   });
+
+  peer.on('call', call => {
+    console.log(call);
+  });
+
+  //Dakota; Socket stuff
+
+  //Call new user when they join
+  socket.on('someoneJoined', async socketId => {
+    const call = await peer.call(socketId, stream);
+  });
 };
 
 ReactDOM.render(<App />, document.getElementById('root'));
