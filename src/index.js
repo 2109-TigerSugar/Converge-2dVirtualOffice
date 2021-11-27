@@ -5,6 +5,7 @@ import App from './components/App';
 import config from './config/config';
 import MainScene from './scenes/MainScene';
 import Lobby from './scenes/Lobby';
+import Peer from 'peerjs';
 
 //Create socket to import elsewhere instead of attaching to window
 export const socket = io();
@@ -47,15 +48,35 @@ window.onload = async function () {
     console.log('My peer ID is: ' + id);
   });
 
+  //Answer calls :)
   peer.on('call', call => {
-    console.log(call);
+    //Getting called  so answer
+    call.answer(stream);
+
+    //Got called and answered so build webcam panel
+    call.on('stream', remoteStream => {
+      const remoteVideo = document.createElement('video');
+      const displayRemoteVideo = webcamPanel.appendChild(remoteVideo);
+      displayRemoteVideo.autoplay = true;
+      displayRemoteVideo.srcObject = remoteStream;
+    });
   });
+
+  //ngrok http
 
   //Dakota; Socket stuff
 
   //Call new user when they join
   socket.on('someoneJoined', async socketId => {
     const call = await peer.call(socketId, stream);
+
+    //Other end answered call so build webcam panel
+    call.on('stream', remoteStream => {
+      const remoteVideo = document.createElement('video');
+      const displayRemoteVideo = webcamPanel.appendChild(remoteVideo);
+      displayRemoteVideo.autoplay = true;
+      displayRemoteVideo.srcObject = remoteStream;
+    });
   });
 };
 
