@@ -5,6 +5,9 @@ Thumbs.db
 *.suo
 *.sublime-project
 *.sublime-workspace
+bundle.js.map
+bundle.js
+
 
 # Vendors
 node_modules/
