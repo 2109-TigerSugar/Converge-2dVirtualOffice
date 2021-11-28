@@ -1,4 +1,5 @@
 .webcam-panel {
+  display: flex;
   margin-left: 10vw;
   width: 80vw;
   height: 10vh;

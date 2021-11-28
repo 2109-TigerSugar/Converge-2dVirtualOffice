@@ -9,11 +9,17 @@ const officeRooms = {
   // }
 };
 
+const connectedSockets = [];
+
 module.exports = io => {
   io.on('connection', socket => {
     console.log(
       `A socket connection to the server has been made: ${socket.id}`
     );
+
+    connectedSockets.push(socket.id);
+    socket.broadcast.emit('someoneJoined', socket.id);
+
     socket.on('joinRoom', roomKey => {
       socket.join(roomKey);
       const roomInfo = officeRooms[roomKey];

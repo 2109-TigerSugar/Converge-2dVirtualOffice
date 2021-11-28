@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { socket } from '../index';
 
 export default class MainScene extends Phaser.Scene {
   constructor() {
@@ -17,10 +18,7 @@ export default class MainScene extends Phaser.Scene {
     this.add.image(0, 0, 'office').setOrigin(0);
 
     //CREATE SOCKET HERE//
-    this.socket = io();
-
-    //Dakota: Save socket info to window so we can create peer id with it! :3
-    window.socket = this.socket;
+    this.socket = socket;
 
     //THIS WILL LAUNCH THE LOBBY
     scene.scene.launch('Lobby', { socket: scene.socket });
