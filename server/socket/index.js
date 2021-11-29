@@ -87,8 +87,8 @@ module.exports = (io) => {
     });
     // get a random code for the room
     socket.on("getRoomCode", async function () {
-      let key = codeGenerator();
-      Object.keys(officeRooms).includes(key) ? (key = codeGenerator()) : key;
+      let key = "key";
+      Object.keys(officeRooms).includes(key) ? (key = "key") : key;
       officeRooms[key] = {
         roomKey: key,
         employees: {},
@@ -98,12 +98,3 @@ module.exports = (io) => {
     });
   });
 };
-
-function codeGenerator() {
-  let code = "";
-  let chars = "ABCDEFGHJKLMNPQRSTUVWXYZ0123456789";
-  for (let i = 0; i < 5; i++) {
-    code += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return code;
-}
