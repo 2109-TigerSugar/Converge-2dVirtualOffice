@@ -11,6 +11,7 @@ import Peer from 'peerjs';
 export const socket = io();
 
 const webcamPanel = document.querySelector('.webcam-panel');
+const callList = {};
 
 class Game extends Phaser.Game {
   constructor() {
@@ -66,10 +67,12 @@ window.onload = async function () {
 
     //Got called and answered so build webcam panel
     call.on('stream', (remoteStream) => {
-      addVideo(remoteStream, true, call.peer);
+      if (callList[call.peer] === undefined) {
+        addVideo(remoteStream, true, call.peer);
+        callList[call.peer] = true;
+      }
     });
   });
-
 
   //Dakota; Socket stuff
 
@@ -79,14 +82,17 @@ window.onload = async function () {
 
     //Other end answered call so build webcam panel
     call.on('stream', (remoteStream) => {
-      addVideo(remoteStream, true, socketId);
+      if (callList[socketId] === undefined) {
+        addVideo(remoteStream, true, socketId);
+        callList[socketId] = true;
+      }
     });
   });
 
   socket.on('socket disconnected', (socketId) => {
-    console.log(`${socketId} disconnected`);
+    // console.log(`${socketId} disconnected`);
     let videoToRemove = document.querySelectorAll(`#${socketId}`);
-    videoToRemove.forEach(video => video.remove());
+    videoToRemove.forEach((video) => video.remove());
   });
 };
 
@@ -97,10 +103,10 @@ function addVideo(stream, mute, socketId) {
     // console.log('onloadmetadata fired');
     videoElement.play();
     webcamPanel.appendChild(videoElement);
+    callList[socketId] = true;
   });
   videoElement.srcObject = stream;
   videoElement.setAttribute('id', socketId);
-  // videoElement.autoplay = true;
   videoElement.muted = mute;
 }
 
