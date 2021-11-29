@@ -100,9 +100,5 @@ module.exports = (io) => {
       socket.emit("roomCreated", key);
     });
 
-    socket.on('peer closed', function(data) {
-      console.log(data);
-      // socket.broadcast.emit(data)
-    })
   });
 };
