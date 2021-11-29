@@ -148,9 +148,7 @@ export default class MainScene extends Phaser.Scene {
     scene.joined = true;
     scene.avatar = scene.physics.add
       .sprite(employeeInfo.x, employeeInfo.y, "avatar")
-      .setOrigin(0.5, 0.5)
-      .setSize(30, 40)
-      .setOffset(0, 24);
+      .setScale(0.2);
   }
 
   //adding this method here if the socket id is not our own aka its another employee/coworker we need to use a different method to add them ---- need to look into if this where we could choose different avatars --- maybe store a bunch in an array and randomly generate image??
