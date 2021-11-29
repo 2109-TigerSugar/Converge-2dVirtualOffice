@@ -68,7 +68,7 @@ window.onload = async function () {
     //Got called and answered so build webcam panel
     call.on('stream', (remoteStream) => {
       if (callList[call.peer] === undefined) {
-        addVideo(remoteStream, true, call.peer);
+        addVideo(remoteStream, false, call.peer);
         callList[call.peer] = true;
       }
     });
@@ -83,7 +83,7 @@ window.onload = async function () {
     //Other end answered call so build webcam panel
     call.on('stream', (remoteStream) => {
       if (callList[socketId] === undefined) {
-        addVideo(remoteStream, true, socketId);
+        addVideo(remoteStream, false, socketId);
         callList[socketId] = true;
       }
     });
