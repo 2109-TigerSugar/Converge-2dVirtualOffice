@@ -92,8 +92,11 @@ export default class MainScene extends Phaser.Scene {
   }
 
   //place all movement in here so actions can be recognized
-  update() {
+  update(delta, time) {
+    //delta - change in ms since last frame rendered - could be used with speed
     const scene = this;
+
+    //checking delta -- proximity
 
     //employee movement
     if (this.avatar) {
