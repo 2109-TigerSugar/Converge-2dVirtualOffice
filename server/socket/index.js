@@ -53,32 +53,32 @@ module.exports = (io) => {
     });
 
     //disconnecting
-    socket.on("disconnect", function () {
-      let roomKey = 0;
-      for (let keys1 in officeRooms) {
-        for (let keys2 in officeRooms[keys1]) {
-          Object.keys(officeRooms[keys1][keys2]).map((el) => {
-            if (el === socket.id) {
-              roomKey = keys1;
-            }
-          });
-        }
-      }
+    // socket.on("disconnect", function () {
+    //   let roomKey = 0;
+    //   for (let keys1 in officeRooms) {
+    //     for (let keys2 in officeRooms[keys1]) {
+    //       Object.keys(officeRooms[keys1][keys2]).map((el) => {
+    //         if (el === socket.id) {
+    //           roomKey = keys1;
+    //         }
+    //       });
+    //     }
+    //   }
 
-      const roomInfo = officeRooms[roomKey];
+    //   const roomInfo = officeRooms[roomKey];
 
-      if (roomInfo) {
-        console.log("user disconnected: ", socket.id);
-        //removing from employee object
-        delete roomInfo.employees[socket.id];
-        //update count
-        roomInfo.numEmployees = Object.keys(roomInfo.employees).length;
-        io.to(roomKey).emit("disconnected", {
-          employeeId: socket.id,
-          numEmployees: roomInfo.numEmployees,
-        });
-      }
-    });
+    //   if (roomInfo) {
+    //     console.log("user disconnected: ", socket.id);
+    //     //removing from employee object
+    //     delete roomInfo.employees[socket.id];
+    //     //update count
+    //     roomInfo.numEmployees = Object.keys(roomInfo.employees).length;
+    //     io.to(roomKey).emit("disconnected", {
+    //       employeeId: socket.id,
+    //       numEmployees: roomInfo.numEmployees,
+    //     });
+    //   }
+    // });
 
     socket.on("isKeyValid", function (input) {
       Object.keys(officeRooms).includes(input)
