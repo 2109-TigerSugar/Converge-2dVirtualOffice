@@ -67,36 +67,39 @@ export default class Lobby extends Phaser.Scene {
         const input = scene.inputElement.getChildByName("code-form");
         scene.socket.emit("isKeyValid", input.value);
       }
-      //another event listener -- ive added a corresponding listener on the socket/index.js -- alot of back and forth between front and backend sheesh
-      scene.requestButton.setInteractive();
-      scene.requestButton.on("pointerdown", () => {
-        scene.socket.emit("getRoomCode");
-      });
+    });
+    //another event listener -- ive added a corresponding listener on the socket/index.js -- alot of back and forth between front and backend sheesh
+    scene.requestButton.setInteractive();
+    scene.requestButton.on("pointerdown", () => {
+      scene.socket.emit("getRoomCode");
+    });
 
-      scene.notValidText = scene.add.text(275, 330, "", {
-        fill: "#ff0000",
-        fontSize: "30px",
-        fontStyle: "bold",
-      });
+    scene.notValidText = scene.add.text(275, 330, "", {
+      fill: "#ff0000",
+      fontSize: "30px",
+      fontStyle: "bold",
+    });
 
-      scene.roomKeyText = scene.add.text(180, 250, "", {
-        fill: "pink",
-        fontSize: "30px",
-      });
+    scene.roomKeyText = scene.add.text(180, 250, "", {
+      fill: "pink",
+      fontSize: "30px",
+    });
 
-      scene.socket.on("roomCreated", function (roomKey) {
-        scene.roomKey = roomKey;
-        scene.roomKeyText.setText(scene.roomKey);
-      });
-      //the below code also corresponds to server/socket/index isKeyValid
-      scene.socket.on("keyNotValid", function () {
-        scene.notValidText.setText("Invalid Room Key");
-      });
-      scene.socket.on("keyIsValid", function (input) {
-        scene.socket.emit("joinRoom", input);
-        scene.scene.stop("Lobby");
-      });
+    scene.socket.on("roomCreated", function (roomKey) {
+      scene.roomKey = roomKey;
+      scene.roomKeyText.setText(scene.roomKey);
+    });
+
+    //the below code also corresponds to server/socket/index isKeyValid
+    scene.socket.on("keyNotValid", function () {
+      scene.notValidText.setText("Invalid Room Key");
+    });
+
+    scene.socket.on("keyIsValid", function (input) {
+      scene.socket.emit("joinRoom", input);
+      scene.scene.stop("Lobby");
     });
   }
+
   update() {}
 }
