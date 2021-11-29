@@ -10,6 +10,8 @@ import Peer from 'peerjs';
 //Create socket to import elsewhere instead of attaching to window
 export const socket = io();
 
+const webcamPanel = document.querySelector('.webcam-panel');
+
 class Game extends Phaser.Game {
   constructor() {
     super(config);
@@ -23,6 +25,8 @@ class Game extends Phaser.Game {
 }
 // Create new instance of game
 window.onload = async function () {
+
+
   window.game = new Game();
 
   //Dakota: Ask for permission to use webcam :) We await because we have no clue when they will accept it!
@@ -32,33 +36,36 @@ window.onload = async function () {
   });
 
   //Build our webcam
-  const video = document.createElement('video');
-  const webcamPanel = document.querySelector('.webcam-panel');
-  const displayVideo = webcamPanel.appendChild(video);
-  displayVideo.autoplay = true;
-  displayVideo.muted = true;
-  if (stream) {
-    displayVideo.srcObject = stream;
-  }
+  addVideo(stream, true);
 
   //Dakota: Setup new peer object! Yay!
-  const peer = new Peer(socket.id);
+  const peer = new Peer(socket.id, {
+    config: {
+      iceServers: [
+        { urls: 'stun:stun.l.google.com:19302' },
+        {
+          url: 'turn:numb.viagenie.ca',
+          credential: 'muazkh',
+          username: 'webrtc@live.com',
+        },
+      ],
+      sdpSemantics: 'unified-plan',
+    },
+  });
 
-  peer.on('open', id => {
+  peer.on('open', (id) => {
     console.log('My peer ID is: ' + id);
   });
 
   //Answer calls :)
-  peer.on('call', call => {
+  peer.on('call', (call) => {
     //Getting called  so answer
     call.answer(stream);
 
     //Got called and answered so build webcam panel
-    call.on('stream', remoteStream => {
-      const remoteVideo = document.createElement('video');
-      const displayRemoteVideo = webcamPanel.appendChild(remoteVideo);
-      displayRemoteVideo.autoplay = true;
-      displayRemoteVideo.srcObject = remoteStream;
+    call.on('stream', (remoteStream) => {
+      console.log('stream event after call.answer');
+      addVideo(remoteStream, false);
     });
   });
 
@@ -67,17 +74,28 @@ window.onload = async function () {
   //Dakota; Socket stuff
 
   //Call new user when they join
-  socket.on('someoneJoined', async socketId => {
-    const call = await peer.call(socketId, stream);
+  socket.on('someoneJoined', (socketId) => {
+    const call = peer.call(socketId, stream);
 
     //Other end answered call so build webcam panel
-    call.on('stream', remoteStream => {
-      const remoteVideo = document.createElement('video');
-      const displayRemoteVideo = webcamPanel.appendChild(remoteVideo);
-      displayRemoteVideo.autoplay = true;
-      displayRemoteVideo.srcObject = remoteStream;
+    call.on('stream', (remoteStream) => {
+      console.log('stream event after peer.call');
+      addVideo(remoteStream, false);
     });
   });
 };
+
+function addVideo(stream, mute) {
+  const videoElement = document.createElement('video');
+  console.dir(stream);
+  videoElement.addEventListener('loadedmetadata', function (e) {
+    console.log('onloadmetadata fired');
+    videoElement.play();
+    webcamPanel.appendChild(videoElement);
+  });
+  videoElement.srcObject = stream;
+  // videoElement.autoplay = true;
+  videoElement.muted = mute;
+}
 
 ReactDOM.render(<App />, document.getElementById('root'));
