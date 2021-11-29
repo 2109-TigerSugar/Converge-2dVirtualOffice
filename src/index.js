@@ -25,18 +25,20 @@ class Game extends Phaser.Game {
 }
 // Create new instance of game
 window.onload = async function () {
-
-
   window.game = new Game();
 
   //Dakota: Ask for permission to use webcam :) We await because we have no clue when they will accept it!
+  navigator.getUserMedia =
+    navigator.mediaDevices.getUserMedia ||
+    navigator.webkitGetUserMedia ||
+    navigator.mozGetUserMedia;
   const stream = await navigator.mediaDevices.getUserMedia({
     video: true,
     audio: true,
   });
 
   //Build our webcam
-  addVideo(stream, true);
+  addVideo(stream, true, socket.id);
 
   //Dakota: Setup new peer object! Yay!
   const peer = new Peer(socket.id, {
@@ -64,12 +66,10 @@ window.onload = async function () {
 
     //Got called and answered so build webcam panel
     call.on('stream', (remoteStream) => {
-      console.log('stream event after call.answer');
-      addVideo(remoteStream, false);
+      addVideo(remoteStream, true, call.peer);
     });
   });
 
-  //ngrok http
 
   //Dakota; Socket stuff
 
@@ -79,21 +79,27 @@ window.onload = async function () {
 
     //Other end answered call so build webcam panel
     call.on('stream', (remoteStream) => {
-      console.log('stream event after peer.call');
-      addVideo(remoteStream, false);
+      addVideo(remoteStream, true, socketId);
     });
+  });
+
+  socket.on('socket disconnected', (socketId) => {
+    console.log(`${socketId} disconnected`);
+    let videoToRemove = document.querySelectorAll(`#${socketId}`);
+    videoToRemove.forEach(video => video.remove());
   });
 };
 
-function addVideo(stream, mute) {
+function addVideo(stream, mute, socketId) {
   const videoElement = document.createElement('video');
-  console.dir(stream);
+  // console.dir(stream);
   videoElement.addEventListener('loadedmetadata', function (e) {
-    console.log('onloadmetadata fired');
+    // console.log('onloadmetadata fired');
     videoElement.play();
     webcamPanel.appendChild(videoElement);
   });
   videoElement.srcObject = stream;
+  videoElement.setAttribute('id', socketId);
   // videoElement.autoplay = true;
   videoElement.muted = mute;
 }

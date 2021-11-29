@@ -53,6 +53,9 @@ module.exports = (io) => {
     });
 
     //disconnecting
+    socket.on('disconnect', () => {
+      io.emit("socket disconnected", socket.id)
+    })
     // socket.on("disconnect", function () {
     //   let roomKey = 0;
     //   for (let keys1 in officeRooms) {
@@ -96,5 +99,10 @@ module.exports = (io) => {
       };
       socket.emit("roomCreated", key);
     });
+
+    socket.on('peer closed', function(data) {
+      console.log(data);
+      // socket.broadcast.emit(data)
+    })
   });
 };
