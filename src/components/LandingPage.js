@@ -1,17 +1,20 @@
-import React from 'react';
-import { CreateForm, JoinForm } from './Forms';
+import React, {useState} from 'react';
+import { JoinOrCreateForm } from './Forms';
 
 const LandingPage = () => {
+  const [formType, setFormType] = useState('')
+
   return (
     // 2 buttons: 1 for create 1 for join
     <div className="landing-page">
       <div className="buttons">
-        <button type="button">Create</button>
-        <button type="button">Join</button>
+        <button onClick={() => {setFormType('create')}} type="button">Create</button>
+        <button onClick={() => {setFormType('join')}} type="button">Join</button>
       </div>
       <div className="form">
-        <CreateForm />
-        <JoinForm />
+        {formType === '' ? null:
+        <JoinOrCreateForm formType={formType}/>
+        }
       </div>
     </div>
   );
