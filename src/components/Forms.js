@@ -33,12 +33,9 @@ export const JoinOrCreateForm = (props) => {
   // only fetch from localStorage if formType is 'join'
 
   useEffect(() => {
-    console.log('useEffect Ran');
     if (props.formType === 'join') {
       let storedData = window.localStorage.getItem('userData');
-      console.log(storedData);
       if (storedData) {
-        console.log(storedData);
         setUserData(JSON.parse(storedData));
       }
     } else {
