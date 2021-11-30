@@ -32,9 +32,10 @@ export const JoinOrCreateForm = (props) => {
     officeType: "",
   })
 
-if(props.formType === 'create') {
+useEffect(() => {
+  window.localStorage.getItem("userData")
+},[])
 
-}
 
   const handleChange = (event) => {
     setUserData({...userData, [event.target.name]: event.target.value})
