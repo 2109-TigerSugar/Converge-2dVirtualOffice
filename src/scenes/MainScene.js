@@ -1,22 +1,22 @@
-import Phaser from "phaser";
-import { socket } from "../index";
+import Phaser from 'phaser';
+import { socket } from '../index';
 
 export default class MainScene extends Phaser.Scene {
   constructor() {
-    super("MainScene");
+    super('MainScene');
     this.state = {};
     this.overlappingSprites = {};
   }
 
   preload() {
-    this.load.image("avatar", "assets/maddie.png");
-    this.load.image("office", "assets/office2.png");
+    this.load.image('avatar', 'assets/maddie.png');
+    this.load.image('office', 'assets/office2.png');
   }
 
   create() {
     const scene = this;
 
-    this.add.image(0, 0, "office").setOrigin(0);
+    this.add.image(0, 0, 'office').setOrigin(0);
 
     //CREATE SOCKET HERE//
     this.socket = socket;
@@ -25,7 +25,7 @@ export default class MainScene extends Phaser.Scene {
     this.coworkers = this.physics.add.group();
 
     //THIS WILL LAUNCH THE LOBBY
-    scene.scene.launch("Lobby", { socket: scene.socket });
+    scene.scene.launch('Lobby', { socket: scene.socket });
     // Join the game room with gameRoomName 'office'
     //  socket.emit("joinRoom", "office");
     //background
@@ -34,7 +34,7 @@ export default class MainScene extends Phaser.Scene {
     this.coworkers = this.physics.add.group();
 
     //WHEN EMPLOYEE JOINS A ROOM -- SET STATE HERE
-    this.socket.on("setState", function (state) {
+    this.socket.on('setState', function (state) {
       const { roomKey, employees, numEmployees } = state;
 
       scene.physics.world.enable(this);
@@ -47,7 +47,7 @@ export default class MainScene extends Phaser.Scene {
     });
     this.coworkers = this.physics.add.group();
     // SOCKET LISTENER FOR CURRENT EMPLOYEES
-    this.socket.on("currentEmployees", function (arg) {
+    this.socket.on('currentEmployees', function (arg) {
       const { employees, numEmployees } = arg;
 
       scene.state.numEmployees = numEmployees;
@@ -63,14 +63,14 @@ export default class MainScene extends Phaser.Scene {
 
     // SOCKET LISTENER FOR NEW EMPLOYEE
 
-    this.socket.on("newEmployee", function (arg) {
+    this.socket.on('newEmployee', function (arg) {
       const { employeeInfo, numEmployees } = arg;
       scene.addCoworkers(scene, employeeInfo);
       scene.state.numEmployees = numEmployees;
     });
 
     // SOCKET LISTENER FOR EMPLOYEE MOVEMENT
-    this.socket.on("employeeMovement", function (employeeInfo) {
+    this.socket.on('employeeMovement', function (employeeInfo) {
       scene.coworkers.getChildren().forEach(function (coworker) {
         if (employeeInfo.employeeId === coworker.employeeId) {
           coworker.setPosition(employeeInfo.x, employeeInfo.y);
@@ -78,7 +78,7 @@ export default class MainScene extends Phaser.Scene {
       });
     });
 
-    this.socket.on("coworkerStopped", function (employeeInfo) {
+    this.socket.on('coworkerStopped', function (employeeInfo) {
       scene.coworkers.getChildren().forEach(function (coworker) {
         if (employeeInfo.employeeId === coworker.employeeId) {
           coworker.anims.stop(null, true);
@@ -89,10 +89,10 @@ export default class MainScene extends Phaser.Scene {
     ///////////////////////////////////////////////
     //set movement keys to arrow keys
     const keys = scene.input.keyboard.addKeys({
-      up: "up",
-      down: "down",
-      left: "left",
-      right: "right",
+      up: 'up',
+      down: 'down',
+      left: 'left',
+      right: 'right',
     }); // keys.up, keys.down, keys.left, keys.right
     this.cursors = keys;
     // this.cursors = this.input.keyboard.createCursorKeys();
@@ -141,7 +141,7 @@ export default class MainScene extends Phaser.Scene {
         (x !== this.sprite.oldPosition.x || y !== this.sprite.oldPosition.y)
       ) {
         this.moving = true;
-        this.socket.emit("employeeMovement", {
+        this.socket.emit('employeeMovement', {
           x: this.sprite.x,
           y: this.sprite.y,
           roomKey: scene.state.roomKey,
@@ -158,7 +158,7 @@ export default class MainScene extends Phaser.Scene {
       //iterates over children and add overlap
       //look into coworkers.children.iterate()
       //stange bug causing the callback to happen twice at each of the overlap
-      this.coworkers.children.iterate((coworker) =>
+      this.coworkers.children.iterate(coworker =>
         scene.addEmployeeOverlap(scene, coworker)
       );
       // check the coworkers we were previously overlapping with
@@ -172,7 +172,7 @@ export default class MainScene extends Phaser.Scene {
     scene.joined = true;
     //the line below adds the sprite to the game map.
     scene.sprite = scene.physics.add
-      .sprite(employeeInfo.x, employeeInfo.y, "avatar")
+      .sprite(employeeInfo.x, employeeInfo.y, 'avatar')
       .setScale(0.2)
       .setVisible(true)
       .setCollideWorldBounds(true);
@@ -181,7 +181,7 @@ export default class MainScene extends Phaser.Scene {
   }
   addCoworkers(scene, employeeInfo) {
     const coworker = scene.physics.add
-      .sprite(employeeInfo.x + 40, employeeInfo.y + 40, "avatar")
+      .sprite(employeeInfo.x + 40, employeeInfo.y + 40, 'avatar')
       .setScale(0.2)
       .setVisible(true)
       .setCollideWorldBounds(true);
@@ -214,13 +214,17 @@ export default class MainScene extends Phaser.Scene {
       )
     ) {
       this.overlappingSprites[coworker.employeeId] = coworker;
-      console.log("overlap OVERLAP!!!!");
+      const { employeeId } = employee;
+      const coworkerId = coworker.employeeId;
+      const showVideo = document.querySelector(`#${coworker.employeeId}`);
+      showVideo.style.display = 'inline';
+      showVideo.muted = false;
     }
   }
 
   checkOverlap(scene) {
     const spriteBounds = scene.sprite.getBounds();
-    Object.keys(scene.overlappingSprites).forEach((employeeId) => {
+    Object.keys(scene.overlappingSprites).forEach(employeeId => {
       const coworker = scene.overlappingSprites[employeeId];
       const coworkerBounds = coworker.getBounds();
       // https://phaser.io/examples/v3/view/geom/intersects/get-rectangle-intersection
@@ -232,7 +236,10 @@ export default class MainScene extends Phaser.Scene {
         )
       ) {
         delete scene.overlappingSprites[employeeId];
-        console.log("NO LONGER OVERLAPPING");
+        console.log('NO LONGER OVERLAPPING');
+        const hideVideo = document.querySelector(`#${coworker.employeeId}`);
+        hideVideo.style.display = 'none';
+        hideVideo.muted = true;
       }
     });
   }

@@ -56,17 +56,17 @@ window.onload = async function () {
     },
   });
 
-  peer.on('open', (id) => {
+  peer.on('open', id => {
     console.log('My peer ID is: ' + id);
   });
 
   //Answer calls :)
-  peer.on('call', (call) => {
+  peer.on('call', call => {
     //Getting called  so answer
     call.answer(stream);
 
     //Got called and answered so build webcam panel
-    call.on('stream', (remoteStream) => {
+    call.on('stream', remoteStream => {
       if (callList[call.peer] === undefined) {
         addVideo(remoteStream, false, call.peer);
         callList[call.peer] = true;
@@ -77,11 +77,11 @@ window.onload = async function () {
   //Dakota; Socket stuff
 
   //Call new user when they join
-  socket.on('someoneJoined', (socketId) => {
+  socket.on('someoneJoined', socketId => {
     const call = peer.call(socketId, stream);
 
     //Other end answered call so build webcam panel
-    call.on('stream', (remoteStream) => {
+    call.on('stream', remoteStream => {
       if (callList[socketId] === undefined) {
         addVideo(remoteStream, false, socketId);
         callList[socketId] = true;
@@ -89,10 +89,10 @@ window.onload = async function () {
     });
   });
 
-  socket.on('socket disconnected', (socketId) => {
+  socket.on('socket disconnected', socketId => {
     // console.log(`${socketId} disconnected`);
     let videoToRemove = document.querySelectorAll(`#${socketId}`);
-    videoToRemove.forEach((video) => video.remove());
+    videoToRemove.forEach(video => video.remove());
   });
 };
 
