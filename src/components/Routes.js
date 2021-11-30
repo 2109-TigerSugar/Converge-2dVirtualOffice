@@ -1,10 +1,18 @@
 import React from "react";
+import { Routes, Route } from "react-router";
+import About from "./About";
+import LandingPage from "./LandingPage";
 
 
-const Routes = () => {
+const RouteContent = () => {
   return (
-    'Routes'
+    <div className="routes">
+      <Routes>
+        <Route path='/' element={<LandingPage />} />
+        <Route path='/about' element={<About />} />
+      </Routes>
+    </div>
   )
 }
 
-export default Routes
+export default RouteContent
