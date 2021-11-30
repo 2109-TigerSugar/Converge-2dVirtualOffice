@@ -9,10 +9,14 @@
     <title>Document</title>
   </head>
   <body>
-    <div class="webcam-panel"></div>
-    <div id="mygame"></div>
+    <!-- WebRTC video panel -->
+    <div class="webcam-panel" style="display: none"></div>
+    <!-- Phaser Game -->
+    <div id="mygame" style="display: none"></div>
 
+    <!-- React Components added here -->
     <div id="root"></div>
+
     <!-- /*Need to include our socket script in the html here*/ -->
     <script src="/socket.io/socket.io.js"></script>
     <!-- <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script> -->

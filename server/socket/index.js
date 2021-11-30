@@ -1,4 +1,8 @@
 const officeRooms = {};
+// {office-1: {numEmployee: 4 , employees: [list of all socketids]}
+
+const employees = {};
+// {socketid:  {rotation, x, y}}
 
 const connectedSockets = [];
 
