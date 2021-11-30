@@ -6,10 +6,8 @@ export default class App extends React.Component {
   render() {
     return (
       <BrowserRouter>
-        <div>
           <Navbar />
           <RouteContent />
-        </div>
       </BrowserRouter>
     );
   }
