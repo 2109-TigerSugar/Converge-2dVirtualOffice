@@ -4,7 +4,6 @@ import { JoinOrCreateForm } from './Forms';
 const LandingPage = () => {
   const [formType, setFormType] = useState('')
 
-  console.log('hide game canvas')
   document.getElementById('mygame').style.display = 'none';
   document.querySelector('.webcam-panel').style.display = 'none';
 

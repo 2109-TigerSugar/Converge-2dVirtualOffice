@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router';
 import { socket } from '..';
 
 // export const CreateForm = () => {
@@ -43,6 +44,7 @@ export const JoinOrCreateForm = (props) => {
     roomKey: '',
     officeType: '',
   });
+  const navigate = useNavigate();
 
   // only fetch from localStorage if formType is 'join'
 
@@ -71,9 +73,7 @@ export const JoinOrCreateForm = (props) => {
     // checks
     if (props.formType === 'create') {
       socket.emit('isKeyUnique', userData.roomKey);
-      socket.on('keyIsUnique', () => {
-        console.log('good key');
-        console.log('local storage start')
+      socket.on('unique-key', () => {
 
         window.localStorage.setItem('userData', JSON.stringify(userData));
         setUserData({
@@ -81,13 +81,21 @@ export const JoinOrCreateForm = (props) => {
           roomKey: '',
           officeType: '',
         });
-        console.log('local storage set to', window.localStorage.getItem('userData'))
+        console.log(
+          'local storage set to',
+          window.localStorage.getItem('userData')
+        );
+
+        // join the room
+        socket.emit('joinRoom', userData.roomKey);
+        navigate('/office');
+
+        // see the phaser canvas with the office
       });
-      socket.on('duplicateKey', () => {
-        alert('bad key')
+      socket.on('duplicate-key', () => {
+        alert('bad key');
       });
     }
-
   };
 
   return (

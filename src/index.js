@@ -10,6 +10,8 @@ import Peer from 'peerjs';
 //Create socket to import elsewhere instead of attaching to window
 export const socket = io();
 
+// import { socket } from './components/Office';
+
 const webcamPanel = document.querySelector('.webcam-panel');
 const callList = {};
 
