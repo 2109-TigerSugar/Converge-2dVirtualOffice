@@ -70,7 +70,7 @@ export default class MainScene extends Phaser.Scene {
     });
 
     // SOCKET LISTENER FOR EMPLOYEE MOVEMENT
-    this.socket.on('employeeMovement', function (employeeInfo) {
+    this.socket.on('employeeMoved', function (employeeInfo) {
       scene.coworkers.getChildren().forEach(function (coworker) {
         if (employeeInfo.employeeId === coworker.employeeId) {
           coworker.setPosition(employeeInfo.x, employeeInfo.y);
@@ -216,10 +216,12 @@ export default class MainScene extends Phaser.Scene {
       this.overlappingSprites[coworker.employeeId] = coworker;
       const { employeeId } = employee;
       const coworkerId = coworker.employeeId;
-      const showVideo = document.querySelector(`#${coworker.employeeId}`);
-      showVideo.style.display = 'inline';
-      showVideo.muted = false;
+      // const showVideo = document.querySelector(`#${coworker.employeeId}`);
+      // showVideo.style.display = 'inline';
+      // showVideo.muted = false;
     }
+
+    console.log(this.overlappingSprites);
   }
 
   checkOverlap(scene) {
@@ -237,9 +239,9 @@ export default class MainScene extends Phaser.Scene {
       ) {
         delete scene.overlappingSprites[employeeId];
         // console.log('NO LONGER OVERLAPPING');
-        const hideVideo = document.querySelector(`#${coworker.employeeId}`);
-        hideVideo.style.display = 'none';
-        hideVideo.muted = true;
+        // const hideVideo = document.querySelector(`#${coworker.employeeId}`);
+        // hideVideo.style.display = 'none';
+        // hideVideo.muted = true;
       }
     });
   }
