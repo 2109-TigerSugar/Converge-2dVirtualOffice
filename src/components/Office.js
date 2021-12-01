@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-// export const socket = io();
+import { socket } from '..';
+import runWebRTC from '../webcam';
 
 const Office = () => {
   document.getElementById('mygame').style.display = 'block';
