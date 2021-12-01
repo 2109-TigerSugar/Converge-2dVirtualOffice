@@ -21,7 +21,7 @@ export default class MainScene extends Phaser.Scene {
     this.socket = socket;
 
     //THIS WILL LAUNCH THE LOBBY
-    scene.scene.launch("Lobby", { socket: scene.socket });
+    // scene.scene.launch("Lobby", { socket: scene.socket });
 
     // CREATE OTHER EMPLOYEES AKA COWORKERS
     this.coworkers = this.physics.add.group();

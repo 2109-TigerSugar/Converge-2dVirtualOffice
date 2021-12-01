@@ -6,11 +6,14 @@ const employees = {};
 
 const connectedSockets = [];
 
+
 module.exports = (io) => {
   io.on("connection", (socket) => {
     console.log(
       `A socket connection to the server has been made: ${socket.id}`
     );
+
+    console.log(officeRooms)
 
     connectedSockets.push(socket.id);
     socket.broadcast.emit("someoneJoined", socket.id);
@@ -87,22 +90,35 @@ module.exports = (io) => {
     //   }
     // });
 
-    socket.on("isKeyValid", function (input) {
-      Object.keys(officeRooms).includes(input)
-        ? socket.emit("keyIsValid", input)
-        : socket.emit("keyNotValid");
+    socket.on("isKeyUnique", function (roomKey) {
+      // Object.keys(officeRooms).includes(input)
+      //   ? socket.emit("keyIsUnique", input)
+      //   : socket.emit("DuplicateKey");
+
+      // if key is unique
+      if(officeRooms[roomKey] === undefined) {
+        officeRooms[roomKey] = { //create room
+              roomKey,
+              employees: {},
+              numEmployees: 0,
+            };
+        console.log(officeRooms);
+        socket.emit("keyIsUnique")
+      } else {
+        socket.emit("duplicateKey") //error
+      }
     });
     // get a random code for the room
-    socket.on("getRoomCode", async function () {
-      let key = "key";
-      Object.keys(officeRooms).includes(key) ? (key = "key") : key;
-      officeRooms[key] = {
-        roomKey: key,
-        employees: {},
-        numEmployees: 0,
-      };
-      socket.emit("roomCreated", key);
-    });
+    // socket.on("getRoomCode", async function () {
+    //   let key = "key";
+    //   Object.keys(officeRooms).includes(key) ? (key = "key") : key;
+    //   officeRooms[key] = {
+    //     roomKey: key,
+    //     employees: {},
+    //     numEmployees: 0,
+    //   };
+    //   socket.emit("roomCreated", key);
+    // });
 
   });
 };

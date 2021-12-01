@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { socket } from '..';
 
 // export const CreateForm = () => {
 //   const [roomKey, setRoomKey] = useState('')
@@ -22,6 +23,19 @@ import React, { useState, useEffect } from 'react';
 //     </form>
 //   )
 // }
+
+/*
+
+create form (onSubmit)
+  check if key is unique (isKeyUnique socket) => check the response => create room + join room => /office
+  if not unique => alert and make them input a new key
+
+
+join form (onSubmit)
+
+  check if roomKey exists, if yes => join => navigate to /office
+  if no -> room does not exists, please check your key or create a room first
+ */
 
 export const JoinOrCreateForm = (props) => {
   const [userData, setUserData] = useState({
@@ -53,14 +67,27 @@ export const JoinOrCreateForm = (props) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(userData);
 
-    window.localStorage.setItem('userData', JSON.stringify(userData));
-    setUserData({
-      name: '',
-      roomKey: '',
-      officeType: '',
-    });
+    // checks
+    if (props.formType === 'create') {
+      socket.emit('isKeyUnique', userData.roomKey);
+      socket.on('keyIsUnique', () => {
+        console.log('good key');
+        console.log('local storage start')
+
+        window.localStorage.setItem('userData', JSON.stringify(userData));
+        setUserData({
+          name: '',
+          roomKey: '',
+          officeType: '',
+        });
+        console.log('local storage set to', window.localStorage.getItem('userData'))
+      });
+      socket.on('duplicateKey', () => {
+        alert('bad key')
+      });
+    }
+
   };
 
   return (
