@@ -125,6 +125,12 @@ module.exports = (io) => {
         socket.emit('duplicate-key'); //error
       }
     });
+
+    socket.on('doesKeyExist', function(roomKey) {
+
+       socket.emit('roomKeyExists', officeRooms[roomKey])
+
+    })
     // get a random code for the room
     // socket.on("getRoomCode", async function () {
     //   let key = "key";

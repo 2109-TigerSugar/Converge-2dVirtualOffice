@@ -95,6 +95,16 @@ export const JoinOrCreateForm = (props) => {
       socket.on('duplicate-key', () => {
         alert('bad key');
       });
+    } else {
+      socket.emit('doesKeyExist', userData.roomKey);
+      socket.on('roomKeyExists', (exists) => {
+        if(exists) {
+          socket.emit('joinRoom', userData.roomKey);
+          navigate('/office');
+        } else {
+          alert('invalid room key');
+        }
+      })
     }
   };
 
