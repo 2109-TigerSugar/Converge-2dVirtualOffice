@@ -14,9 +14,10 @@ module.exports = (io) => {
     socket.broadcast.emit('someoneJoined', socket.id);
 
     socket.on('joinRoom', (roomKey) => {
-      if (socket.rooms.has(roomKey)) return;
+      if (socket.rooms.has(roomKey) || !officeRooms[roomKey]) return;
       socket.join(roomKey);
       const roomInfo = officeRooms[roomKey];
+      console.log('roominfo', roomInfo)
       roomInfo.employees[socket.id] = {
         rotation: 0,
         x: 400,
@@ -122,25 +123,16 @@ module.exports = (io) => {
           numEmployees: 0,
         };
         console.log(officeRooms);
-        socket.emit('unique-key');
+        socket.emit('roomUniqueCheck', true);
       } else {
-        socket.emit('duplicate-key'); //should not join room
+        socket.emit('roomUniqueCheck', false); //should not join room
       }
     });
 
     socket.on('doesKeyExist', function (roomKey) {
-      socket.emit('roomKeyExists', officeRooms[roomKey]);
+      console.log('does room exist', officeRooms[roomKey]);
+      socket.emit('roomExistCheck', officeRooms[roomKey] !== undefined);
     });
-    // get a random code for the room
-    // socket.on("getRoomCode", async function () {
-    //   let key = "key";
-    //   Object.keys(officeRooms).includes(key) ? (key = "key") : key;
-    //   officeRooms[key] = {
-    //     roomKey: key,
-    //     employees: {},
-    //     numEmployees: 0,
-    //   };
-    //   socket.emit("roomCreated", key);
-    // });
+
   });
 };

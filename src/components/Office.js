@@ -14,7 +14,7 @@ const Office = () => {
     })();
     if (userData && userData.roomKey) {
       socket.emit('doesKeyExist', userData.roomKey);
-      socket.on('roomKeyExists', (exists) => {
+      socket.on('roomExistCheck', (exists) => {
         if(exists) {
           socket.emit('joinRoom', userData.roomKey);
         } else {
@@ -25,7 +25,6 @@ const Office = () => {
 
     return () =>{
       // when going to another page, hide the webcam panel and phaser game
-      alert('unmounting office react component')
       document.getElementById('mygame').style.display = 'none';
     document.querySelector('.webcam-panel').style.display = 'none';
 

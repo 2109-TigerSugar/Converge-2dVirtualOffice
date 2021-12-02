@@ -62,6 +62,8 @@ export const JoinOrCreateForm = (props) => {
         officeType: '',
       });
     }
+
+    return () => setUserData({});
   }, [props.formType]);
 
   const handleChange = (event) => {
@@ -76,39 +78,47 @@ export const JoinOrCreateForm = (props) => {
     if (props.formType === 'create') {
       socket.emit('isKeyUnique', userData.roomKey);
       // key is unique so user will join the room
-      socket.on('unique-key', () => {
-        // user data is saved on local storage
-        window.localStorage.setItem('userData', JSON.stringify(userData));
-        setUserData({
-          name: '',
-          roomKey: '',
-          officeType: '',
-        });
-        console.log(
-          'local storage set to',
-          window.localStorage.getItem('userData')
-        );
+      socket.on('roomUniqueCheck', (unique) => {
+        console.log('create here')
+        if (unique) validKey(userData);
+        else
+          setErr(
+            `room ${userData.roomKey} is taken. Please join with another key.`
+          );
+      });
 
-        // join the room
-        socket.emit('joinRoom', userData.roomKey);
-        navigate('/office');
-      });
-      // user did not input a unique key
-      socket.on('duplicate-key', () => {
-        setErr(`room ${userData.roomKey} is taken. Please join with another key.`)
-      });
-    } else {
+      // socket.on('unique-key', () => {
+      //   validKey(userData);
+      // });
+      // // user did not input a unique key
+      // socket.on('duplicate-key', () => {
+      //   setErr(
+      //     `room ${userData.roomKey} is taken. Please join with another key.`
+      //   );
+      // });
+    }
+    if (props.formType === 'join')
+    {
       //pressing the join button
       socket.emit('doesKeyExist', userData.roomKey);
-      socket.on('roomKeyExists', (exists) => {
-        if (exists) {
-          socket.emit('joinRoom', userData.roomKey);
-          navigate('/office');
-        } else {
-          setErr(`room ${userData.roomKey} is invalid. Please join with another key.`)
+      socket.on('roomExistCheck', (exists) => {
+        if (exists) validKey(userData);
+        else {
+          setErr(
+            `room ${userData.roomKey} is invalid. Please join with another key.`
+          );
         }
       });
     }
+  };
+
+  const validKey = (userData) => {
+    // user data is saved on local storage
+    window.localStorage.setItem('userData', JSON.stringify(userData));
+
+    // join the room
+    socket.emit('joinRoom', userData.roomKey);
+    navigate('/office');
   };
 
   return (
@@ -163,8 +173,10 @@ export const JoinOrCreateForm = (props) => {
           onChange={handleChange}
         />
       </div>
-      <button type="submit" disabled={!userData.name || !userData.roomKey}>{props.formType}</button>
-      { err && (<p style={{color: 'red'}}>{err}</p>)}
+      <button type="submit" disabled={!userData.name || !userData.roomKey}>
+        {props.formType}
+      </button>
+      {err && <p style={{ color: 'red' }}>{err}</p>}
     </form>
   );
 };
