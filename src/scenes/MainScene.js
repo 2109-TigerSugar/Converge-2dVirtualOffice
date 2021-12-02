@@ -91,7 +91,6 @@ export default class MainScene extends Phaser.Scene {
       scene.coworkers.getChildren().forEach(function (coworker) {
         if (employeeInfo.employeeId === coworker.employeeId) {
           coworker.setPosition(employeeInfo.x, employeeInfo.y);
-          coworker.anims.play('walkLeftRight', true)
         }
       });
     });
