@@ -17,12 +17,13 @@ export default class MainScene extends Phaser.Scene {
     //passed into this.load.tilemapTiledJSON(phaserKey, pathToFile)
     const TILEMAP_JSON = 'assets/kelsey-office.json';
 
-    this.load.image('avatar', 'assets/maddie.png');
+    this.load.spritesheet('avatar', 'assets/example-sprite.png', { frameWidth: 48, frameHeight: 96 });
     this.load.image('office', TILEMAP_PNG);
     this.load.tilemapTiledJSON('map', TILEMAP_JSON);
   }
 
   create() {
+   this.state.active = true;
     const scene = this;
 
     //Dakota: Load map JSON from tiled we preloaded just above
@@ -90,6 +91,7 @@ export default class MainScene extends Phaser.Scene {
       scene.coworkers.getChildren().forEach(function (coworker) {
         if (employeeInfo.employeeId === coworker.employeeId) {
           coworker.setPosition(employeeInfo.x, employeeInfo.y);
+          coworker.anims.play('walkLeftRight', true)
         }
       });
     });
@@ -102,7 +104,7 @@ export default class MainScene extends Phaser.Scene {
       });
     });
 
-    this.cursors = this.input.keyboard.createCursorKeys();
+    // this.cursors = this.input.keyboard.createCursorKeys();
     // DISCONNECT
     this.socket.on('coworker disconnected', function (arg) {
       const { coworkerId, numEmployees } = arg;
@@ -116,11 +118,11 @@ export default class MainScene extends Phaser.Scene {
 
     ///////////////////////////////////////////////
     //set movement keys to arrow keys
-    const keys = scene.input.keyboard.addKeys({
-      up: 'up',
-      down: 'down',
-      left: 'left',
-      right: 'right',
+    const keys = scene.input.keyboard.createCursorKeys({
+      // up: 'up',
+      // down: 'down',
+      // left: 'left',
+      // right: 'right',
     }); // keys.up, keys.down, keys.left, keys.right
     this.cursors = keys;
     // this.cursors = this.input.keyboard.createCursorKeys();
@@ -129,6 +131,30 @@ export default class MainScene extends Phaser.Scene {
     /************************ OVERLAP **************************/
 
     /************************ OVERLAP **************************/
+
+    //animation
+    scene.anims.create({
+      key: 'walkLeftRight',
+      frames: this.anims.generateFrameNumbers('avatar', { start: 112, end: 117 }),
+      frameRate: 10,
+      repeat: 0
+    })
+
+    scene.anims.create({
+      key: 'walkUp',
+      frames: this.anims.generateFrameNumbers('avatar', { start: 118, end: 123 }),
+      frameRate: 10,
+      repeat: 0
+    })
+
+    scene.anims.create({
+      key: 'walkDown',
+      frames: this.anims.generateFrameNumbers('avatar', { start: 130, end: 135 }),
+      frameRate: 10,
+      repeat: 0
+    })
+
+
   }
 
   //place all movement in here so actions can be recognized
@@ -140,22 +166,28 @@ export default class MainScene extends Phaser.Scene {
 
     //employee movement
     if (this.sprite) {
-      const speed = 200;
+      const speed = 100;
 
       this.sprite.body.setVelocity(0);
 
       // left to right movements
       if (this.cursors.left.isDown) {
         this.sprite.body.setVelocityX(-speed);
+        this.sprite.anims.play('walkLeftRight', true);
+        this.sprite.flipX = true;
       } else if (this.cursors.right.isDown) {
         this.sprite.body.setVelocityX(speed);
+        this.sprite.anims.play('walkLeftRight', true);
+        this.sprite.flipX = false;
       }
 
       //up and down movements
       if (this.cursors.up.isDown) {
         this.sprite.body.setVelocityY(-speed);
+        this.sprite.anims.play('walkUp', true);
       } else if (this.cursors.down.isDown) {
         this.sprite.body.setVelocityY(speed);
+        this.sprite.anims.play('walkDown', true);
       }
 
       this.sprite.body.velocity.normalize().scale(speed);
@@ -201,9 +233,16 @@ export default class MainScene extends Phaser.Scene {
     //the line below adds the sprite to the game map.
     scene.sprite = scene.physics.add
       .sprite(employeeInfo.x, employeeInfo.y, 'avatar')
-      .setScale(0.2)
       .setVisible(true);
     // .setCollideWorldBounds(true);
+
+    //animation
+    // scene.anims.create({
+    //   key: 'walk',
+    //   frames: this.anims.generateFrameNumbers('avatar', { start: 112, end: 118 }),
+    //   frameRate: 10,
+    //   repeat: -1
+    // })
 
     scene.sprite.employeeId = employeeInfo.employeeId;
     //Cameraplsworkthx
@@ -216,7 +255,6 @@ export default class MainScene extends Phaser.Scene {
   addCoworkers(scene, employeeInfo) {
     const coworker = scene.physics.add
       .sprite(employeeInfo.x + 40, employeeInfo.y + 40, 'avatar')
-      .setScale(0.2)
       .setVisible(true);
     // .setCollideWorldBounds(true);
     coworker.employeeId = employeeInfo.employeeId;
