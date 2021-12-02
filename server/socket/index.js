@@ -9,7 +9,7 @@ module.exports = (io) => {
       `A socket connection to the server has been made: ${socket.id}`
     );
 
-    console.log('on connection office rooms', officeRooms)
+    console.log('on connection office rooms', officeRooms);
     connectedSockets.push(socket.id);
     socket.broadcast.emit('someoneJoined', socket.id);
 
@@ -65,24 +65,24 @@ module.exports = (io) => {
       // can access the rooms socket belonged to
       console.log('user disconnecting belonged to', socket.rooms);
 
-      // let rooms = Array.from(socket.rooms);
-      socket.rooms.forEach((key) => {
-        if (officeRooms[key]) {
-          delete officeRooms[key].employees[socket.id];
-          if (officeRooms[key].numEmployees <= 1)
-            officeRooms[key].numEmployees = 0;
-          else officeRooms[key].numEmployees -= 1;
-          console.log('room after user disconnects',officeRooms[key]);
+      socket.rooms.forEach((roomKey) => {
+        if (officeRooms[roomKey]) {
+          // remove that employee from the employee list
+          // decrease the numEmployee of that room
+          delete officeRooms[roomKey].employees[socket.id];
+          officeRooms[roomKey].numEmployees = Object.keys(officeRooms[roomKey].employees).length;
+          console.log('room after user disconnects', officeRooms[roomKey]);
+
+          // need to notify coworkers that socket.id has disconnected
+          socket.to(roomKey).emit('coworker disconnected', {coworkerId: socket.id, numEmployees: officeRooms[roomKey].numEmployees });
         }
       });
     });
 
     //disconnect
     socket.on('disconnect', () => {
-      io.emit('socket disconnected', socket.id); //used for peerjs to remove video element
-
-      // remove that employee from the employee list
-      // decrease the numEmployee of that room
+      //used for peerjs to remove video element
+      io.emit('socket disconnected', socket.id);
     });
     // socket.on("disconnect", function () {
     //   let roomKey = 0;
@@ -131,10 +131,9 @@ module.exports = (io) => {
       }
     });
 
-    socket.on('doesKeyExist', function(roomKey) {
-       socket.emit('roomKeyExists', officeRooms[roomKey])
-
-    })
+    socket.on('doesKeyExist', function (roomKey) {
+      socket.emit('roomKeyExists', officeRooms[roomKey]);
+    });
     // get a random code for the room
     // socket.on("getRoomCode", async function () {
     //   let key = "key";

@@ -11,9 +11,7 @@ const Office = () => {
     (async () => {
       await runWebRTC(socket);
     })();
-    console.log(userData)
     if (userData && userData.roomKey) {
-      console.log(socket)
       socket.emit('doesKeyExist', userData.roomKey);
       socket.on('roomKeyExists', (exists) => {
         if(exists) {

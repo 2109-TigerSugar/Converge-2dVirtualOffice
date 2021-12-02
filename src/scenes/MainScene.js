@@ -82,15 +82,15 @@ export default class MainScene extends Phaser.Scene {
     });
     this.cursors = this.input.keyboard.createCursorKeys();
     // DISCONNECT
-    // this.socket.on("disconnected", function (arg) {
-    //   const { employeeId, numEmployees } = arg;
-    //   scene.state.numEmployees = numEmployees;
-    //   scene.coworkers.getChildren().forEach(function (coworker) {
-    //     if (employeeId === coworker.employeeId) {
-    //       coworker.destroy();
-    //     }
-    //   });
-    // });
+    this.socket.on("coworker disconnected", function (arg) {
+      const { coworkerId, numEmployees } = arg;
+      scene.state.numEmployees = numEmployees;
+      scene.coworkers.getChildren().forEach(function (coworker) {
+        if (coworkerId === coworker.employeeId) {
+          coworker.destroy();
+        }
+      });
+    });
   }
 
   //place all movement in here so actions can be recognized
