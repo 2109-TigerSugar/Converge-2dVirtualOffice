@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
-import { socket } from '../index';
+import {socket} from '../socket'
+
 
 let officeLayer;
 export default class MainScene extends Phaser.Scene {

@@ -6,7 +6,8 @@ import config from './config/config';
 import MainScene from './scenes/MainScene';
 
 //Create socket to import elsewhere instead of attaching to window
-export const socket = io();
+// export const socket = io();
+import { socket } from './socket';
 
 class Game extends Phaser.Game {
   constructor() {

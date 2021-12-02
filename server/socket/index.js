@@ -16,7 +16,7 @@ module.exports = io => {
 
     console.log('on connection office rooms', officeRooms);
     connectedSockets.push(socket.id);
-    socket.broadcast.emit('someoneJoined', socket.id);
+    // socket.broadcast.emit('someoneJoined', socket.id);
 
     socket.on('joinRoom', roomKey => {
       if (socket.rooms.has(roomKey) || !officeRooms[roomKey]) return;
