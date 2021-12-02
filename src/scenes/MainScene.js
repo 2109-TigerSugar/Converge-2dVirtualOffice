@@ -47,9 +47,6 @@ export default class MainScene extends Phaser.Scene {
     // CREATE OTHER PLAYERS GROUP
     this.coworkers = this.physics.add.group();
 
-    // CREATE OTHER PLAYERS GROUP
-    this.coworkers = this.physics.add.group();
-
     //WHEN EMPLOYEE JOINS A ROOM -- SET STATE HERE
     this.socket.on('setState', function (state) {
       const { roomKey, employees, numEmployees } = state;
