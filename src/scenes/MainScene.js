@@ -281,8 +281,10 @@ export default class MainScene extends Phaser.Scene {
         delete scene.overlappingSprites[employeeId];
         // console.log('NO LONGER OVERLAPPING');
         const hideVideo = document.querySelector(`#${coworker.employeeId}`);
-        hideVideo.style.display = 'none';
-        hideVideo.muted = true;
+        if (hideVideo) {
+          hideVideo.style.display = 'none';
+          hideVideo.muted = true;
+        }
       }
     });
   }
