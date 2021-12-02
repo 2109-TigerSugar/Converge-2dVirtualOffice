@@ -8,6 +8,7 @@ const Office = () => {
   useEffect(() => {
     document.getElementById('mygame').style.display = 'block';
     document.querySelector('.webcam-panel').style.display = 'flex';
+
     (async () => {
       await runWebRTC(socket);
     })();
@@ -21,6 +22,16 @@ const Office = () => {
         }
       })
     }
+
+    return () =>{
+      // when going to another page, hide the webcam panel and phaser game
+      alert('unmounting office react component')
+      document.getElementById('mygame').style.display = 'none';
+    document.querySelector('.webcam-panel').style.display = 'none';
+
+    }
+
+
   }, []);
 
   return (
