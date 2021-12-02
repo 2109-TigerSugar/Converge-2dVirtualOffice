@@ -24,6 +24,16 @@ export default class MainScene extends Phaser.Scene {
   create() {
     const scene = this;
 
+    //Dakota: Load map JSON from tiled we preloaded just above
+    const map = this.make.tilemap({ key: 'map' });
+    //Add image of tileset using map.addTileSetImage(tilesetName, phaserKey)
+    //Note: The tilesetName can be found in the JSON file exported from Tiled (likely in our assets folder)
+    const tileset = map.addTilesetImage('kelsey-office', 'tiles');
+
+    //Here we create each layer just as they were created in tiled. By default tiled names layers things like "Tile Layer 1", but we can change this in Tiled!
+    //map.createStaticLayer(layerNameFromTiled, tileset, x, y)
+    const officeLayer = map.createStaticLayer('Tile Layer 1', tileset, 0, 0);
+
     this.add.image(0, 0, 'office').setOrigin(0);
 
     //CREATE SOCKET HERE//
@@ -186,6 +196,9 @@ export default class MainScene extends Phaser.Scene {
       .setCollideWorldBounds(true);
 
     scene.sprite.employeeId = employeeInfo.employeeId;
+    //Cameraplsworkthx
+    const camera = this.cameras.main;
+    camera.startFollow(this.sprite);
   }
   addCoworkers(scene, employeeInfo) {
     const coworker = scene.physics.add
