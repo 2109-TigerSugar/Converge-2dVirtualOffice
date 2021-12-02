@@ -98,6 +98,7 @@ export default class Lobby extends Phaser.Scene {
     scene.socket.on("keyIsValid", function (input) {
       scene.socket.emit("joinRoom", input);
       scene.scene.stop("Lobby");
+      scene.scene.launch("MainRoom", { socket: scene.socket });
     });
   }
 

@@ -58,6 +58,7 @@ module.exports = (io) => {
         .emit('employeeMoved', officeRooms[roomKey].employees[socket.id]);
     });
 
+
     // disconnecting: right before disconnect
     socket.on('disconnecting', () => {
       // can access the rooms socket belonged to
@@ -82,37 +83,10 @@ module.exports = (io) => {
       //used for peerjs to remove video element
       io.emit('socket disconnected', socket.id);
     });
-    // socket.on("disconnect", function () {
-    //   let roomKey = 0;
-    //   for (let keys1 in officeRooms) {
-    //     for (let keys2 in officeRooms[keys1]) {
-    //       Object.keys(officeRooms[keys1][keys2]).map((el) => {
-    //         if (el === socket.id) {
-    //           roomKey = keys1;
-    //         }
-    //       });
-    //     }
-    //   }
 
-    //   const roomInfo = officeRooms[roomKey];
-
-    //   if (roomInfo) {
-    //     console.log("user disconnected: ", socket.id);
-    //     //removing from employee object
-    //     delete roomInfo.employees[socket.id];
-    //     //update count
-    //     roomInfo.numEmployees = Object.keys(roomInfo.employees).length;
-    //     io.to(roomKey).emit("disconnected", {
-    //       employeeId: socket.id,
-    //       numEmployees: roomInfo.numEmployees,
-    //     });
-    //   }
-    // });
 
     socket.on('isKeyUnique', function (roomKey) {
-      // Object.keys(officeRooms).includes(input)
-      //   ? socket.emit("keyIsUnique", input)
-      //   : socket.emit("DuplicateKey");
+
 
       // if key is unique
       if (officeRooms[roomKey] === undefined) {
@@ -129,10 +103,20 @@ module.exports = (io) => {
       }
     });
 
+
     socket.on('doesKeyExist', function (roomKey) {
       console.log('does room exist', officeRooms[roomKey]);
       socket.emit('roomExistCheck', officeRooms[roomKey] !== undefined);
-    });
 
+    });
   });
 };
+
+function codeGenerator() {
+  let code = "";
+  let chars = "ABCDEFGHJKLMNPQRSTUVWXYZ0123456789";
+  for (let i = 0; i < 5; i++) {
+    code += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return code;
+}
