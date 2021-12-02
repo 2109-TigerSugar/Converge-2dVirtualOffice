@@ -47,21 +47,19 @@ export default class MainScene extends Phaser.Scene {
     // CREATE OTHER PLAYERS GROUP
     this.coworkers = this.physics.add.group();
 
-    //THIS WILL LAUNCH THE LOBBY
-    scene.scene.launch('Lobby', { socket: scene.socket });
-    // Join the game room with gameRoomName 'office'
-    //  socket.emit("joinRoom", "office");
-    //background
 
     // CREATE OTHER PLAYERS GROUP
     this.coworkers = this.physics.add.group();
 
     //WHEN EMPLOYEE JOINS A ROOM -- SET STATE HERE
     this.socket.on('setState', function (state) {
+
       const { roomKey, employees, numEmployees } = state;
 
       scene.physics.world.enable(this);
       scene.physics.world.setBounds(0, 0, 800, 600);
+
+      console.log('in setState event', state )
 
       // STATE FOR OFFICE
       scene.state.roomKey = roomKey;
@@ -109,6 +107,19 @@ export default class MainScene extends Phaser.Scene {
       });
     });
 
+    this.cursors = this.input.keyboard.createCursorKeys();
+    // DISCONNECT
+    this.socket.on("coworker disconnected", function (arg) {
+      const { coworkerId, numEmployees } = arg;
+      scene.state.numEmployees = numEmployees;
+      scene.coworkers.getChildren().forEach(function (coworker) {
+        if (coworkerId === coworker.employeeId) {
+          coworker.destroy();
+        }
+      });
+    });
+
+
     ///////////////////////////////////////////////
     //set movement keys to arrow keys
     const keys = scene.input.keyboard.addKeys({
@@ -124,6 +135,7 @@ export default class MainScene extends Phaser.Scene {
     /************************ OVERLAP **************************/
 
     /************************ OVERLAP **************************/
+
   }
 
   //place all movement in here so actions can be recognized

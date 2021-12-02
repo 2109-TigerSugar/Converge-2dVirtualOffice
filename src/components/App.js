@@ -1,10 +1,14 @@
-import React from "react";
+import React from 'react';
+import Navbar from './Navbar';
+import RouteContent from './Routes';
+import { BrowserRouter } from 'react-router-dom';
 export default class App extends React.Component {
   render() {
     return (
-      <div style={{ textAlign: "center" }}>
-        <h1>Hello World</h1>
-      </div>
+      <BrowserRouter>
+          <Navbar />
+          <RouteContent />
+      </BrowserRouter>
     );
   }
 }
