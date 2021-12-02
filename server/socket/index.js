@@ -127,7 +127,7 @@ module.exports = (io) => {
         console.log(officeRooms);
         socket.emit('unique-key');
       } else {
-        socket.emit('duplicate-key'); //error
+        socket.emit('duplicate-key'); //should not join room
       }
     });
 

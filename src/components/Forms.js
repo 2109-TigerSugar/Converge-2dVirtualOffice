@@ -44,6 +44,7 @@ export const JoinOrCreateForm = (props) => {
     roomKey: '',
     officeType: '',
   });
+  const [err, setErr] = useState('');
   const navigate = useNavigate();
 
   // only fetch from localStorage if formType is 'join'
@@ -65,6 +66,7 @@ export const JoinOrCreateForm = (props) => {
 
   const handleChange = (event) => {
     setUserData({ ...userData, [event.target.name]: event.target.value });
+    setErr('');
   };
 
   const handleSubmit = (event) => {
@@ -93,7 +95,7 @@ export const JoinOrCreateForm = (props) => {
       });
       // user did not input a unique key
       socket.on('duplicate-key', () => {
-        alert(`room ${userData.roomKey} is taken. Please try another one.`);
+        setErr(`room ${userData.roomKey} is taken. Please join with another key.`)
       });
     } else {
       //pressing the join button
@@ -103,10 +105,7 @@ export const JoinOrCreateForm = (props) => {
           socket.emit('joinRoom', userData.roomKey);
           navigate('/office');
         } else {
-          console.log('bads');
-          alert(
-            `room ${userData.roomKey} is invalid. Please join with another key.`
-          );
+          setErr(`room ${userData.roomKey} is invalid. Please join with another key.`)
         }
       });
     }
@@ -165,6 +164,7 @@ export const JoinOrCreateForm = (props) => {
         />
       </div>
       <button type="submit" disabled={!userData.name || !userData.roomKey}>{props.formType}</button>
+      { err && (<p style={{color: 'red'}}>{err}</p>)}
     </form>
   );
 };
