@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { socket } from '../index';
 
+let officeLayer;
 export default class MainScene extends Phaser.Scene {
   constructor() {
     super('MainScene');
@@ -28,13 +29,17 @@ export default class MainScene extends Phaser.Scene {
     const map = this.make.tilemap({ key: 'map' });
     //Add image of tileset using map.addTileSetImage(tilesetName, phaserKey)
     //Note: The tilesetName can be found in the JSON file exported from Tiled (likely in our assets folder)
-    const tileset = map.addTilesetImage('kelsey-office', 'tiles');
+    const tileset = map.addTilesetImage('kelsey-office', 'office', 48, 48);
 
-    //Here we create each layer just as they were created in tiled. By default tiled names layers things like "Tile Layer 1", but we can change this in Tiled!
+    //Below we create each layer just as they were created in tiled. By default tiled names layers things like "Tile Layer 1", but we can change this in Tiled!
     //map.createStaticLayer(layerNameFromTiled, tileset, x, y)
-    const officeLayer = map.createStaticLayer('Tile Layer 1', tileset, 0, 0);
 
-    this.add.image(0, 0, 'office').setOrigin(0);
+    officeLayer = map.createLayer('Tile Layer 1', tileset, 0, 0);
+
+    //Set collision property (in this case I called it collide in tiled and set collision tiles to true)
+    officeLayer.setCollisionByProperty({ collide: true });
+
+    // this.add.image(0, 0, 'office').setOrigin(0);
 
     //CREATE SOCKET HERE//
     this.socket = socket;
@@ -192,20 +197,23 @@ export default class MainScene extends Phaser.Scene {
     scene.sprite = scene.physics.add
       .sprite(employeeInfo.x, employeeInfo.y, 'avatar')
       .setScale(0.2)
-      .setVisible(true)
-      .setCollideWorldBounds(true);
+      .setVisible(true);
+    // .setCollideWorldBounds(true);
 
     scene.sprite.employeeId = employeeInfo.employeeId;
     //Cameraplsworkthx
     const camera = this.cameras.main;
     camera.startFollow(this.sprite);
+
+    //Set collision plsworkthx
+    this.physics.add.collider(this.sprite, officeLayer);
   }
   addCoworkers(scene, employeeInfo) {
     const coworker = scene.physics.add
       .sprite(employeeInfo.x + 40, employeeInfo.y + 40, 'avatar')
       .setScale(0.2)
-      .setVisible(true)
-      .setCollideWorldBounds(true);
+      .setVisible(true);
+    // .setCollideWorldBounds(true);
     coworker.employeeId = employeeInfo.employeeId;
     scene.coworkers.add(coworker);
   }
