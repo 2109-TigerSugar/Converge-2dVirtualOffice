@@ -39,7 +39,6 @@ join form (onSubmit)
  */
 
 export const JoinOrCreateForm = (props) => {
-  console.log('render')
   const [userData, setUserData] = useState({
     name: '',
     roomKey: '',

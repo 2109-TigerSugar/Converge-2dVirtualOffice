@@ -11,8 +11,8 @@ const LandingPage = () => {
     // 2 buttons: 1 for create 1 for join
     <div className="landing-page">
       <div className="buttons">
-        <button onClick={() => {console.log('clicked create'); setFormType('create')}} type="button">Create</button>
-        <button onClick={() => {console.log('clicked join');setFormType('join')}} type="button">Join</button>
+        <button onClick={() => {setFormType('create')}} type="button">Create</button>
+        <button onClick={() => {setFormType('join')}} type="button">Join</button>
       </div>
       <div className="form">
         {formType === '' ? null:
