@@ -14,11 +14,8 @@ module.exports = (io) => {
     socket.broadcast.emit('someoneJoined', socket.id);
 
     socket.on('joinRoom', (roomKey) => {
-      console.log('test');
-
       if (socket.rooms.has(roomKey)) return;
       socket.join(roomKey);
-      console.log(Array.from(socket.rooms));
       const roomInfo = officeRooms[roomKey];
       roomInfo.employees[socket.id] = {
         rotation: 0,
