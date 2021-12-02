@@ -47,19 +47,17 @@ export default class MainScene extends Phaser.Scene {
     // CREATE OTHER PLAYERS GROUP
     this.coworkers = this.physics.add.group();
 
-
     // CREATE OTHER PLAYERS GROUP
     this.coworkers = this.physics.add.group();
 
     //WHEN EMPLOYEE JOINS A ROOM -- SET STATE HERE
     this.socket.on('setState', function (state) {
-
       const { roomKey, employees, numEmployees } = state;
 
       scene.physics.world.enable(this);
       scene.physics.world.setBounds(0, 0, 800, 600);
 
-      console.log('in setState event', state )
+      console.log('in setState event', state);
 
       // STATE FOR OFFICE
       scene.state.roomKey = roomKey;
@@ -109,7 +107,7 @@ export default class MainScene extends Phaser.Scene {
 
     this.cursors = this.input.keyboard.createCursorKeys();
     // DISCONNECT
-    this.socket.on("coworker disconnected", function (arg) {
+    this.socket.on('coworker disconnected', function (arg) {
       const { coworkerId, numEmployees } = arg;
       scene.state.numEmployees = numEmployees;
       scene.coworkers.getChildren().forEach(function (coworker) {
@@ -118,7 +116,6 @@ export default class MainScene extends Phaser.Scene {
         }
       });
     });
-
 
     ///////////////////////////////////////////////
     //set movement keys to arrow keys
@@ -135,7 +132,6 @@ export default class MainScene extends Phaser.Scene {
     /************************ OVERLAP **************************/
 
     /************************ OVERLAP **************************/
-
   }
 
   //place all movement in here so actions can be recognized
@@ -255,8 +251,7 @@ export default class MainScene extends Phaser.Scene {
       )
     ) {
       this.overlappingSprites[coworker.employeeId] = coworker;
-      const { employeeId } = employee;
-      const coworkerId = coworker.employeeId;
+
       const showVideo = document.querySelector(
         `#${
           this.socket.id === coworker.employeeId
@@ -264,8 +259,10 @@ export default class MainScene extends Phaser.Scene {
             : coworker.employeeId
         }`
       );
-      showVideo.style.display = 'inline';
-      showVideo.muted = false;
+      if (showVideo) {
+        showVideo.style.display = 'inline';
+        showVideo.muted = false;
+      }
     }
 
     console.log(this.overlappingSprites);

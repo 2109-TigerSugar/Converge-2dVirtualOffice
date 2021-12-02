@@ -1,10 +1,8 @@
 import Peer from 'peerjs';
 
-
-const runWebRTC = async (socket) => {
-
-const webcamPanel = document.querySelector('.webcam-panel');
-const callList = {};
+const runWebRTC = async socket => {
+  const webcamPanel = document.querySelector('.webcam-panel');
+  const callList = {};
 
   //Dakota: Ask for permission to use webcam :) We await because we have no clue when they will accept it!
   navigator.getUserMedia =
@@ -34,17 +32,17 @@ const callList = {};
     },
   });
 
-  peer.on('open', (id) => {
+  peer.on('open', id => {
     console.log('My peer ID is: ' + id);
   });
 
   //Answer calls :)
-  peer.on('call', (call) => {
+  peer.on('call', call => {
     //Getting called  so answer
     call.answer(stream);
 
     //Got called and answered so build webcam panel
-    call.on('stream', (remoteStream) => {
+    call.on('stream', remoteStream => {
       if (callList[call.peer] === undefined) {
         addVideo(remoteStream, false, call.peer);
         callList[call.peer] = true;
@@ -55,11 +53,11 @@ const callList = {};
   //Dakota; Socket stuff
 
   //Call new user when they join
-  socket.on('someoneJoined', (socketId) => {
+  socket.on('someoneJoined', socketId => {
     const call = peer.call(socketId, stream);
 
     //Other end answered call so build webcam panel
-    call.on('stream', (remoteStream) => {
+    call.on('stream', remoteStream => {
       if (callList[socketId] === undefined) {
         addVideo(remoteStream, false, socketId);
         callList[socketId] = true;
@@ -67,10 +65,10 @@ const callList = {};
     });
   });
 
-  socket.on('socket disconnected', (socketId) => {
+  socket.on('socket disconnected', socketId => {
     // console.log(`${socketId} disconnected`);
     let videoToRemove = document.querySelectorAll(`#${CSS.escape(socketId)}`);
-    videoToRemove.forEach((video) => video.remove());
+    videoToRemove.forEach(video => video.remove());
   });
 
   function addVideo(stream, mute, socketId) {
@@ -79,13 +77,14 @@ const callList = {};
     videoElement.addEventListener('loadedmetadata', function (e) {
       // console.log('onloadmetadata fired');
       videoElement.play();
-      webcamPanel.appendChild(videoElement);
+      // webcamPanel.appendChild(videoElement);
       callList[socketId] = true;
     });
+    webcamPanel.appendChild(videoElement);
     videoElement.srcObject = stream;
     videoElement.setAttribute('id', socketId);
     videoElement.muted = mute;
   }
-}
+};
 
 export default runWebRTC;
