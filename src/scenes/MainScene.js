@@ -9,8 +9,16 @@ export default class MainScene extends Phaser.Scene {
   }
 
   preload() {
+    //PNG of Tilemap (The image of the tilemap that you used to build the map in Tiled application)
+    //passed into this.load.image(phaserKey, pathToFile)
+    const TILEMAP_PNG = 'assets/kelsey-office.png';
+    ///JSON file of exported Tilemap from Tiled
+    //passed into this.load.tilemapTiledJSON(phaserKey, pathToFile)
+    const TILEMAP_JSON = 'assets/kelsey-office.json';
+
     this.load.image('avatar', 'assets/maddie.png');
-    this.load.image('office', 'assets/office2.png');
+    this.load.image('office', TILEMAP_PNG);
+    this.load.tilemapTiledJSON('map', TILEMAP_JSON);
   }
 
   create() {
