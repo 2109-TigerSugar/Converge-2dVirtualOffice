@@ -45,22 +45,27 @@ const runWebRTC = async socket => {
     call.on('stream', remoteStream => {
       if (callList[call.peer] === undefined) {
         addVideo(remoteStream, false, call.peer);
-        callList[call.peer] = true;
+        // callList[call.peer] = true;
       }
     });
   });
 
   //Dakota; Socket stuff
 
+  socket.on('someoneJoined', socketId => {
+    console.log('Someone joined emit fired');
+  });
+
   //Call new user when they join
   socket.on('someoneJoined', socketId => {
     const call = peer.call(socketId, stream);
+    console.log('Call just happened');
 
     //Other end answered call so build webcam panel
     call.on('stream', remoteStream => {
       if (callList[socketId] === undefined) {
         addVideo(remoteStream, false, socketId);
-        callList[socketId] = true;
+        // callList[socketId] = true;
       }
     });
   });
