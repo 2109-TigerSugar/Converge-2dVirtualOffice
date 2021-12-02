@@ -5,18 +5,20 @@ import runWebRTC from '../webcam';
 
 const Office = () => {
   const userData = JSON.parse(window.localStorage.getItem('userData'));
+
   useEffect(() => {
+    // will show the webcam panel and phaser game
     document.getElementById('mygame').style.display = 'block';
     document.querySelector('.webcam-panel').style.display = 'flex';
-
     (async () => {
-      await runWebRTC(socket);
+      await runWebRTC(socket); //starts peerjs code for video
     })();
+    // when the user refreshes the page, make them join the room again if key exists
     if (userData && userData.roomKey) {
       socket.emit('doesKeyExist', userData.roomKey);
       socket.on('roomExistCheck', (exists) => {
         if(exists) {
-          socket.emit('joinRoom', userData.roomKey);
+          socket.emit('joinRoom', userData.roomKey); //
         } else {
           alert(`room ${userData.roomKey} is invalid. Please join with another key.`);
         }

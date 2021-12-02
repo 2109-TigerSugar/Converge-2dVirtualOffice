@@ -2,55 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { socket } from '..';
 
-// export const CreateForm = () => {
-//   const [roomKey, setRoomKey] = useState('')
-
-//   const handleChange = (event) => {
-//     setRoomKey(event.target.value)
-//   }
-
-//   const handleSubmit = (event) => {
-//     event.preventDefault()
-//     console.log(roomKey)
-//   }
-
-//   return (
-//     <form onSubmit= {handleSubmit}>
-//       <label>Name</label>
-
-//       <label htmlFor="officeKey">Enter Room Key</label>
-//       <input type="text" name="officeKey" id= "officeKey" value={ roomKey } onChange= {handleChange}/>
-//       <button type="submit">create</button>
-//     </form>
-//   )
-// }
-
-/*
-
-create form (onSubmit)
-  check if key is unique (isKeyUnique socket) => check the response => create room + join room => /office
-  if not unique => alert and make them input a new key
-
-
-join form (onSubmit)
-
-  check if roomKey exists, if yes => join => navigate to /office
-  if no -> room does not exists, please check your key or create a room first
- */
-
 export const JoinOrCreateForm = (props) => {
+  // to make the form controlled, have a state to keep track of input values
   const [userData, setUserData] = useState({
     name: '',
     roomKey: '',
     officeType: '',
   });
-  const [err, setErr] = useState('');
-  const navigate = useNavigate();
-
-  // only fetch from localStorage if formType is 'join'
+  const [err, setErr] = useState(''); //if we need to show an error
+  const navigate = useNavigate(); //to let us navigate to other pages
 
   useEffect(() => {
     if (props.formType === 'join') {
+      // only fetch from localStorage if formType is 'join'
       let storedData = window.localStorage.getItem('userData');
       if (storedData) {
         setUserData(JSON.parse(storedData));
@@ -77,33 +41,25 @@ export const JoinOrCreateForm = (props) => {
     // pressing create
     if (props.formType === 'create') {
       socket.emit('isKeyUnique', userData.roomKey);
-      // key is unique so user will join the room
       socket.on('roomUniqueCheck', (unique) => {
-        console.log('create here')
+        // key is unique so user will join the room
         if (unique) validKey(userData);
+        // key is not unique, cannot create room with same key
         else
           setErr(
             `room ${userData.roomKey} is taken. Please join with another key.`
           );
       });
-
-      // socket.on('unique-key', () => {
-      //   validKey(userData);
-      // });
-      // // user did not input a unique key
-      // socket.on('duplicate-key', () => {
-      //   setErr(
-      //     `room ${userData.roomKey} is taken. Please join with another key.`
-      //   );
-      // });
     }
-    if (props.formType === 'join')
-    {
-      //pressing the join button
+
+    // pressing join bottom
+    if (props.formType === 'join') {
       socket.emit('doesKeyExist', userData.roomKey);
       socket.on('roomExistCheck', (exists) => {
+        // room is created, user can join room
         if (exists) validKey(userData);
         else {
+          // room is not created yet
           setErr(
             `room ${userData.roomKey} is invalid. Please join with another key.`
           );
@@ -176,6 +132,7 @@ export const JoinOrCreateForm = (props) => {
       <button type="submit" disabled={!userData.name || !userData.roomKey}>
         {props.formType}
       </button>
+      {/* Error div that wil show if err (state) is not an empty string */}
       {err && <p style={{ color: 'red' }}>{err}</p>}
     </form>
   );
