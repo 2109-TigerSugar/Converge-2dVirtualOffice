@@ -7,12 +7,17 @@ const LandingPage = () => {
   document.getElementById('mygame').style.display = 'none';
   document.querySelector('.webcam-panel').style.display = 'none';
 
+  const handleClick = (e) => {
+    let chosen = e.target.id;
+    (formType !== chosen) ? setFormType(chosen) : setFormType('');
+  }
+
   return (
     // 2 buttons: 1 for create 1 for join
     <div className="landing-page">
       <div className="buttons">
-        <button onClick={() => {setFormType('create')}} type="button">Create</button>
-        <button onClick={() => {setFormType('join')}} type="button">Join</button>
+        <button onClick={handleClick} type="button" id='create'>Create</button>
+        <button onClick={handleClick} type="button" id='join'>Join</button>
       </div>
       <div className="form">
         {formType === '' ? null:

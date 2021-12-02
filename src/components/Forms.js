@@ -70,11 +70,12 @@ export const JoinOrCreateForm = (props) => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // checks
+    // pressing create
     if (props.formType === 'create') {
       socket.emit('isKeyUnique', userData.roomKey);
+      // key is unique so user will join the room
       socket.on('unique-key', () => {
-
+        // user data is saved on local storage
         window.localStorage.setItem('userData', JSON.stringify(userData));
         setUserData({
           name: '',
@@ -89,53 +90,81 @@ export const JoinOrCreateForm = (props) => {
         // join the room
         socket.emit('joinRoom', userData.roomKey);
         navigate('/office');
-
-        // see the phaser canvas with the office
       });
+      // user did not input a unique key
       socket.on('duplicate-key', () => {
         alert(`room ${userData.roomKey} is taken. Please try another one.`);
       });
     } else {
+      //pressing the join button
       socket.emit('doesKeyExist', userData.roomKey);
       socket.on('roomKeyExists', (exists) => {
-        if(exists) {
+        if (exists) {
           socket.emit('joinRoom', userData.roomKey);
           navigate('/office');
         } else {
-          console.log('bads')
-          alert(`room ${userData.roomKey} is invalid. Please join with another key.`);
+          console.log('bads');
+          alert(
+            `room ${userData.roomKey} is invalid. Please join with another key.`
+          );
         }
-      })
+      });
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <label htmlFor="name">Name</label>
-      <input
-        type="text"
-        name="name"
-        id="name"
-        value={userData.name}
-        onChange={handleChange}
-      />
-      <label htmlFor="officeKey">Room Key</label>
-      <input
-        type="text"
-        name="roomKey"
-        id="officeKey"
-        value={userData.roomKey}
-        onChange={handleChange}
-      />
-      <label htmlFor="officeType">Office Type</label>
-      <input
-        type="text"
-        name="officeType"
-        id="officeType"
-        value={userData.officeType}
-        onChange={handleChange}
-      />
-      <button type="submit">{props.formType}</button>
+      <div>
+        <label htmlFor="name">
+          Name
+          <span
+            style={{
+              display: !userData.name ? 'inline' : 'none',
+              color: 'red',
+            }}
+          >
+            *
+          </span>
+        </label>
+        <input
+          type="text"
+          name="name"
+          id="name"
+          value={userData.name}
+          onChange={handleChange}
+        />
+      </div>
+      <div>
+        <label htmlFor="officeKey">
+          Room Key
+          <span
+            style={{
+              display: !userData.roomKey ? 'inline' : 'none',
+              color: 'red',
+            }}
+          >
+            *
+          </span>
+        </label>
+        <input
+          type="text"
+          name="roomKey"
+          id="officeKey"
+          value={userData.roomKey}
+          onChange={handleChange}
+        />
+      </div>
+      <div>
+        <label htmlFor="officeType">Office Type</label>
+        <input
+          type="text"
+          name="officeType"
+          id="officeType"
+          value={userData.officeType}
+          onChange={handleChange}
+        />
+      </div>
+      <button type="submit" disabled={!userData.name || !userData.roomKey}>{props.formType}</button>
     </form>
   );
 };
