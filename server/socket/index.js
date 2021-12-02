@@ -9,11 +9,14 @@ module.exports = (io) => {
       `A socket connection to the server has been made: ${socket.id}`
     );
 
+    console.log('on connection office rooms', officeRooms)
     connectedSockets.push(socket.id);
     socket.broadcast.emit('someoneJoined', socket.id);
 
     socket.on('joinRoom', (roomKey) => {
-      if (Array.from(socket.rooms).includes(roomKey)) return;
+      console.log('test');
+
+      if (socket.rooms.has(roomKey)) return;
       socket.join(roomKey);
       console.log(Array.from(socket.rooms));
       const roomInfo = officeRooms[roomKey];
@@ -27,7 +30,9 @@ module.exports = (io) => {
       roomInfo.numEmployees = Object.keys(roomInfo.employees).length;
       console.log('roomInfo in joinRoom', roomInfo);
 
+      // why only emit it to a single socket?
       //set initial state HERE
+      console.log('setState called');
       socket.emit('setState', roomInfo);
 
       //sending the employees object to the new employee
@@ -58,16 +63,16 @@ module.exports = (io) => {
     // disconnecting: right before disconnect
     socket.on('disconnecting', () => {
       // can access the rooms socket belonged to
-      console.log(socket.id);
-      console.log('disconnecting', socket.rooms);
+      console.log('user disconnecting belonged to', socket.rooms);
 
-      let rooms = Array.from(socket.rooms);
-      rooms.forEach((key) => {
+      // let rooms = Array.from(socket.rooms);
+      socket.rooms.forEach((key) => {
         if (officeRooms[key]) {
           delete officeRooms[key].employees[socket.id];
           if (officeRooms[key].numEmployees <= 1)
             officeRooms[key].numEmployees = 0;
-          console.log(officeRooms[key]);
+          else officeRooms[key].numEmployees -= 1;
+          console.log('room after user disconnects',officeRooms[key]);
         }
       });
     });
@@ -127,7 +132,6 @@ module.exports = (io) => {
     });
 
     socket.on('doesKeyExist', function(roomKey) {
-
        socket.emit('roomKeyExists', officeRooms[roomKey])
 
     })

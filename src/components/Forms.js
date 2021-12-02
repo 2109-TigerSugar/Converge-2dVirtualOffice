@@ -39,6 +39,7 @@ join form (onSubmit)
  */
 
 export const JoinOrCreateForm = (props) => {
+  console.log('render')
   const [userData, setUserData] = useState({
     name: '',
     roomKey: '',
@@ -93,7 +94,7 @@ export const JoinOrCreateForm = (props) => {
         // see the phaser canvas with the office
       });
       socket.on('duplicate-key', () => {
-        alert('bad key');
+        alert(`room ${userData.roomKey} is taken. Please try another one.`);
       });
     } else {
       socket.emit('doesKeyExist', userData.roomKey);
@@ -102,7 +103,8 @@ export const JoinOrCreateForm = (props) => {
           socket.emit('joinRoom', userData.roomKey);
           navigate('/office');
         } else {
-          alert('invalid room key');
+          console.log('bads')
+          alert(`room ${userData.roomKey} is invalid. Please join with another key.`);
         }
       })
     }

@@ -69,7 +69,7 @@ const callList = {};
 
   socket.on('socket disconnected', (socketId) => {
     // console.log(`${socketId} disconnected`);
-    let videoToRemove = document.querySelectorAll(`#${socketId}`);
+    let videoToRemove = document.querySelectorAll(`#${CSS.escape(socketId)}`);
     videoToRemove.forEach((video) => video.remove());
   });
 

@@ -27,9 +27,11 @@ export default class MainScene extends Phaser.Scene {
     this.coworkers = this.physics.add.group();
 
     //WHEN EMPLOYEE JOINS A ROOM -- SET STATE HERE
-    this.socket.on("setState", function (state) {
+    socket.on("setState", function (state) {
       const { roomKey, employees, numEmployees } = state;
       scene.physics.resume();
+
+      console.log('in setState event', state )
 
       // STATE FOR OFFICE
       scene.state.roomKey = roomKey;
