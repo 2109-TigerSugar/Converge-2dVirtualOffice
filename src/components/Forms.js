@@ -73,7 +73,6 @@ export const JoinOrCreateForm = (props) => {
     window.localStorage.setItem('userData', JSON.stringify(userData));
 
     // join the room
-    socket.emit('joinRoom', userData.roomKey);
     navigate('/office');
   };
 
