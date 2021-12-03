@@ -33,6 +33,8 @@ const Office = () => {
       // when going to another page, hide the webcam panel and phaser game
       document.getElementById('mygame').style.display = 'none';
       document.querySelector('.webcam-panel').style.display = 'none';
+      let myVideo = document.querySelector(`#${CSS.escape(socket.id)}`);
+      myVideo.remove();
     };
   });
 
