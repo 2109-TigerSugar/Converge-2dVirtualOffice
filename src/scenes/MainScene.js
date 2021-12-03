@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { socket } from '../index';
+import { socket } from '../socket';
 
 let officeLayer;
 export default class MainScene extends Phaser.Scene {
@@ -12,10 +12,10 @@ export default class MainScene extends Phaser.Scene {
   preload() {
     //PNG of Tilemap (The image of the tilemap that you used to build the map in Tiled application)
     //passed into this.load.image(phaserKey, pathToFile)
-    const TILEMAP_PNG = 'assets/kelsey-office.png';
+    const TILEMAP_PNG = 'assets/potential.png';
     ///JSON file of exported Tilemap from Tiled
     //passed into this.load.tilemapTiledJSON(phaserKey, pathToFile)
-    const TILEMAP_JSON = 'assets/kelsey-office.json';
+    const TILEMAP_JSON = 'assets/potential.json';
 
     this.load.spritesheet('avatar', 'assets/example-sprite.png', { frameWidth: 48, frameHeight: 96 });
     this.load.image('office', TILEMAP_PNG);
@@ -30,7 +30,7 @@ export default class MainScene extends Phaser.Scene {
     const map = this.make.tilemap({ key: 'map' });
     //Add image of tileset using map.addTileSetImage(tilesetName, phaserKey)
     //Note: The tilesetName can be found in the JSON file exported from Tiled (likely in our assets folder)
-    const tileset = map.addTilesetImage('kelsey-office', 'office', 48, 48);
+    const tileset = map.addTilesetImage('potential', 'office', 48, 48);
 
     //Below we create each layer just as they were created in tiled. By default tiled names layers things like "Tile Layer 1", but we can change this in Tiled!
     //map.createStaticLayer(layerNameFromTiled, tileset, x, y)
@@ -53,9 +53,7 @@ export default class MainScene extends Phaser.Scene {
       const { roomKey, employees, numEmployees } = state;
 
       scene.physics.world.enable(this);
-      scene.physics.world.setBounds(0, 0, 800, 600);
-
-      console.log('in setState event', state);
+      // scene.physics.world.setBounds(0, 0, 800, 600);
 
       // STATE FOR OFFICE
       scene.state.roomKey = roomKey;
@@ -129,8 +127,6 @@ export default class MainScene extends Phaser.Scene {
     this.physics.world.setBounds(0, 0, 800, 600);
     /************************ OVERLAP **************************/
 
-    /************************ OVERLAP **************************/
-
     //animation
     scene.anims.create({
       key: 'walkLeftRight',
@@ -165,7 +161,8 @@ export default class MainScene extends Phaser.Scene {
 
     //employee movement
     if (this.sprite) {
-      const speed = 100;
+
+      const speed = 275;
 
       this.sprite.body.setVelocity(0);
 
@@ -217,7 +214,7 @@ export default class MainScene extends Phaser.Scene {
       //iterates over children and add overlap
       //look into coworkers.children.iterate()
       //stange bug causing the callback to happen twice at each of the overlap
-      this.coworkers.children.iterate(coworker =>
+      this.coworkers.children.iterate((coworker) =>
         scene.addEmployeeOverlap(scene, coworker)
       );
       // check the coworkers we were previously overlapping with
@@ -246,6 +243,8 @@ export default class MainScene extends Phaser.Scene {
     scene.sprite.employeeId = employeeInfo.employeeId;
     //Cameraplsworkthx
     const camera = this.cameras.main;
+    camera.zoomX = 0.5;
+    camera.zoomY = 0.5;
     camera.startFollow(this.sprite);
 
     //Set collision plsworkthx
@@ -286,25 +285,23 @@ export default class MainScene extends Phaser.Scene {
     ) {
       this.overlappingSprites[coworker.employeeId] = coworker;
 
-      const showVideo = document.querySelector(
-        `#${
-          this.socket.id === coworker.employeeId
-            ? employee.employeeId
-            : coworker.employeeId
-        }`
-      );
+      const showId =
+        this.socket.id === coworker.employeeId
+          ? employee.employeeId
+          : coworker.employeeId;
+
+      const showVideo = document.querySelector(`#${CSS.escape(showId)}`);
+      console.log(showVideo);
       if (showVideo) {
         showVideo.style.display = 'inline';
         showVideo.muted = false;
       }
     }
-
-    console.log(this.overlappingSprites);
   }
 
   checkOverlap(scene) {
     const spriteBounds = scene.sprite.getBounds();
-    Object.keys(scene.overlappingSprites).forEach(employeeId => {
+    Object.keys(scene.overlappingSprites).forEach((employeeId) => {
       const coworker = scene.overlappingSprites[employeeId];
       const coworkerBounds = coworker.getBounds();
       // https://phaser.io/examples/v3/view/geom/intersects/get-rectangle-intersection
@@ -317,7 +314,9 @@ export default class MainScene extends Phaser.Scene {
       ) {
         delete scene.overlappingSprites[employeeId];
         // console.log('NO LONGER OVERLAPPING');
-        const hideVideo = document.querySelector(`#${coworker.employeeId}`);
+        const hideVideo = document.querySelector(
+          `#${CSS.escape(coworker.employeeId)}`
+        );
         if (hideVideo) {
           hideVideo.style.display = 'none';
           hideVideo.muted = true;

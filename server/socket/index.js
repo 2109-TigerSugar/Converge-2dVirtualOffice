@@ -8,25 +8,28 @@ const officeRooms = {
 
 const connectedSockets = [];
 
-module.exports = io => {
-  io.on('connection', socket => {
+module.exports = (io) => {
+  io.on('connection', (socket) => {
     console.log(
       `A socket connection to the server has been made: ${socket.id}`
     );
 
     console.log('on connection office rooms', officeRooms);
     connectedSockets.push(socket.id);
-    socket.broadcast.emit('someoneJoined', socket.id);
+    // socket.broadcast.emit('someoneJoined', socket.id);
 
-    socket.on('joinRoom', roomKey => {
-      if (socket.rooms.has(roomKey) || !officeRooms[roomKey]) return;
+    socket.on('joinRoom', (roomKey) => {
+      if (socket.rooms.has(roomKey) || !officeRooms[roomKey]) {
+        console.log('did not join room', socket.id);
+        return;
+      }
       socket.join(roomKey);
+      console.log('joined room', socket.id);
       const roomInfo = officeRooms[roomKey];
-      console.log('roominfo', roomInfo);
       roomInfo.employees[socket.id] = {
         rotation: 0,
-        x: 400,
-        y: 300,
+        x: 3400,
+        y: 3600,
         employeeId: socket.id,
       };
 
@@ -68,7 +71,7 @@ module.exports = io => {
       // can access the rooms socket belonged to
       console.log('user disconnecting belonged to', socket.rooms);
 
-      socket.rooms.forEach(roomKey => {
+      socket.rooms.forEach((roomKey) => {
         if (officeRooms[roomKey]) {
           // remove that employee from the employee list
           // decrease the numEmployee of that room
@@ -115,12 +118,3 @@ module.exports = io => {
     });
   });
 };
-
-function codeGenerator() {
-  let code = '';
-  let chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789';
-  for (let i = 0; i < 5; i++) {
-    code += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return code;
-}

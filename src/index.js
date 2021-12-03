@@ -6,7 +6,11 @@ import config from './config/config';
 import MainScene from './scenes/MainScene';
 
 //Create socket to import elsewhere instead of attaching to window
-export const socket = io();
+// export const socket = io();
+import { socket } from './socket';
+
+let gameDiv = document.getElementById('mygame');
+console.dir(gameDiv);
 
 class Game extends Phaser.Game {
   constructor() {
@@ -19,9 +23,10 @@ class Game extends Phaser.Game {
     this.scene.start('MainScene');
   }
 }
+
 // Create new instance of game
 window.onload = async function () {
   window.game = new Game();
-};
 
-ReactDOM.render(<App />, document.getElementById('root'));
+  ReactDOM.render(<App />, document.getElementById('root'));
+};

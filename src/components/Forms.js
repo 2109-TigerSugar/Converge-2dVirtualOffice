@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import { socket } from '..';
+import { socket } from '../socket';
 
 export const JoinOrCreateForm = (props) => {
   // to make the form controlled, have a state to keep track of input values
@@ -81,7 +81,7 @@ export const JoinOrCreateForm = (props) => {
     <form onSubmit={handleSubmit}>
       <div>
         <label htmlFor="name">
-          Name
+          Your Name
           <span
             style={{
               display: !userData.name ? 'inline' : 'none',
