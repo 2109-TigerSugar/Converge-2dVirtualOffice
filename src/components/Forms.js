@@ -8,6 +8,7 @@ export const JoinOrCreateForm = (props) => {
     name: '',
     roomKey: '',
     officeType: '',
+    avatar: 'avatar',
   });
   const [err, setErr] = useState(''); //if we need to show an error
   const navigate = useNavigate(); //to let us navigate to other pages
@@ -24,6 +25,7 @@ export const JoinOrCreateForm = (props) => {
         name: '',
         roomKey: '',
         officeType: '',
+        avatar: 'avatar',
       });
     }
 
@@ -72,7 +74,8 @@ export const JoinOrCreateForm = (props) => {
     // user data is saved on local storage
     window.localStorage.setItem('userData', JSON.stringify(userData));
 
-    // join the room
+    // join the office
+
     navigate('/office');
   };
 
@@ -117,6 +120,13 @@ export const JoinOrCreateForm = (props) => {
           value={userData.roomKey}
           onChange={handleChange}
         />
+      </div>
+      <div>
+      <label htmlFor="avatar">Avatar:</label>
+      <select name="avatar" id="avatar" value={userData.avatar} onChange={handleChange}>
+        <option value="avatar">avatar1</option>
+        <option value="sprite2">avatar2</option>
+      </select>
       </div>
       <div>
         <label htmlFor="officeType">Office Type</label>
