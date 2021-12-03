@@ -5,6 +5,7 @@ import runWebRTC from '../webcam';
 
 const Office = () => {
   const userData = JSON.parse(window.localStorage.getItem('userData'));
+  console.log(socket)
 
   useEffect(() => {
     // will show the webcam panel and phaser game

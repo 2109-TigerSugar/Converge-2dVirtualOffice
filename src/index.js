@@ -9,6 +9,9 @@ import MainScene from './scenes/MainScene';
 // export const socket = io();
 import { socket } from './socket';
 
+let gameDiv = document.getElementById('mygame');
+console.dir(gameDiv);
+
 class Game extends Phaser.Game {
   constructor() {
     super(config);
@@ -20,9 +23,10 @@ class Game extends Phaser.Game {
     this.scene.start('MainScene');
   }
 }
+
 // Create new instance of game
 window.onload = async function () {
   window.game = new Game();
-};
 
-ReactDOM.render(<App />, document.getElementById('root'));
+  ReactDOM.render(<App />, document.getElementById('root'));
+};

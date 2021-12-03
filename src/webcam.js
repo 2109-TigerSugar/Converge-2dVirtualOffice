@@ -34,6 +34,7 @@ const runWebRTC = async socket => {
 
   peer.on('open', id => {
     console.log('My peer ID is: ' + id);
+    window.localStorage.setItem('peer', peer);
   });
 
   //Answer calls :)
