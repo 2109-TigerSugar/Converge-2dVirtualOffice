@@ -20,11 +20,9 @@ module.exports = (io) => {
 
     socket.on('joinRoom', (roomKey) => {
       if (socket.rooms.has(roomKey) || !officeRooms[roomKey]) {
-        console.log('did not join room', socket.id);
         return;
       }
       socket.join(roomKey);
-      console.log('joined room', socket.id);
       const roomInfo = officeRooms[roomKey];
       roomInfo.employees[socket.id] = {
         rotation: 0,
@@ -38,7 +36,6 @@ module.exports = (io) => {
 
       // why only emit it to a single socket?
       //set initial state HERE
-      console.log('setState called');
       socket.emit('setState', roomInfo);
 
       //sending the employees object to the new employee
@@ -66,6 +63,22 @@ module.exports = (io) => {
         .emit('employeeMoved', officeRooms[roomKey].employees[socket.id]);
     });
 
+    // user leaves room (socket not disconnected)
+    socket.on('leaveRoom', (roomKey) => {
+      socket.leave(roomKey);
+      delete officeRooms[roomKey].employees[socket.id];
+          officeRooms[roomKey].numEmployees = Object.keys(
+            officeRooms[roomKey].employees
+          ).length;
+      socket.emit('leftRoom');
+
+      io.to(roomKey).emit('coworker disconnected', {
+        coworkerId: socket.id,
+        numEmployees: officeRooms[roomKey].numEmployees,
+      });
+
+    })
+
     // disconnecting: right before disconnect
     socket.on('disconnecting', () => {
       // can access the rooms socket belonged to
@@ -82,7 +95,7 @@ module.exports = (io) => {
           console.log('room after user disconnects', officeRooms[roomKey]);
 
           // need to notify coworkers that socket.id has disconnected
-          socket.to(roomKey).emit('coworker disconnected', {
+          io.to(roomKey).emit('coworker disconnected', {
             coworkerId: socket.id,
             numEmployees: officeRooms[roomKey].numEmployees,
           });
@@ -90,11 +103,6 @@ module.exports = (io) => {
       });
     });
 
-    //disconnect
-    socket.on('disconnect', () => {
-      //used for peerjs to remove video element
-      io.emit('socket disconnected', socket.id);
-    });
 
     socket.on('isKeyUnique', function (roomKey) {
       // if key is unique
@@ -113,8 +121,19 @@ module.exports = (io) => {
     });
 
     socket.on('doesKeyExist', function (roomKey) {
-      console.log('does room exist', officeRooms[roomKey]);
       socket.emit('roomExistCheck', officeRooms[roomKey] !== undefined);
     });
   });
+
+  io.of("/").adapter.on("create-room", (room) => {
+    console.log(`room ${room} was created`);
+  });
+
+  io.of("/").adapter.on("join-room", (room, id) => {
+    console.log(`socket ${id} has joined room ${room}`);
+  });
+  io.of("/").adapter.on("leave-room", (room, id) => {
+    console.log(`socket ${id} has left room ${room}`);
+  });
+
 };
