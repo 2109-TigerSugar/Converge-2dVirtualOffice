@@ -14,7 +14,11 @@ const LandingPage = () => {
 
   return (
     // 2 buttons: 1 for create 1 for join
+
     <div className="landing-page">
+      <div className='companyName'><h1>Converge</h1></div>
+
+      <img src="../assets/kelsey-office.png"/>
       <div className="buttons">
         <button onClick={handleClick} type="button" id='create'>Create</button>
         <button onClick={handleClick} type="button" id='join'>Join</button>
@@ -25,6 +29,7 @@ const LandingPage = () => {
         }
       </div>
     </div>
+
   );
 };
 
