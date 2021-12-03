@@ -18,7 +18,8 @@ module.exports = (io) => {
     connectedSockets.push(socket.id);
     // socket.broadcast.emit('someoneJoined', socket.id);
 
-    socket.on('joinRoom', (roomKey) => {
+    socket.on('joinRoom', (userData) => {
+      const { name, roomKey, avatar, officeType } = userData
       if (socket.rooms.has(roomKey) || !officeRooms[roomKey]) {
         console.log('did not join room', socket.id);
         return;
@@ -31,6 +32,9 @@ module.exports = (io) => {
         x: 3400,
         y: 3600,
         employeeId: socket.id,
+        avatar,
+        name,
+        roomKey
       };
 
       roomInfo.numEmployees = Object.keys(roomInfo.employees).length;
