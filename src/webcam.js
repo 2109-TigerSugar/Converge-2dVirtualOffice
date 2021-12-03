@@ -34,6 +34,7 @@ const runWebRTC = async socket => {
 
   peer.on('open', id => {
     console.log('My peer ID is: ' + id);
+    window.localStorage.setItem('peer', peer);
   });
 
   //Answer calls :)
@@ -43,6 +44,7 @@ const runWebRTC = async socket => {
 
     //Got called and answered so build webcam panel
     call.on('stream', remoteStream => {
+      console.log('stream after call.answer ');
       if (callList[call.peer] === undefined) {
         addVideo(remoteStream, false, call.peer);
         callList[call.peer] = true;
@@ -50,14 +52,15 @@ const runWebRTC = async socket => {
     });
   });
 
-  //Dakota; Socket stuff
-
   //Call new user when they join
-  socket.on('someoneJoined', socketId => {
+  socket.on('newEmployee', ({ employeeInfo }) => {
+    const socketId = employeeInfo.employeeId;
     const call = peer.call(socketId, stream);
+    console.log('Call just happened');
 
     //Other end answered call so build webcam panel
     call.on('stream', remoteStream => {
+      console.log('stream after peer.cal ');
       if (callList[socketId] === undefined) {
         addVideo(remoteStream, false, socketId);
         callList[socketId] = true;
@@ -78,13 +81,13 @@ const runWebRTC = async socket => {
       // console.log('onloadmetadata fired');
       videoElement.play();
       // webcamPanel.appendChild(videoElement);
-      callList[socketId] = true;
     });
     webcamPanel.appendChild(videoElement);
     videoElement.srcObject = stream;
     videoElement.setAttribute('id', socketId);
     videoElement.muted = mute;
   }
+  console.log('done running webcam.js');
 };
 
 export default runWebRTC;

@@ -16,13 +16,16 @@ module.exports = io => {
 
     console.log('on connection office rooms', officeRooms);
     connectedSockets.push(socket.id);
-    socket.broadcast.emit('someoneJoined', socket.id);
+    // socket.broadcast.emit('someoneJoined', socket.id);
 
     socket.on('joinRoom', roomKey => {
-      if (socket.rooms.has(roomKey) || !officeRooms[roomKey]) return;
+      if (socket.rooms.has(roomKey) || !officeRooms[roomKey]) {
+        console.log('did not join room', socket.id )
+        return;
+      }
       socket.join(roomKey);
+      console.log('joined room', socket.id)
       const roomInfo = officeRooms[roomKey];
-      console.log('roominfo', roomInfo);
       roomInfo.employees[socket.id] = {
         rotation: 0,
         x: 400,
@@ -115,12 +118,3 @@ module.exports = io => {
     });
   });
 };
-
-function codeGenerator() {
-  let code = '';
-  let chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789';
-  for (let i = 0; i < 5; i++) {
-    code += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return code;
-}

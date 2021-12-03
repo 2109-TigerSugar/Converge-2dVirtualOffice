@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
-import { socket } from '../index';
+import {socket} from '../socket'
+
 
 let officeLayer;
 export default class MainScene extends Phaser.Scene {
@@ -249,20 +250,18 @@ export default class MainScene extends Phaser.Scene {
     ) {
       this.overlappingSprites[coworker.employeeId] = coworker;
 
-      const showVideo = document.querySelector(
-        `#${
-          this.socket.id === coworker.employeeId
-            ? employee.employeeId
-            : coworker.employeeId
-        }`
-      );
+      const showId =
+        this.socket.id === coworker.employeeId
+          ? employee.employeeId
+          : coworker.employeeId;
+
+      const showVideo = document.querySelector(`#${CSS.escape(showId)}`);
+      console.log(showVideo);
       if (showVideo) {
         showVideo.style.display = 'inline';
         showVideo.muted = false;
       }
     }
-
-    console.log(this.overlappingSprites);
   }
 
   checkOverlap(scene) {
@@ -280,7 +279,9 @@ export default class MainScene extends Phaser.Scene {
       ) {
         delete scene.overlappingSprites[employeeId];
         // console.log('NO LONGER OVERLAPPING');
-        const hideVideo = document.querySelector(`#${coworker.employeeId}`);
+        const hideVideo = document.querySelector(
+          `#${CSS.escape(coworker.employeeId)}`
+        );
         if (hideVideo) {
           hideVideo.style.display = 'none';
           hideVideo.muted = true;
