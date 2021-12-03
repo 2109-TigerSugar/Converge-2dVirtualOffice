@@ -74,8 +74,8 @@ export const JoinOrCreateForm = (props) => {
     // user data is saved on local storage
     window.localStorage.setItem('userData', JSON.stringify(userData));
 
-    // join the room
-    // socket.emit('joinRoom', userData.roomKey);
+    // join the office
+
     navigate('/office');
   };
 

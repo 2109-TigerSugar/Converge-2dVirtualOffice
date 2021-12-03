@@ -106,6 +106,9 @@ export default class MainScene extends Phaser.Scene {
     });
 
     // this.cursors = this.input.keyboard.createCursorKeys();
+
+
+
     // DISCONNECT
     this.socket.on('coworker disconnected', function (arg) {
       const { coworkerId, numEmployees } = arg;

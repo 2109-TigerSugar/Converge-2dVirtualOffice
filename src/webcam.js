@@ -15,7 +15,7 @@ const runWebRTC = async socket => {
   });
 
   //Build our webcam
-  addVideo(stream, true, socket.id);
+  addVideo(stream, false, socket.id);
 
   //Dakota: Setup new peer object! Yay!
   const peer = new Peer(socket.id, {
@@ -46,7 +46,7 @@ const runWebRTC = async socket => {
     call.on('stream', remoteStream => {
       console.log('stream after call.answer ');
       if (callList[call.peer] === undefined) {
-        addVideo(remoteStream, false, call.peer);
+        addVideo(remoteStream, true, call.peer);
         callList[call.peer] = true;
       }
     });
@@ -62,19 +62,19 @@ const runWebRTC = async socket => {
     call.on('stream', remoteStream => {
       console.log('stream after peer.cal ');
       if (callList[socketId] === undefined) {
-        addVideo(remoteStream, false, socketId);
+        addVideo(remoteStream, true, socketId);
         callList[socketId] = true;
       }
     });
   });
 
-  socket.on('socket disconnected', socketId => {
+  socket.on('coworker disconnected', ({coworkerId : socketId}) => {
     // console.log(`${socketId} disconnected`);
     let videoToRemove = document.querySelectorAll(`#${CSS.escape(socketId)}`);
     videoToRemove.forEach(video => video.remove());
   });
 
-  function addVideo(stream, mute, socketId) {
+  function addVideo(stream, hide, socketId) {
     const videoElement = document.createElement('video');
     // console.dir(stream);
     videoElement.addEventListener('loadedmetadata', function (e) {
@@ -85,7 +85,8 @@ const runWebRTC = async socket => {
     webcamPanel.appendChild(videoElement);
     videoElement.srcObject = stream;
     videoElement.setAttribute('id', socketId);
-    videoElement.muted = mute;
+    videoElement.muted = true;
+    videoElement.style.display = hide ? 'none' : 'inline';
   }
   console.log('done running webcam.js');
 };
