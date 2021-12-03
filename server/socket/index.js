@@ -70,7 +70,13 @@ module.exports = (io) => {
           officeRooms[roomKey].numEmployees = Object.keys(
             officeRooms[roomKey].employees
           ).length;
-      socket.emit('setState', {});
+      socket.emit('leftRoom');
+
+      io.to(roomKey).emit('coworker disconnected', {
+        coworkerId: socket.id,
+        numEmployees: officeRooms[roomKey].numEmployees,
+      });
+
     })
 
     // disconnecting: right before disconnect
@@ -97,12 +103,6 @@ module.exports = (io) => {
       });
     });
 
-
-    //disconnect
-    socket.on('disconnect', () => {
-      //used for peerjs to remove video element
-      io.emit('socket disconnected', socket.id);
-    });
 
     socket.on('isKeyUnique', function (roomKey) {
       // if key is unique

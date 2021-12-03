@@ -68,7 +68,7 @@ const runWebRTC = async socket => {
     });
   });
 
-  socket.on('socket disconnected', socketId => {
+  socket.on('coworker disconnected', ({coworkerId : socketId}) => {
     // console.log(`${socketId} disconnected`);
     let videoToRemove = document.querySelectorAll(`#${CSS.escape(socketId)}`);
     videoToRemove.forEach(video => video.remove());
