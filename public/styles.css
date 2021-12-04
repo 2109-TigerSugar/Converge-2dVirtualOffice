@@ -6,6 +6,7 @@ font-family: 'Roboto Slab', serif; */
 body {
   margin: 0;
   padding: 0;
+  background: white;
 }
 
 .webcam-panel {
@@ -16,6 +17,7 @@ body {
   background-color: rgb(89, 90, 88);
 }
 
+/* navbar styling */
 .links {
   display: flex;
   flex-direction: row;
@@ -36,9 +38,15 @@ body {
 }
 
 .links a:hover {
-  color: yellow;
+  color: #66AB77;
 }
 
+.links img {
+  height: 4rem;
+  padding-left: 2rem;
+}
+
+/* langing page */
 .landing-page {
   display: flex;
   flex-direction: column;
@@ -47,35 +55,73 @@ body {
   height: 70vh;
 }
 
-.landinghero {
-  background-image: url("../assets/kelsey-office.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-  backface-visibility: hidden;
-  height: 88vh;
-  opacity: 0.5;
+.button-hero {
+  display:flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 2rem;
 }
 
 .landing-page img {
-  margin-top: -6rem;
+  margin-top: -2rem;
   height: 50vh;
+  margin-right: 5rem;
 }
 
+/* name and logo banner */
  .companyName{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+ }
+
+ .companyName p {
+  align-items: center;
+  font-family: 'EB Garamond', serif;
+  font-size: 1.5rem;
+  margin-top: -2rem;
+  padding-bottom: 1rem;
+  color: #143E88;
+ }
+
+ .nameLogo {
+   display: flex;
+   flex-direction: row;
+   align-content: center;
+   align-items: baseline;
+ }
+ .nameLogo h1 {
   font-family:'Noto Sans', sans-serif;
   font-weight: 900;
-   font-size: 6rem;
-   color: #143E88;
+  font-size: 5.5rem;
+  color: #143E88;
+  margin-left:0;
+  margin-right:0;
  }
+
+ .nameLogo img {
+  height: 4rem;
+  margin-left:0;
+  margin-right:0;
+}
+
+
+/* create and join buttons */
  .buttons{
-   padding-top: 1rem;
+   display: flex;
+   flex-direction: row;
+   align-items: baseline;
+   padding-top: 8rem;
+  margin-left: 4rem;
+
  }
+
 
  .buttons button{
    display: inline-flex;
-   padding: 0.35em 1.2em;
+   padding: 0.35em 1.5em;
    border: 0.1em solid #143E88;
-   margin: 0 0.3em 0.3em 0;
+   margin: 0 0.5rem 0.5rem 2rem;
    border-radius: 0.12em;
    box-sizing: border-box;
    text-decoration: none;
@@ -99,3 +145,4 @@ body {
    }
   }
 }
+

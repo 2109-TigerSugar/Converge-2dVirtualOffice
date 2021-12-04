@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import { socket } from '..';
+import { socket } from '../socket';
 
 export const JoinOrCreateForm = (props) => {
   // to make the form controlled, have a state to keep track of input values
@@ -8,6 +8,7 @@ export const JoinOrCreateForm = (props) => {
     name: '',
     roomKey: '',
     officeType: '',
+    avatar: 'avatar',
   });
   const [err, setErr] = useState(''); //if we need to show an error
   const navigate = useNavigate(); //to let us navigate to other pages
@@ -24,6 +25,7 @@ export const JoinOrCreateForm = (props) => {
         name: '',
         roomKey: '',
         officeType: '',
+        avatar: 'avatar',
       });
     }
 
@@ -72,8 +74,8 @@ export const JoinOrCreateForm = (props) => {
     // user data is saved on local storage
     window.localStorage.setItem('userData', JSON.stringify(userData));
 
-    // join the room
-    socket.emit('joinRoom', userData.roomKey);
+    // join the office
+
     navigate('/office');
   };
 
@@ -81,7 +83,7 @@ export const JoinOrCreateForm = (props) => {
     <form onSubmit={handleSubmit}>
       <div>
         <label htmlFor="name">
-          Name
+          Your Name
           <span
             style={{
               display: !userData.name ? 'inline' : 'none',
@@ -118,6 +120,13 @@ export const JoinOrCreateForm = (props) => {
           value={userData.roomKey}
           onChange={handleChange}
         />
+      </div>
+      <div>
+      <label htmlFor="avatar">Avatar:</label>
+      <select name="avatar" id="avatar" value={userData.avatar} onChange={handleChange}>
+        <option value="avatar">avatar1</option>
+        <option value="sprite2">avatar2</option>
+      </select>
       </div>
       <div>
         <label htmlFor="officeType">Office Type</label>
