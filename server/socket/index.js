@@ -70,6 +70,7 @@ module.exports = (io) => {
     // user leaves room (socket not disconnected)
     socket.on('leaveRoom', (roomKey) => {
       socket.leave(roomKey);
+      if (!officeRooms[roomKey]) return;
       delete officeRooms[roomKey].employees[socket.id];
           officeRooms[roomKey].numEmployees = Object.keys(
             officeRooms[roomKey].employees

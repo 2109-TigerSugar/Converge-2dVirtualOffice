@@ -5,14 +5,11 @@ import runWebRTC from '../webcam';
 
 const Office = () => {
   const userData = JSON.parse(window.localStorage.getItem('userData'));
-  console.log(socket)
 
   useEffect(() => {
-    // will show the webcam panel and phaser game
     document.getElementById('mygame').style.display = 'block';
     document.querySelector('.webcam-panel').style.display = 'flex';
     (async () => {
-      console.log('running webrtc');
       await runWebRTC(socket); //starts peerjs code for video
     })();
     // when the user refreshes the page, make them join the room again if key exists
@@ -35,13 +32,10 @@ const Office = () => {
       document.getElementById('mygame').style.display = 'none';
       document.querySelector('.webcam-panel').style.display = 'none';
       let myVideo = document.querySelector(`#${CSS.escape(socket.id)}`);
-      if(myVideo) myVideo.remove();
+      if (myVideo) myVideo.remove();
 
       // leave the room when going office page unmounts
-      socket.emit('leaveRoom', userData.roomKey )
-
-
-
+      socket.emit('leaveRoom', userData.roomKey);
     };
   });
 

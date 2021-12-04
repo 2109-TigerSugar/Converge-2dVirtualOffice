@@ -20,10 +20,12 @@ export default class MainScene extends Phaser.Scene {
     this.load.spritesheet('avatar', 'assets/example-sprite.png', { frameWidth: 48, frameHeight: 96 });
     this.load.image('office', TILEMAP_PNG);
     this.load.tilemapTiledJSON('map', TILEMAP_JSON);
+    console.log('preload')
   }
 
   create() {
     let avatarChoice;
+
    this.state.active = true;
     const scene = this;
 
@@ -54,6 +56,7 @@ export default class MainScene extends Phaser.Scene {
       const { roomKey, employees, numEmployees } = state;
 
 
+
       scene.physics.world.enable(this);
       // scene.physics.world.setBounds(0, 0, 800, 600);
 
@@ -63,11 +66,16 @@ export default class MainScene extends Phaser.Scene {
       scene.state.numEmployees = numEmployees;
       avatarChoice = scene.state.employees[scene.socket.id].avatar
       scene.addAnimation(avatarChoice, scene);
+
+      console.log('create')
+      console.log('state:', scene.state);
+
     });
     this.coworkers = this.physics.add.group();
     // SOCKET LISTENER FOR CURRENT EMPLOYEES
     this.socket.on('currentEmployees', function (arg) {
       const { employees, numEmployees } = arg;
+      console.log('currentEmployees received', employees);
 
       scene.state.numEmployees = numEmployees;
 
@@ -135,10 +143,7 @@ export default class MainScene extends Phaser.Scene {
     /************************ OVERLAP **************************/
 
     //animation
-    // if(Object.keys(this.state).length) {
-    //   const avatarChoice = scene.state.employees[this.socket.id].avatar
-    //   console.log(avatarChoice)
-    // }
+
   }
 
     addAnimation(avatarChoice, scene) {
