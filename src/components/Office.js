@@ -35,7 +35,7 @@ const Office = () => {
       document.getElementById('mygame').style.display = 'none';
       document.querySelector('.webcam-panel').style.display = 'none';
       let myVideo = document.querySelector(`#${CSS.escape(socket.id)}`);
-      myVideo.remove();
+      if(myVideo) myVideo.remove();
 
       // leave the room when going office page unmounts
       socket.emit('leaveRoom', userData.roomKey )
