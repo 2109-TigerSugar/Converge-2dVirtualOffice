@@ -115,7 +115,23 @@ export default class MainScene extends Phaser.Scene {
 
     // this.cursors = this.input.keyboard.createCursorKeys();
 
+    // LEAVE ROOM (not socket disconnection)
+    this.socket.on('leftRoom', function(arg){
+      //remove all coworker avatars
+      scene.coworkers.clear(true, true);
+      console.log('coworkers cleared', scene.coworkers)
 
+    })
+
+    this.socket.on('coworkerLeftRoom', function (arg) {
+      const { coworkerId, numEmployees } = arg;
+      scene.state.numEmployees = numEmployees;
+      scene.coworkers.getChildren().forEach(function (coworker) {
+        if (coworkerId === coworker.employeeId) {
+          coworker.destroy();
+        }
+      });
+    });
 
     // DISCONNECT
     this.socket.on('coworker disconnected', function (arg) {
@@ -127,6 +143,7 @@ export default class MainScene extends Phaser.Scene {
         }
       });
     });
+
 
     ///////////////////////////////////////////////
     //set movement keys to arrow keys
@@ -244,6 +261,7 @@ export default class MainScene extends Phaser.Scene {
   //have to add a method on mainscene to add an employee --- used it in our create method
 
   addEmployee(scene, employeeInfo) {
+    if(scene.joined) return; //don't add if joined already
     scene.joined = true;
     //the line below adds the sprite to the game map.
     scene.sprite = scene.physics.add

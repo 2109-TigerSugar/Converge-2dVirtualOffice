@@ -7,6 +7,10 @@ const Office = () => {
   const userData = JSON.parse(window.localStorage.getItem('userData'));
 
   useEffect(() => {
+    // if game scene is sleeping, wake it
+    if(window.game.scene.isSleeping('MainScene')) window.game.scene.wake('MainScene');
+
+
     // will show video panel and game panel
     document.getElementById('mygame').style.display = 'block';
     document.querySelector('.webcam-panel').style.display = 'flex';
@@ -37,8 +41,11 @@ const Office = () => {
       // when going to another page, hide the webcam panel and phaser game
       document.getElementById('mygame').style.display = 'none';
       document.querySelector('.webcam-panel').style.display = 'none';
+
+      window.game.scene.sleep('MainScene');
+
       // should disconnect peerJS so others can't see you anymore
-      window.peer.disconnect();
+      if (window.peer) window.peer.disconnect();
 
       // leave the room when going office page unmounts
       socket.emit('leaveRoom', userData.roomKey);
