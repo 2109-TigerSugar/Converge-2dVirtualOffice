@@ -179,6 +179,8 @@ form {
 
 input{
   margin:1rem;
+  font-family: 'Noto Sans', sans-serif;
+  color: #143E88;
 }
 
 label {
