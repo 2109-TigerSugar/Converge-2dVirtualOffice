@@ -14,37 +14,57 @@ class Employee extends Phaser.GameObjects.Container {
     scene.physics.world.enable(this); //now we can use this.body
     console.log(this.body); //can be used later on: this.body.setVelocity..etc
 
-    //Get all children :)
-    this.children = getChildren(scene, employeeInfo);
+    // this.children = getChildren(scene, employeeInfo);
 
     this.spriteParts = {};
     //[body, eye, hair, outfit, userName];
-    this.spriteParts.body = this.children[0];
-    this.spriteParts.eye = this.children[1];
-    this.spriteParts.hair = this.children[2];
-    this.spriteParts.outfit = this.children[3];
-    this.spriteParts.userName = this.children[4];
+    // this.spriteParts.body = this.children[0];
+    // this.spriteParts.eye = this.children[1];
+    // this.spriteParts.hair = this.children[2];
+    // this.spriteParts.outfit = this.children[3];
+    // this.spriteParts.userName = this.children[4];
 
-    let config;
-    config = {
-      key: 'walkLeftRight',
-      frames: this.spriteParts.body.anims.generateFrameNumbers('employeeBody', {
-        start: 112,
-        end: 117,
-      }),
-      frameRate: 10,
-      repeat: 0,
-    };
-    console.log(config);
-    scene.anims.create(config);
+    // let config;
+    // config = {
+    //   key: 'walkLeftRight',
+    //   frames: this.spriteParts.body.anims.generateFrameNumbers('employeeBody', {
+    //     start: 112,
+    //     end: 117,
+    //   }),
+    //   frameRate: 10,
+    //   repeat: 0,
+    // };
+    // console.log(config);
+    // scene.anims.create(config);
+    this.list.forEach(sprite => {
+      if (sprite.type === 'Sprite') {
+        const spriteName = sprite.texture.key;
+        //Left/Right
+        scene.anims.create({
+          key: 'walkLeftRight',
+          frames: sprite.anims.generateFrameNumbers(spriteName, {
+            start: 112,
+            end: 117,
+          }),
+          frameRate: 10,
+          repeat: 0,
+        });
+      }
+    });
 
     scene.add.existing(this); // will add our container to our scene
+    console.log(this);
   }
 
   left() {
     this.body.setVelocityX(-this.speed);
-    this.spriteParts.body.anims.play('walkLeftRight', true);
-    this.flipX = true;
+    // this.spriteParts.body.anims.play('walkLeftRight', true);
+    this.list.forEach(sprite => {
+      if (sprite.type === 'Sprite') {
+        sprite.anims.play('walkLeftRight', true);
+      }
+    });
+    this.flipX = false;
   }
   // ...
 

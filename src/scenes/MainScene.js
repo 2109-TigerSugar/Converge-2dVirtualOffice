@@ -161,7 +161,7 @@ export default class MainScene extends Phaser.Scene {
 
       // left to right movements
       if (this.cursors.left.isDown) {
-        this.sprite.body.setVelocityX(-speed);
+        this.sprite.left();
       } else if (this.cursors.right.isDown) {
         this.sprite.body.setVelocityX(speed);
       }
