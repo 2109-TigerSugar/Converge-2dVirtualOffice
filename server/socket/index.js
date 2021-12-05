@@ -77,7 +77,7 @@ module.exports = (io) => {
           ).length;
       socket.emit('leftRoom');
 
-      io.to(roomKey).emit('coworker disconnected', {
+      io.to(roomKey).emit('coworker left room', {
         coworkerId: socket.id,
         numEmployees: officeRooms[roomKey].numEmployees,
       });

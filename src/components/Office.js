@@ -7,10 +7,14 @@ const Office = () => {
   const userData = JSON.parse(window.localStorage.getItem('userData'));
 
   useEffect(() => {
+    // will show video panel and game panel
     document.getElementById('mygame').style.display = 'block';
     document.querySelector('.webcam-panel').style.display = 'flex';
+
+    //starts peerjs code for video
     (async () => {
-      await runWebRTC(socket); //starts peerjs code for video
+      if (window.peer) window.peer.reconnect();
+      else await runWebRTC(socket);
     })();
     // when the user refreshes the page, make them join the room again if key exists
     if (userData && userData.roomKey) {
@@ -24,6 +28,8 @@ const Office = () => {
           );
         }
       });
+    } else {
+      alert(`Please create or join a room first.`);
     }
 
     // cleanup function
@@ -31,8 +37,8 @@ const Office = () => {
       // when going to another page, hide the webcam panel and phaser game
       document.getElementById('mygame').style.display = 'none';
       document.querySelector('.webcam-panel').style.display = 'none';
-      let myVideo = document.querySelector(`#${CSS.escape(socket.id)}`);
-      if (myVideo) myVideo.remove();
+      // should disconnect peerJS so others can't see you anymore
+      window.peer.disconnect();
 
       // leave the room when going office page unmounts
       socket.emit('leaveRoom', userData.roomKey);

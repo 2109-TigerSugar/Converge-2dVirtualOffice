@@ -71,7 +71,7 @@ export default class MainScene extends Phaser.Scene {
       console.log('state:', scene.state);
 
     });
-    this.coworkers = this.physics.add.group();
+    // this.coworkers = this.physics.add.group();
     // SOCKET LISTENER FOR CURRENT EMPLOYEES
     this.socket.on('currentEmployees', function (arg) {
       const { employees, numEmployees } = arg;
