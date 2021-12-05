@@ -25,13 +25,25 @@ class Employee extends Phaser.GameObjects.Container {
     this.spriteParts.outfit = this.children[3];
     this.spriteParts.userName = this.children[4];
 
+    let config;
+    config = {
+      key: 'walkLeftRight',
+      frames: this.spriteParts.body.anims.generateFrameNumbers('employeeBody', {
+        start: 112,
+        end: 117,
+      }),
+      frameRate: 10,
+      repeat: 0,
+    };
+    console.log(config);
+    scene.anims.create(config);
+
     scene.add.existing(this); // will add our container to our scene
   }
 
   left() {
     this.body.setVelocityX(-this.speed);
-    console.log(this.spriteParts);
-
+    this.spriteParts.body.anims.play('walkLeftRight', true);
     this.flipX = true;
   }
   // ...
@@ -79,7 +91,7 @@ function getChildren(scene, employeeInfo) {
 
   const userName = scene.add.text(-25, -50, name, {
     font: '16px Courier',
-    fill: '#000000',
+    fill: '#0f0f',
   });
 
   //return all sprites in children array

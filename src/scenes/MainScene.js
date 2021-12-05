@@ -28,6 +28,7 @@ export default class MainScene extends Phaser.Scene {
       frameWidth: 48,
       frameHeight: 96,
     });
+
     this.load.spritesheet('outfit1', 'assets/outfit.png', {
       frameWidth: 48,
       frameHeight: 96,
@@ -39,6 +40,7 @@ export default class MainScene extends Phaser.Scene {
   }
 
   create() {
+    this.state.active = true;
     const scene = this;
 
     //Dakota: Load map JSON from tiled we preloaded just above
@@ -142,45 +144,7 @@ export default class MainScene extends Phaser.Scene {
     this.physics.world.enable(this);
     this.physics.world.setBounds(0, 0, 800, 600);
     /************************ OVERLAP **************************/
-
-    //animation
-    // if(Object.keys(this.state).length) {
-    //   const avatarChoice = scene.state.employees[this.socket.id].avatar
-    //   console.log(avatarChoice)
-    // }
   }
-
-  // addAnimation(avatarChoice, scene) {
-  //   scene.anims.create({
-  //     key: 'walkLeftRight',
-  //     frames: this.anims.generateFrameNumbers(avatarChoice, {
-  //       start: 112,
-  //       end: 117,
-  //     }),
-  //     frameRate: 10,
-  //     repeat: 0,
-  //   });
-
-  //   scene.anims.create({
-  //     key: 'walkUp',
-  //     frames: this.anims.generateFrameNumbers(avatarChoice, {
-  //       start: 118,
-  //       end: 123,
-  //     }),
-  //     frameRate: 10,
-  //     repeat: 0,
-  //   });
-
-  //   scene.anims.create({
-  //     key: 'walkDown',
-  //     frames: this.anims.generateFrameNumbers(avatarChoice, {
-  //       start: 130,
-  //       end: 135,
-  //     }),
-  //     frameRate: 10,
-  //     repeat: 0,
-  //   });
-  // }
 
   //place all movement in here so actions can be recognized
   update(delta, time) {
@@ -198,22 +162,15 @@ export default class MainScene extends Phaser.Scene {
       // left to right movements
       if (this.cursors.left.isDown) {
         this.sprite.body.setVelocityX(-speed);
-        this.sprite.left();
-        // this.sprite.anims.play('walkLeftRight', true);
-        // this.sprite.flipX = true;
       } else if (this.cursors.right.isDown) {
         this.sprite.body.setVelocityX(speed);
-        // this.sprite.anims.play('walkLeftRight', true);
-        // this.sprite.flipX = false;
       }
 
       //up and down movements
       if (this.cursors.up.isDown) {
         this.sprite.body.setVelocityY(-speed);
-        // this.sprite.anims.play('walkUp', true);
       } else if (this.cursors.down.isDown) {
         this.sprite.body.setVelocityY(speed);
-        // this.sprite.anims.play('walkDown', true);
       }
 
       this.sprite.body.velocity.normalize().scale(speed);
@@ -257,9 +214,9 @@ export default class MainScene extends Phaser.Scene {
   addEmployee(scene, employeeInfo) {
     scene.joined = true;
     //the line below adds the sprite to the game map.
-    //Example Employee
+
     let testEmployeeInfo = {
-      name: 'Test',
+      name: 'Kelsey',
       skinColor: 0xf0ddd7,
       eyeColor: 0x000000,
       hairStyle: 'hairstyle1',
@@ -269,20 +226,11 @@ export default class MainScene extends Phaser.Scene {
       y: 300,
     };
 
-    //Build above employee
-    scene.sprite = new Employee(scene, testEmployeeInfo);
+    scene.sprite = new Employee(this, testEmployeeInfo);
     // .setCollideWorldBounds(true);
     console.log('employee Info', employeeInfo);
-    //animation
-    // scene.anims.create({
-    //   key: 'walk',
-    //   frames: this.anims.generateFrameNumbers('avatar', { start: 112, end: 118 }),
-    //   frameRate: 10,
-    //   repeat: -1
-    // })
 
     scene.sprite.employeeId = employeeInfo.employeeId;
-
     //Cameraplsworkthx
     const camera = this.cameras.main;
     camera.zoomX = 0.5;
