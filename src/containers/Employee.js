@@ -1,32 +1,89 @@
 import Phaser from 'phaser';
 
-// class Employee extends Phaser.GameObjects.Container {
-//   constructor(scene, x, y, children) {
-//     super(scene, x, y, children);
-//     this.x = x;
-//     this.y = y;
-//     scene.add.existing(this);
-//   }
+class Employee extends Phaser.GameObjects.Container {
+  constructor(scene, employeeInfo) {
+    super(
+      scene,
+      employeeInfo.x,
+      employeeInfo.y,
+      getChildren(scene, employeeInfo)
+    );
+    this.scene = scene; // so we can have reference to main scene outside of constructor
+    this.setSize(48, 96); //container needs a size to enable physics
+    this.speed = 275; //easily change our walking speed
+    scene.physics.world.enable(this); //now we can use this.body
+    console.log(this.body); //can be used later on: this.body.setVelocity..etc
 
-//   //employee stuff
-// }
+    //Get all children :)
+    this.children = getChildren(scene, employeeInfo);
 
-function buildEmployee(skinTone, hairStyle, hairColor, outfit) {
-  const employee = this.add.container(0, 0);
+    this.spriteParts = {};
+    //[body, eye, hair, outfit, userName];
+    this.spriteParts.body = this.children[0];
+    this.spriteParts.eye = this.children[1];
+    this.spriteParts.hair = this.children[2];
+    this.spriteParts.outfit = this.children[3];
+    this.spriteParts.userName = this.children[4];
+
+    scene.add.existing(this); // will add our container to our scene
+  }
+
+  left() {
+    this.body.setVelocityX(-this.speed);
+    console.log(this.spriteParts);
+
+    this.flipX = true;
+  }
+  // ...
+
+  // All animation setup!
+
+  // this.scene.anims.create({
+  //   key: 'walkUp',
+  //   frames: this.anims.generateFrameNumbers(avatarChoice, {
+  //     start: 118,
+  //     end: 123,
+  //   }),
+  //   frameRate: 10,
+  //   repeat: 0,
+  // });
+
+  // this.scene.anims.create({
+  //   key: 'walkDown',
+  //   frames: this.anims.generateFrameNumbers(avatarChoice, {
+  //     start: 130,
+  //     end: 135,
+  //   }),
+  //   frameRate: 10,
+  //   repeat: 0,
+  // });
+}
+
+function getChildren(scene, employeeInfo) {
+  let { hairStyle, hairColor, skinColor, eyeColor, outfitStyle, name } =
+    employeeInfo;
 
   //body (applying tint to the one spritesheet)
-  const body = this.add.sprite(0, 0, 'employeeBody');
-  body.setTintFill(skinTone);
+  const body = scene.add.sprite(0, 0, 'employeeBody');
+  body.setTintFill(skinColor);
+
+  const eye = scene.add.sprite(0, 0, 'eye');
+  eye.setTintFill(eyeColor);
 
   //hair (x number of hairstyles, apply tint to whichever they choose)
-  const hair = this.add.sprite(0, 0, hairStyle);
+  const hair = scene.add.sprite(0, 0, hairStyle);
   hair.setTintFill(hairColor);
 
   //outfit (x number of outfits)
-  const outfit = this.add.sprite(0, 0, outfit);
+  const outfit = scene.add.sprite(0, 0, outfitStyle);
 
-  //Add all sprites as children
-  employee.add([body, hair, outfit]);
+  const userName = scene.add.text(-25, -50, name, {
+    font: '16px Courier',
+    fill: '#000000',
+  });
+
+  //return all sprites in children array
+  return [body, eye, hair, outfit, userName];
 }
 
-export default buildEmployee;
+export default Employee;
