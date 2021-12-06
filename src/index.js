@@ -7,10 +7,6 @@ import MainScene from './scenes/MainScene';
 
 //Create socket to import elsewhere instead of attaching to window
 // export const socket = io();
-import { socket } from './socket';
-
-let gameDiv = document.getElementById('mygame');
-console.dir(gameDiv);
 
 class Game extends Phaser.Game {
   constructor() {
@@ -20,13 +16,16 @@ class Game extends Phaser.Game {
 
     // Start the game with the mainscene
     // << START GAME WITH MAIN SCENE HERE >>
-    this.scene.start('MainScene');
+    // this.scene.start('MainScene');
   }
 }
 
 // Create new instance of game
 window.onload = async function () {
   window.game = new Game();
+  document.getElementById('mygame').style.display = 'none';
+  document.querySelector('.webcam-panel').style.display = 'none';
+
 
   ReactDOM.render(<App />, document.getElementById('root'));
 };

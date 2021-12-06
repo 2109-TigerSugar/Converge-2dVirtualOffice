@@ -2,14 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { socket } from '../socket';
 
+
+const initialUserData = {
+  name: '',
+  roomKey: '',
+  officeType: '',
+  avatar: 'avatar',
+}
+
 export const JoinOrCreateForm = (props) => {
   // to make the form controlled, have a state to keep track of input values
-  const [userData, setUserData] = useState({
-    name: '',
-    roomKey: '',
-    officeType: '',
-    avatar: 'avatar',
-  });
+  const [userData, setUserData] = useState(initialUserData);
   const [err, setErr] = useState(''); //if we need to show an error
   const navigate = useNavigate(); //to let us navigate to other pages
 
@@ -21,15 +24,10 @@ export const JoinOrCreateForm = (props) => {
         setUserData(JSON.parse(storedData));
       }
     } else {
-      setUserData({
-        name: '',
-        roomKey: '',
-        officeType: '',
-        avatar: 'avatar',
-      });
+      setUserData(initialUserData);
     }
 
-    return () => setUserData({});
+    return () => setUserData(initialUserData);
   }, [props.formType]);
 
   const handleChange = (event) => {

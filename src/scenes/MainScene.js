@@ -8,7 +8,7 @@ export default class MainScene extends Phaser.Scene {
     super('MainScene');
     this.state = {};
     this.overlappingSprites = {};
-    // this.officeLayer;
+
   }
 
   preload() {
@@ -26,6 +26,7 @@ export default class MainScene extends Phaser.Scene {
 
   create() {
     this.state.active = true;
+
     const scene = this;
 
     buildMap(scene);
@@ -40,6 +41,7 @@ export default class MainScene extends Phaser.Scene {
     this.socket.on('setState', function (state) {
       const { roomKey, employees, numEmployees } = state;
 
+
       scene.physics.world.enable(this);
       // scene.physics.world.setBounds(0, 0, 800, 600);
 
@@ -47,11 +49,14 @@ export default class MainScene extends Phaser.Scene {
       scene.state.roomKey = roomKey;
       scene.state.employees = employees;
       scene.state.numEmployees = numEmployees;
+
     });
+
 
     // SOCKET LISTENER FOR CURRENT EMPLOYEES
     this.socket.on('currentEmployees', function (arg) {
       const { employees, numEmployees } = arg;
+      console.log('currentEmployees received', employees);
 
       scene.state.numEmployees = numEmployees;
 
@@ -90,6 +95,24 @@ export default class MainScene extends Phaser.Scene {
       });
     });
 
+
+    // LEAVE ROOM (not socket disconnection)
+    this.socket.on('leftRoom', function(arg){
+      //remove all coworker avatars
+      scene.coworkers.clear(true, true);
+
+    })
+
+    this.socket.on('coworkerLeftRoom', function (arg) {
+      const { coworkerId, numEmployees } = arg;
+      scene.state.numEmployees = numEmployees;
+      scene.coworkers.getChildren().forEach(function (coworker) {
+        if (coworkerId === coworker.employeeId) {
+          coworker.destroy();
+        }
+      });
+    });
+
     // DISCONNECT
     this.socket.on('coworker disconnected', function (arg) {
       const { coworkerId, numEmployees } = arg;
@@ -100,6 +123,7 @@ export default class MainScene extends Phaser.Scene {
         }
       });
     });
+
 
     ///////////////////////////////////////////////
     //set movement keys to arrow keys
@@ -147,6 +171,7 @@ export default class MainScene extends Phaser.Scene {
   //have to add a method on mainscene to add an employee --- used it in our create method
 
   addEmployee(scene, employeeInfo) {
+    if(scene.joined) return; //don't add if joined already
     scene.joined = true;
     //the line below adds the sprite to the game map.
     scene.sprite = new Employee(scene, employeeInfo);
