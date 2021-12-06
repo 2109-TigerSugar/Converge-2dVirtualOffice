@@ -22,7 +22,6 @@ export default class MainScene extends Phaser.Scene {
     this.load.tilemapTiledJSON('map', TILEMAP_JSON);
 
     loadSpriteSheets(this);
-
   }
 
   create() {
@@ -69,6 +68,7 @@ export default class MainScene extends Phaser.Scene {
 
     this.socket.on('newEmployee', function (arg) {
       const { employeeInfo, numEmployees } = arg;
+      console.log('new employee', employeeInfo);
       scene.addCoworkers(scene, employeeInfo);
       scene.state.numEmployees = numEmployees;
     });
@@ -153,15 +153,21 @@ export default class MainScene extends Phaser.Scene {
     // .setCollideWorldBounds(true);
     console.log('employee Info', employeeInfo);
 
+    //Cameraplsworkthx
+    const camera = this.cameras.main;
+    camera.zoomX = 0.5;
+    camera.zoomY = 0.5;
+    camera.startFollow(this.sprite);
+
     //Set collision plsworkthx
     scene.physics.add.collider(scene.sprite, officeLayer);
   }
   addCoworkers(scene, employeeInfo) {
-    // const coworker = new Employee(scene, testEmployeeInfo);
+    const coworker = new Employee(scene, employeeInfo);
 
-    const coworker = scene.physics.add
-      .sprite(employeeInfo.x + 40, employeeInfo.y + 40, employeeInfo.avatar)
-      .setVisible(true);
+    // const coworker = scene.physics.add
+    //   .sprite(employeeInfo.x + 40, employeeInfo.y + 40, employeeInfo.avatar)
+    //   .setVisible(true);
 
     coworker.employeeId = employeeInfo.employeeId;
     scene.coworkers.add(coworker);
@@ -250,7 +256,7 @@ function buildMap(scene) {
   officeLayer.setCollisionByProperty({ collide: true });
 }
 
-function loadSpriteSheets(scene){
+function loadSpriteSheets(scene) {
   scene.load.spritesheet('employeeBody', 'assets/body.png', {
     frameWidth: 48,
     frameHeight: 96,

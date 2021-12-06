@@ -19,12 +19,6 @@ class Employee extends Phaser.GameObjects.Container {
 
     console.log(this);
 
-    //Cameraplsworkthx
-    const camera = scene.cameras.main;
-    camera.zoomX = 0.5;
-    camera.zoomY = 0.5;
-    camera.startFollow(this);
-
     // All animation setup!
     this.list.forEach(sprite => {
       if (sprite.type === 'Sprite') {
@@ -73,7 +67,7 @@ class Employee extends Phaser.GameObjects.Container {
         sprite.flipX = true;
       }
     });
-    emitMovement('left', this)
+    emitMovement('left', this);
   }
   right() {
     this.body.setVelocityX(this.speed);
@@ -83,7 +77,7 @@ class Employee extends Phaser.GameObjects.Container {
         sprite.flipX = false;
       }
     });
-    emitMovement('right', this)
+    emitMovement('right', this);
   }
   up() {
     this.body.setVelocityY(-this.speed);
@@ -92,7 +86,7 @@ class Employee extends Phaser.GameObjects.Container {
         sprite.anims.play('walkUp', true);
       }
     });
-    emitMovement('up', this)
+    emitMovement('up', this);
   }
   down() {
     this.body.setVelocityY(this.speed);
@@ -101,7 +95,7 @@ class Employee extends Phaser.GameObjects.Container {
         sprite.anims.play('walkDown', true);
       }
     });
-    emitMovement('down', this)
+    emitMovement('down', this);
   }
 
   // ...
