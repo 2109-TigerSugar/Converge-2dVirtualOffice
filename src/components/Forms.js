@@ -137,7 +137,7 @@ export const JoinOrCreateForm = (props) => {
         />
       </div>
       <button type="submit" disabled={!userData.name || !userData.roomKey}>
-        {props.formType}
+      {props.formType}
       </button>
       {/* Error div that wil show if err (state) is not an empty string */}
       {err && <p style={{ color: 'red' }}>{err}</p>}

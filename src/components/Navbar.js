@@ -4,11 +4,13 @@ import { Link } from 'react-router-dom';
 const Navbar = () => {
   return (
     <nav className="links">
-      <div className="left">
-        <Link to='/'>Logo</Link>
+      <div className="navLink">
+     <img src="../assets/convergelogowhite.png" />
       </div>
-      <div className="right">
-
+      <div className="navLink">
+        <Link to='/'>Home</Link>
+      </div>
+      <div className="navLink">
         <Link to='/about'>About</Link>
       </div>
     </nav>

@@ -1,17 +1,25 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import Popup from './Popup';
 import { Link } from 'react-router-dom';
 import { socket } from '../socket';
 import runWebRTC from '../webcam';
 
 const Office = () => {
-  const userData = JSON.parse(window.localStorage.getItem('userData'));
+  console.log(socket);
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const togglePopup = () => {
+    setIsOpen(!isOpen);
+  };
 
   useEffect(() => {
     // if game scene is sleeping, wake it
-    if(window.game.scene.isSleeping('MainScene')) window.game.scene.wake('MainScene');
-
+    if (window.game.scene.isSleeping('MainScene'))
+      window.game.scene.wake('MainScene');
 
     // will show video panel and game panel
+    const userData = JSON.parse(window.localStorage.getItem('userData'));
     document.getElementById('mygame').style.display = 'block';
     document.querySelector('.webcam-panel').style.display = 'flex';
 
@@ -23,7 +31,7 @@ const Office = () => {
     // when the user refreshes the page, make them join the room again if key exists
     if (userData && userData.roomKey) {
       socket.emit('doesKeyExist', userData.roomKey);
-      socket.on('roomExistCheck', exists => {
+      socket.on('roomExistCheck', (exists) => {
         if (exists) {
           socket.emit('joinRoom', userData); //
         } else {
@@ -54,7 +62,45 @@ const Office = () => {
 
   return (
     <div>
-      <Link to="/">Back Home</Link>
+      <div id="header">
+        <div id="nav">
+          <ul>
+            <li className="button-two">
+              <Link to="/"> Switch Room </Link>
+            </li>
+
+            <li className="button-three">
+              <a onClick={togglePopup}> How To Play </a>
+            </li>
+
+            <li className="button-four">
+              <a href="assets/potentialcropped.png">Map</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      {isOpen && (
+        <Popup
+          content={
+            <>
+              <b>Instructions</b>
+              <div>
+                <div id="arrows-container">
+                  <img className="arrows" src="assets/keys.png" />
+                </div>
+                <div id="arrow-instructions">
+                  <p>Walk around your office with your arrow keys!</p>
+                </div>
+                <div id="coworker-container">
+                  <img className="coworkers" src="assets/coworkers.png" />
+                </div>
+              </div>
+            </>
+          }
+          handleClose={togglePopup}
+        />
+      )}
     </div>
   );
 };
