@@ -61,44 +61,42 @@ class Employee extends Phaser.GameObjects.Container {
 
   left() {
     this.body.setVelocityX(-this.speed);
-    this.list.forEach(sprite => {
-      if (sprite.type === 'Sprite') {
-        sprite.anims.play('walkLeftRight', true);
-        sprite.flipX = true;
-      }
-    });
+    this.animate('left');
     emitMovement('left', this);
   }
+
   right() {
     this.body.setVelocityX(this.speed);
-    this.list.forEach(sprite => {
-      if (sprite.type === 'Sprite') {
-        sprite.anims.play('walkLeftRight', true);
-        sprite.flipX = false;
-      }
-    });
+    this.animate('right');
     emitMovement('right', this);
   }
+
   up() {
     this.body.setVelocityY(-this.speed);
-    this.list.forEach(sprite => {
-      if (sprite.type === 'Sprite') {
-        sprite.anims.play('walkUp', true);
-      }
-    });
+    this.animate('up');
     emitMovement('up', this);
   }
+
   down() {
     this.body.setVelocityY(this.speed);
-    this.list.forEach(sprite => {
-      if (sprite.type === 'Sprite') {
-        sprite.anims.play('walkDown', true);
-      }
-    });
+    this.animate('down');
     emitMovement('down', this);
   }
 
-  // ...
+  animate(direction) {
+    this.list.forEach(sprite => {
+      if (sprite.type === 'Sprite') {
+        //Left Or Right
+        if (direction === 'left' || direction === 'right') {
+          sprite.anims.play('walkLeftRight', true);
+          sprite.flipX = direction === 'left' ? true : false;
+        } else {
+          const animationName = direction === 'up' ? 'walkUp' : 'walkDown';
+          sprite.anims.play(animationName, true);
+        }
+      }
+    });
+  }
 }
 
 function getChildren(scene, employeeInfo) {

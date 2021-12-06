@@ -63,18 +63,19 @@ module.exports = io => {
 
     // HERE UPDATE THE EMPLOYEES MOVEMENT DATA
     socket.on('employeeMovement', function (data) {
-      const { x, y, roomKey } = data;
+      const { x, y, roomKey, direction } = data;
 
       // only if socket is still in the room
       if (!socket.rooms.has(roomKey) || !officeRooms[roomKey]) return;
 
       officeRooms[roomKey].employees[socket.id].x = x;
       officeRooms[roomKey].employees[socket.id].y = y;
+      officeRooms[roomKey].employees[socket.id].direction = direction;
 
       //emit a message to all employees about the movement of coworker
       socket
         .to(roomKey)
-        .emit('employeeMoved', officeRooms[roomKey].employees[socket.id]);
+        .emit('coworkerMoved', officeRooms[roomKey].employees[socket.id]);
     });
 
     // user leaves room (socket not disconnected)
