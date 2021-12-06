@@ -5,7 +5,6 @@ import { socket } from '../socket';
 import runWebRTC from '../webcam';
 
 const Office = () => {
-  const userData = JSON.parse(window.localStorage.getItem('userData'));
   console.log(socket);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -20,6 +19,7 @@ const Office = () => {
       window.game.scene.wake('MainScene');
 
     // will show video panel and game panel
+    const userData = JSON.parse(window.localStorage.getItem('userData'));
     document.getElementById('mygame').style.display = 'block';
     document.querySelector('.webcam-panel').style.display = 'flex';
 
@@ -49,8 +49,6 @@ const Office = () => {
       // when going to another page, hide the webcam panel and phaser game
       document.getElementById('mygame').style.display = 'none';
       document.querySelector('.webcam-panel').style.display = 'none';
-      let myVideo = document.querySelector(`#${CSS.escape(socket.id)}`);
-      myVideo.remove();
 
       window.game.scene.sleep('MainScene');
 
