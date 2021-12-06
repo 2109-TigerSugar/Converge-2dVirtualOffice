@@ -34,7 +34,7 @@ const runWebRTC = async socket => {
 
   peer.on('open', id => {
     console.log('My peer ID is: ' + id);
-    window.localStorage.setItem('peer', peer);
+    window.peer = peer;
   });
 
   //Answer calls :)
@@ -88,7 +88,6 @@ const runWebRTC = async socket => {
     videoElement.muted = true;
     videoElement.style.display = hide ? 'none' : 'inline';
   }
-  console.log('done running webcam.js');
 };
 
 export default runWebRTC;

@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { socket } from '../socket';
+import Employee from '../containers/Employee';
 
 let officeLayer;
 export default class MainScene extends Phaser.Scene {
@@ -7,6 +8,7 @@ export default class MainScene extends Phaser.Scene {
     super('MainScene');
     this.state = {};
     this.overlappingSprites = {};
+
   }
 
   preload() {
@@ -16,32 +18,18 @@ export default class MainScene extends Phaser.Scene {
     ///JSON file of exported Tilemap from Tiled
     //passed into this.load.tilemapTiledJSON(phaserKey, pathToFile)
     const TILEMAP_JSON = 'assets/potential.json';
-    this.load.spritesheet('sprite2', 'assets/sprite2.png', { frameWidth: 48, frameHeight: 96 })
-    this.load.spritesheet('avatar', 'assets/example-sprite.png', { frameWidth: 48, frameHeight: 96 });
     this.load.image('office', TILEMAP_PNG);
     this.load.tilemapTiledJSON('map', TILEMAP_JSON);
+
+    loadSpriteSheets(this);
   }
 
   create() {
-    let avatarChoice;
-   this.state.active = true;
+    this.state.active = true;
+
     const scene = this;
 
-    //Dakota: Load map JSON from tiled we preloaded just above
-    const map = this.make.tilemap({ key: 'map' });
-    //Add image of tileset using map.addTileSetImage(tilesetName, phaserKey)
-    //Note: The tilesetName can be found in the JSON file exported from Tiled (likely in our assets folder)
-    const tileset = map.addTilesetImage('potential', 'office', 48, 48);
-
-    //Below we create each layer just as they were created in tiled. By default tiled names layers things like "Tile Layer 1", but we can change this in Tiled!
-    //map.createStaticLayer(layerNameFromTiled, tileset, x, y)
-
-    officeLayer = map.createLayer('Tile Layer 1', tileset, 0, 0);
-
-    //Set collision property (in this case I called it collide in tiled and set collision tiles to true)
-    officeLayer.setCollisionByProperty({ collide: true });
-
-    // this.add.image(0, 0, 'office').setOrigin(0);
+    buildMap(scene);
 
     //CREATE SOCKET HERE//
     this.socket = socket;
@@ -61,13 +49,14 @@ export default class MainScene extends Phaser.Scene {
       scene.state.roomKey = roomKey;
       scene.state.employees = employees;
       scene.state.numEmployees = numEmployees;
-      avatarChoice = scene.state.employees[scene.socket.id].avatar
-      scene.addAnimation(avatarChoice, scene);
+
     });
-    this.coworkers = this.physics.add.group();
+
+
     // SOCKET LISTENER FOR CURRENT EMPLOYEES
     this.socket.on('currentEmployees', function (arg) {
       const { employees, numEmployees } = arg;
+      console.log('currentEmployees received', employees);
 
       scene.state.numEmployees = numEmployees;
 
@@ -84,6 +73,7 @@ export default class MainScene extends Phaser.Scene {
 
     this.socket.on('newEmployee', function (arg) {
       const { employeeInfo, numEmployees } = arg;
+      console.log('new employee', employeeInfo);
       scene.addCoworkers(scene, employeeInfo);
       scene.state.numEmployees = numEmployees;
     });
@@ -105,9 +95,23 @@ export default class MainScene extends Phaser.Scene {
       });
     });
 
-    // this.cursors = this.input.keyboard.createCursorKeys();
 
+    // LEAVE ROOM (not socket disconnection)
+    this.socket.on('leftRoom', function(arg){
+      //remove all coworker avatars
+      scene.coworkers.clear(true, true);
 
+    })
+
+    this.socket.on('coworkerLeftRoom', function (arg) {
+      const { coworkerId, numEmployees } = arg;
+      scene.state.numEmployees = numEmployees;
+      scene.coworkers.getChildren().forEach(function (coworker) {
+        if (coworkerId === coworker.employeeId) {
+          coworker.destroy();
+        }
+      });
+    });
 
     // DISCONNECT
     this.socket.on('coworker disconnected', function (arg) {
@@ -120,115 +124,43 @@ export default class MainScene extends Phaser.Scene {
       });
     });
 
+
     ///////////////////////////////////////////////
     //set movement keys to arrow keys
-    const keys = scene.input.keyboard.createCursorKeys({
-      // up: 'up',
-      // down: 'down',
-      // left: 'left',
-      // right: 'right',
-    }); // keys.up, keys.down, keys.left, keys.right
-    this.cursors = keys;
-    // this.cursors = this.input.keyboard.createCursorKeys();
+    this.cursors = scene.input.keyboard.createCursorKeys();
     this.physics.world.enable(this);
     this.physics.world.setBounds(0, 0, 800, 600);
     /************************ OVERLAP **************************/
-
-    //animation
-    // if(Object.keys(this.state).length) {
-    //   const avatarChoice = scene.state.employees[this.socket.id].avatar
-    //   console.log(avatarChoice)
-    // }
   }
-
-    addAnimation(avatarChoice, scene) {
-      scene.anims.create({
-        key: 'walkLeftRight',
-        frames: this.anims.generateFrameNumbers(avatarChoice, { start: 112, end: 117 }),
-        frameRate: 10,
-        repeat: 0
-      })
-
-      scene.anims.create({
-        key: 'walkUp',
-        frames: this.anims.generateFrameNumbers(avatarChoice, { start: 118, end: 123 }),
-        frameRate: 10,
-        repeat: 0
-      })
-
-      scene.anims.create({
-        key: 'walkDown',
-        frames: this.anims.generateFrameNumbers(avatarChoice, { start: 130, end: 135 }),
-        frameRate: 10,
-        repeat: 0
-      })
-    }
-
-
 
   //place all movement in here so actions can be recognized
   update(delta, time) {
     //delta - change in ms since last frame rendered - could be used with speed
     const scene = this;
 
-    //checking delta -- proximity
-
     //employee movement
     if (this.sprite) {
-
-      const speed = 275;
-
       this.sprite.body.setVelocity(0);
 
       // left to right movements
       if (this.cursors.left.isDown) {
-        this.sprite.body.setVelocityX(-speed);
-        this.sprite.anims.play('walkLeftRight', true);
-        this.sprite.flipX = true;
+        this.sprite.left();
       } else if (this.cursors.right.isDown) {
-        this.sprite.body.setVelocityX(speed);
-        this.sprite.anims.play('walkLeftRight', true);
-        this.sprite.flipX = false;
+        this.sprite.right();
       }
 
       //up and down movements
       if (this.cursors.up.isDown) {
-        this.sprite.body.setVelocityY(-speed);
-        this.sprite.anims.play('walkUp', true);
+        this.sprite.up();
       } else if (this.cursors.down.isDown) {
-        this.sprite.body.setVelocityY(speed);
-        this.sprite.anims.play('walkDown', true);
+        this.sprite.down();
       }
 
-      this.sprite.body.velocity.normalize().scale(speed);
-
-      //emitting the movement with SOCKETS
-      let x = this.sprite.x;
-      let y = this.sprite.y;
-
-      if (
-        this.sprite.oldPosition &&
-        (x !== this.sprite.oldPosition.x || y !== this.sprite.oldPosition.y)
-      ) {
-        this.moving = true;
-        this.socket.emit('employeeMovement', {
-          x: this.sprite.x,
-          y: this.sprite.y,
-          roomKey: scene.state.roomKey,
-        });
-      }
-
-      // we have store the prior location of the sprite data
-      this.sprite.oldPosition = {
-        x: this.sprite.x,
-        y: this.sprite.y,
-        rotation: this.sprite.rotation,
-      };
+      this.sprite.body.velocity.normalize().scale(this.sprite.speed);
 
       //iterates over children and add overlap
-      //look into coworkers.children.iterate()
       //stange bug causing the callback to happen twice at each of the overlap
-      this.coworkers.children.iterate((coworker) =>
+      this.coworkers.children.iterate(coworker =>
         scene.addEmployeeOverlap(scene, coworker)
       );
       // check the coworkers we were previously overlapping with
@@ -239,22 +171,13 @@ export default class MainScene extends Phaser.Scene {
   //have to add a method on mainscene to add an employee --- used it in our create method
 
   addEmployee(scene, employeeInfo) {
+    if(scene.joined) return; //don't add if joined already
     scene.joined = true;
     //the line below adds the sprite to the game map.
-    scene.sprite = scene.physics.add
-      .sprite(employeeInfo.x, employeeInfo.y, employeeInfo.avatar)
-      .setVisible(true);
+    scene.sprite = new Employee(scene, employeeInfo);
     // .setCollideWorldBounds(true);
-    console.log("employee Info", employeeInfo)
-    //animation
-    // scene.anims.create({
-    //   key: 'walk',
-    //   frames: this.anims.generateFrameNumbers('avatar', { start: 112, end: 118 }),
-    //   frameRate: 10,
-    //   repeat: -1
-    // })
+    console.log('employee Info', employeeInfo);
 
-    scene.sprite.employeeId = employeeInfo.employeeId;
     //Cameraplsworkthx
     const camera = this.cameras.main;
     camera.zoomX = 0.5;
@@ -262,13 +185,15 @@ export default class MainScene extends Phaser.Scene {
     camera.startFollow(this.sprite);
 
     //Set collision plsworkthx
-    this.physics.add.collider(this.sprite, officeLayer);
+    scene.physics.add.collider(scene.sprite, officeLayer);
   }
   addCoworkers(scene, employeeInfo) {
-    const coworker = scene.physics.add
-      .sprite(employeeInfo.x + 40, employeeInfo.y + 40, employeeInfo.avatar)
-      .setVisible(true);
-    // .setCollideWorldBounds(true);
+    const coworker = new Employee(scene, employeeInfo);
+
+    // const coworker = scene.physics.add
+    //   .sprite(employeeInfo.x + 40, employeeInfo.y + 40, employeeInfo.avatar)
+    //   .setVisible(true);
+
     coworker.employeeId = employeeInfo.employeeId;
     scene.coworkers.add(coworker);
   }
@@ -315,7 +240,7 @@ export default class MainScene extends Phaser.Scene {
 
   checkOverlap(scene) {
     const spriteBounds = scene.sprite.getBounds();
-    Object.keys(scene.overlappingSprites).forEach((employeeId) => {
+    Object.keys(scene.overlappingSprites).forEach(employeeId => {
       const coworker = scene.overlappingSprites[employeeId];
       const coworkerBounds = coworker.getBounds();
       // https://phaser.io/examples/v3/view/geom/intersects/get-rectangle-intersection
@@ -338,4 +263,40 @@ export default class MainScene extends Phaser.Scene {
       }
     });
   }
+}
+
+function buildMap(scene) {
+  //Dakota: Load map JSON from tiled we preloaded just above
+  const map = scene.make.tilemap({ key: 'map' });
+  //Add image of tileset using map.addTileSetImage(tilesetName, phaserKey)
+  //Note: The tilesetName can be found in the JSON file exported from Tiled (likely in our assets folder)
+  const tileset = map.addTilesetImage('potential', 'office', 48, 48);
+
+  //Below we create each layer just as they were created in tiled. By default tiled names layers things like "Tile Layer 1", but we can change this in Tiled!
+  //map.createStaticLayer(layerNameFromTiled, tileset, x, y)
+
+  officeLayer = map.createLayer('Tile Layer 1', tileset, 0, 0);
+
+  //Set collision property (in this case I called it collide in tiled and set collision tiles to true)
+  officeLayer.setCollisionByProperty({ collide: true });
+}
+
+function loadSpriteSheets(scene) {
+  scene.load.spritesheet('employeeBody', 'assets/body.png', {
+    frameWidth: 48,
+    frameHeight: 96,
+  });
+  scene.load.spritesheet('hairstyle1', 'assets/hair.png', {
+    frameWidth: 48,
+    frameHeight: 96,
+  });
+
+  scene.load.spritesheet('outfit1', 'assets/outfit.png', {
+    frameWidth: 48,
+    frameHeight: 96,
+  });
+  scene.load.spritesheet('eye', 'assets/eye.png', {
+    frameWidth: 48,
+    frameHeight: 96,
+  });
 }
