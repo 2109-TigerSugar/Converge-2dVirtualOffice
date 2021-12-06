@@ -2,13 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { socket } from '../socket';
 
-
 const initialUserData = {
   name: '',
   roomKey: '',
   officeType: '',
   avatar: 'avatar',
-}
+  hairStyle: 'hairStyle',
+
+  skinColor: 0xf0ddd7,
+  eyeColor: 0x000000,
+  hairColor: 0xf1cc8f,
+  outfitStyle: 'outfit1',
+};
 
 export const JoinOrCreateForm = (props) => {
   // to make the form controlled, have a state to keep track of input values
@@ -120,12 +125,57 @@ export const JoinOrCreateForm = (props) => {
         />
       </div>
       <div>
-      <label htmlFor="avatar">Avatar:</label>
-      <select name="avatar" id="avatar" value={userData.avatar} onChange={handleChange}>
-        <option value="avatar">avatar1</option>
-        <option value="sprite2">avatar2</option>
-      </select>
+        <label htmlFor="avatar">Avatar:</label>
+        <select
+          name="avatar"
+          id="avatar"
+          value={userData.avatar}
+          onChange={handleChange}
+        >
+          <option value="avatar">avatar1</option>
+          <option value="sprite2">avatar2</option>
+        </select>
       </div>
+      <div>
+        <label htmlFor="hairStyle">Hair Style:</label>
+        <select
+          name="hairStyle"
+          id="hairStyle"
+          value={userData.hairStyle}
+          onChange={handleChange}
+        >
+          <option value="hairStyle1">1</option>
+          <option value="hairStyle2">2</option>
+          <option value="hairStyle3">3</option>
+          <option value="hairStyle4">4</option>
+          <option value="hairStyle5">5</option>
+          <option value="hairStyle6">6</option>
+          <option value="hairStyle7">7</option>
+          <option value="hairStyle8">8</option>
+          <option value="hairStyle9">9</option>
+          <option value="hairStyle10">10</option>
+          <option value="hairStyle11">11</option>
+          <option value="hairStyle12">12</option>
+          <option value="hairStyle13">13</option>
+          <option value="hairStyle14">14</option>
+          <option value="hairStyle15">15</option>
+          <option value="hairStyle16">16</option>
+          <option value="hairStyle17">17</option>
+          <option value="hairStyle18">18</option>
+          <option value="hairStyle19">19</option>
+          <option value="hairStyle20">20</option>
+          <option value="hairStyle21">21</option>
+          <option value="hairStyle22">22</option>
+          <option value="hairStyle23">23</option>
+          <option value="hairStyle24">24</option>
+          <option value="hairStyle25">25</option>
+          <option value="hairStyle26">26</option>
+          <option value="hairStyle27">27</option>
+          <option value="hairStyle28">28</option>
+          <option value="hairStyle29">29</option>
+        </select>
+      </div>
+
       <div>
         <label htmlFor="officeType">Office Type</label>
         <input
@@ -137,7 +187,7 @@ export const JoinOrCreateForm = (props) => {
         />
       </div>
       <button type="submit" disabled={!userData.name || !userData.roomKey}>
-      {props.formType}
+        {props.formType}
       </button>
       {/* Error div that wil show if err (state) is not an empty string */}
       {err && <p style={{ color: 'red' }}>{err}</p>}

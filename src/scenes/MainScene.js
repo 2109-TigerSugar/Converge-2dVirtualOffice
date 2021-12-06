@@ -154,7 +154,7 @@ export default class MainScene extends Phaser.Scene {
 
       //iterates over children and add overlap
       //stange bug causing the callback to happen twice at each of the overlap
-      this.coworkers.children.iterate(coworker =>
+      this.coworkers.children.iterate((coworker) =>
         scene.addEmployeeOverlap(scene, coworker)
       );
       // check the coworkers we were previously overlapping with
@@ -234,7 +234,7 @@ export default class MainScene extends Phaser.Scene {
 
   checkOverlap(scene) {
     const spriteBounds = scene.sprite.getBounds();
-    Object.keys(scene.overlappingSprites).forEach(employeeId => {
+    Object.keys(scene.overlappingSprites).forEach((employeeId) => {
       const coworker = scene.overlappingSprites[employeeId];
       const coworkerBounds = coworker.getBounds();
       // https://phaser.io/examples/v3/view/geom/intersects/get-rectangle-intersection
@@ -283,9 +283,9 @@ function loadSpriteSheets(scene) {
 
   //All hairstyles are named hairstyle# like hairstyle1, hairstyle2, etc
   const hairstyleCount = 29;
-  for (let i = 0; i < hairstyleCount; i++) {
+  for (let i = 1; i <= hairstyleCount; i++) {
     scene.load.spritesheet(
-      `hairstyle${i}`,
+      `hairStyle${i}`,
       `assets/avatars/hairstyles/hairstyle${i}.png`,
       {
         frameWidth: 48,
@@ -296,7 +296,7 @@ function loadSpriteSheets(scene) {
 
   //All outfits are named outfit# like outfit1, outfit2, etc
   const outfitCount = 10;
-  for (let i = 0; i < outfitCount; i++) {
+  for (let i = 1; i <= outfitCount; i++) {
     scene.load.spritesheet(
       `outfit${i}`,
       `assets/avatars/outfits/outfit${i}.png`,
