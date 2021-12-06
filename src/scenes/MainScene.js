@@ -222,8 +222,8 @@ export default class MainScene extends Phaser.Scene {
       hairStyle: 'hairstyle1',
       hairColor: 0xf1cc8f,
       outfitStyle: 'outfit1',
-      x: 600,
-      y: 300,
+      x: 3400,
+      y: 3600,
     };
 
     scene.sprite = new Employee(this, testEmployeeInfo);

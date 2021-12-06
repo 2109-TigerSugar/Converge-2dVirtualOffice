@@ -23,7 +23,7 @@ class Employee extends Phaser.GameObjects.Container {
         sprite.anims.create({
           key: 'walkLeftRight',
           frames: sprite.anims.generateFrameNumbers(spriteName, {
-            start: 111,
+            start: 114,
             end: 117,
           }),
           frameRate: 10,
