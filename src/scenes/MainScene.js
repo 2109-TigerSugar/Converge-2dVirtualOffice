@@ -57,8 +57,6 @@ export default class MainScene extends Phaser.Scene {
     //Set collision property (in this case I called it collide in tiled and set collision tiles to true)
     officeLayer.setCollisionByProperty({ collide: true });
 
-    // this.add.image(0, 0, 'office').setOrigin(0);
-
     //CREATE SOCKET HERE//
     this.socket = socket;
 
@@ -118,8 +116,6 @@ export default class MainScene extends Phaser.Scene {
       });
     });
 
-    // this.cursors = this.input.keyboard.createCursorKeys();
-
     // DISCONNECT
     this.socket.on('coworker disconnected', function (arg) {
       const { coworkerId, numEmployees } = arg;
@@ -133,14 +129,7 @@ export default class MainScene extends Phaser.Scene {
 
     ///////////////////////////////////////////////
     //set movement keys to arrow keys
-    const keys = scene.input.keyboard.createCursorKeys({
-      // up: 'up',
-      // down: 'down',
-      // left: 'left',
-      // right: 'right',
-    }); // keys.up, keys.down, keys.left, keys.right
-    this.cursors = keys;
-    // this.cursors = this.input.keyboard.createCursorKeys();
+    this.cursors = scene.input.keyboard.createCursorKeys();
     this.physics.world.enable(this);
     this.physics.world.setBounds(0, 0, 800, 600);
     /************************ OVERLAP **************************/
@@ -151,12 +140,8 @@ export default class MainScene extends Phaser.Scene {
     //delta - change in ms since last frame rendered - could be used with speed
     const scene = this;
 
-    //checking delta -- proximity
-
     //employee movement
     if (this.sprite) {
-      const speed = 275;
-
       this.sprite.body.setVelocity(0);
 
       // left to right movements
@@ -173,7 +158,7 @@ export default class MainScene extends Phaser.Scene {
         this.sprite.down();
       }
 
-      this.sprite.body.velocity.normalize().scale(speed);
+      this.sprite.body.velocity.normalize().scale(this.sprite.speed);
 
       //emitting the movement with SOCKETS
       let x = this.sprite.x;
@@ -226,25 +211,20 @@ export default class MainScene extends Phaser.Scene {
       y: 3600,
     };
 
-    scene.sprite = new Employee(this, testEmployeeInfo);
+    scene.sprite = new Employee(scene, testEmployeeInfo);
     // .setCollideWorldBounds(true);
     console.log('employee Info', employeeInfo);
 
     scene.sprite.employeeId = employeeInfo.employeeId;
-    //Cameraplsworkthx
-    const camera = this.cameras.main;
-    camera.zoomX = 0.5;
-    camera.zoomY = 0.5;
-    camera.startFollow(this.sprite);
 
     //Set collision plsworkthx
-    this.physics.add.collider(this.sprite, officeLayer);
+    scene.physics.add.collider(scene.sprite, officeLayer);
   }
   addCoworkers(scene, employeeInfo) {
     const coworker = scene.physics.add
       .sprite(employeeInfo.x + 40, employeeInfo.y + 40, employeeInfo.avatar)
       .setVisible(true);
-    // .setCollideWorldBounds(true);
+
     coworker.employeeId = employeeInfo.employeeId;
     scene.coworkers.add(coworker);
   }

@@ -14,6 +14,12 @@ class Employee extends Phaser.GameObjects.Container {
     scene.physics.world.enable(this); //now we can use this.body
     console.log(this.body); //can be used later on: this.body.setVelocity..etc
 
+    //Cameraplsworkthx
+    const camera = scene.cameras.main;
+    camera.zoomX = 0.5;
+    camera.zoomY = 0.5;
+    camera.startFollow(this);
+
     // All animation setup!
     this.list.forEach(sprite => {
       if (sprite.type === 'Sprite') {
