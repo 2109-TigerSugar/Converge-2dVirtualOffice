@@ -2,6 +2,8 @@ import Peer from 'peerjs';
 
 const runWebRTC = async socket => {
   const webcamPanel = document.querySelector('.webcam-panel');
+  const webcamController = document.querySelector('.webcam-controller');
+
   const callList = {};
 
   //Dakota: Ask for permission to use webcam :) We await because we have no clue when they will accept it!
@@ -16,6 +18,10 @@ const runWebRTC = async socket => {
 
   //Build our webcam
   addVideo(stream, false, socket.id);
+
+  // show the controller my stream is loaded
+  webcamController.style.display = 'flex';
+  window.myStream = stream;
 
   //Dakota: Setup new peer object! Yay!
   const peer = new Peer(socket.id, {
@@ -60,7 +66,7 @@ const runWebRTC = async socket => {
 
     //Other end answered call so build webcam panel
     call.on('stream', remoteStream => {
-      console.log('stream after peer.cal ');
+      console.log('stream after peer.call ');
       if (callList[socketId] === undefined) {
         addVideo(remoteStream, true, socketId);
         callList[socketId] = true;
@@ -68,19 +74,15 @@ const runWebRTC = async socket => {
     });
   });
 
-  socket.on('coworker disconnected', ({coworkerId : socketId}) => {
-    // console.log(`${socketId} disconnected`);
+  socket.on('coworker disconnected', ({ coworkerId: socketId }) => {
     let videoToRemove = document.querySelectorAll(`#${CSS.escape(socketId)}`);
     videoToRemove.forEach(video => video.remove());
   });
 
   function addVideo(stream, hide, socketId) {
     const videoElement = document.createElement('video');
-    // console.dir(stream);
     videoElement.addEventListener('loadedmetadata', function (e) {
-      // console.log('onloadmetadata fired');
       videoElement.play();
-      // webcamPanel.appendChild(videoElement);
     });
     webcamPanel.appendChild(videoElement);
     videoElement.srcObject = stream;
