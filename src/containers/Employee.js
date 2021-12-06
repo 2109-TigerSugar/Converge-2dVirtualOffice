@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { socket } from '../socket';
 
 class Employee extends Phaser.GameObjects.Container {
   constructor(scene, employeeInfo) {
@@ -14,8 +15,9 @@ class Employee extends Phaser.GameObjects.Container {
     scene.physics.world.enable(this); //now we can use this.body
 
     this.employeeId = employeeInfo.employeeId;
+    this.roomKey = employeeInfo.roomKey;
 
-
+    console.log(this);
 
     //Cameraplsworkthx
     const camera = scene.cameras.main;
@@ -71,6 +73,7 @@ class Employee extends Phaser.GameObjects.Container {
         sprite.flipX = true;
       }
     });
+    emitMovement('left', this)
   }
   right() {
     this.body.setVelocityX(this.speed);
@@ -80,6 +83,7 @@ class Employee extends Phaser.GameObjects.Container {
         sprite.flipX = false;
       }
     });
+    emitMovement('right', this)
   }
   up() {
     this.body.setVelocityY(-this.speed);
@@ -88,6 +92,7 @@ class Employee extends Phaser.GameObjects.Container {
         sprite.anims.play('walkUp', true);
       }
     });
+    emitMovement('up', this)
   }
   down() {
     this.body.setVelocityY(this.speed);
@@ -96,6 +101,7 @@ class Employee extends Phaser.GameObjects.Container {
         sprite.anims.play('walkDown', true);
       }
     });
+    emitMovement('down', this)
   }
 
   // ...
@@ -126,6 +132,20 @@ function getChildren(scene, employeeInfo) {
 
   //return all sprites in children array
   return [body, eye, hair, outfit, userName];
+}
+
+// take in direction
+// emit employeeMovement event : x, y, roomKey, direction
+
+function emitMovement(direction, employee) {
+  let { x, y, roomKey } = employee;
+
+  socket.emit('employeeMovement', {
+    x,
+    y,
+    roomKey,
+    direction,
+  });
 }
 
 export default Employee;

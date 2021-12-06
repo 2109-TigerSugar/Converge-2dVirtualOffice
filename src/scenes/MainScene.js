@@ -21,24 +21,6 @@ export default class MainScene extends Phaser.Scene {
     this.load.image('office', TILEMAP_PNG);
     this.load.tilemapTiledJSON('map', TILEMAP_JSON);
 
-    // this.load.spritesheet('employeeBody', 'assets/body.png', {
-    //   frameWidth: 48,
-    //   frameHeight: 96,
-    // });
-    // this.load.spritesheet('hairstyle1', 'assets/hair.png', {
-    //   frameWidth: 48,
-    //   frameHeight: 96,
-    // });
-
-    // this.load.spritesheet('outfit1', 'assets/outfit.png', {
-    //   frameWidth: 48,
-    //   frameHeight: 96,
-    // });
-    // this.load.spritesheet('eye', 'assets/eye.png', {
-    //   frameWidth: 48,
-    //   frameHeight: 96,
-    // });
-
     loadSpriteSheets(this);
 
   }
@@ -151,29 +133,6 @@ export default class MainScene extends Phaser.Scene {
       }
 
       this.sprite.body.velocity.normalize().scale(this.sprite.speed);
-
-      //emitting the movement with SOCKETS
-      let x = this.sprite.x;
-      let y = this.sprite.y;
-
-      if (
-        this.sprite.oldPosition &&
-        (x !== this.sprite.oldPosition.x || y !== this.sprite.oldPosition.y)
-      ) {
-        this.moving = true;
-        this.socket.emit('employeeMovement', {
-          x: this.sprite.x,
-          y: this.sprite.y,
-          roomKey: scene.state.roomKey,
-        });
-      }
-
-      // we have store the prior location of the sprite data
-      this.sprite.oldPosition = {
-        x: this.sprite.x,
-        y: this.sprite.y,
-        rotation: this.sprite.rotation,
-      };
 
       //iterates over children and add overlap
       //stange bug causing the callback to happen twice at each of the overlap
