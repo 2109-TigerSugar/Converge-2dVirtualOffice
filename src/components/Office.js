@@ -1,11 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import Popup from './Popup';
 import { Link } from 'react-router-dom';
 import { socket } from '../socket';
 import runWebRTC from '../webcam';
 
 const Office = () => {
   const userData = JSON.parse(window.localStorage.getItem('userData'));
-  console.log(socket)
+  console.log(socket);
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const togglePopup = () => {
+    setIsOpen(!isOpen);
+  };
 
   useEffect(() => {
     // will show the webcam panel and phaser game
@@ -18,7 +25,7 @@ const Office = () => {
     // when the user refreshes the page, make them join the room again if key exists
     if (userData && userData.roomKey) {
       socket.emit('doesKeyExist', userData.roomKey);
-      socket.on('roomExistCheck', exists => {
+      socket.on('roomExistCheck', (exists) => {
         if (exists) {
           socket.emit('joinRoom', userData); //
         } else {
@@ -38,16 +45,51 @@ const Office = () => {
       myVideo.remove();
 
       // leave the room when going office page unmounts
-      socket.emit('leaveRoom', userData.roomKey )
-
-
-
+      socket.emit('leaveRoom', userData.roomKey);
     };
   });
 
   return (
     <div>
-      <Link to="/">Back Home</Link>
+      <div id="header">
+        <div id="nav">
+          <ul>
+            <li className="button-two">
+              <Link to="/"> Switch Room </Link>
+            </li>
+
+            <li className="button-three">
+              <a onClick={togglePopup}> How To Play </a>
+            </li>
+
+            <li className="button-four">
+              <a href="assets/potentialcropped.png">Map</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      {isOpen && (
+        <Popup
+          content={
+            <>
+              <b>Instructions</b>
+              <div>
+                <div id="arrows-container">
+                  <img className="arrows" src="assets/keys.png" />
+                </div>
+                <div id="arrow-instructions">
+                  <p>Walk around your office with your arrow keys!</p>
+                </div>
+                <div id="coworker-container">
+                  <img className="coworkers" src="assets/coworkers.png" />
+                </div>
+              </div>
+            </>
+          }
+          handleClose={togglePopup}
+        />
+      )}
     </div>
   );
 };
