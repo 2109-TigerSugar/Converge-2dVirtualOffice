@@ -283,9 +283,9 @@ function loadSpriteSheets(scene) {
 
   //All hairstyles are named hairstyle# like hairstyle1, hairstyle2, etc
   const hairstyleCount = 29;
-  for (let i = 0; i < hairstyleCount; i++) {
+  for (let i = 1; i <= hairstyleCount; i++) {
     scene.load.spritesheet(
-      `hairstyle${i}`,
+      `hairStyle${i}`,
       `assets/avatars/hairstyles/hairstyle${i}.png`,
       {
         frameWidth: 48,
@@ -296,9 +296,9 @@ function loadSpriteSheets(scene) {
 
   //All outfits are named outfit# like outfit1, outfit2, etc
   const outfitCount = 10;
-  for (let i = 0; i < outfitCount; i++) {
+  for (let i = 1; i <= outfitCount; i++) {
     scene.load.spritesheet(
-      `outfit${i}`,
+      `outfitStyle${i}`,
       `assets/avatars/outfits/outfit${i}.png`,
       {
         frameWidth: 48,

@@ -36,9 +36,9 @@ module.exports = io => {
 
         skinColor: 0xf0ddd7,
         eyeColor: 0x000000,
-        hairStyle: 'hairstyle1',
+        hairStyle: 'hairStyle10',
         hairColor: 0xf1cc8f,
-        outfitStyle: 'outfit1',
+        outfitStyle: 'outfitStyle5',
       };
 
       roomInfo.numEmployees = Object.keys(roomInfo.employees).length;
