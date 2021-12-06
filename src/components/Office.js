@@ -5,9 +5,8 @@ import { socket } from '../socket';
 import runWebRTC from '../webcam';
 
 const Office = () => {
-  console.log(socket);
-
   const [isOpen, setIsOpen] = useState(false);
+  const [mapOpen, setMapOpen] = useState(false);
   let userData = JSON.parse(window.localStorage.getItem('userData'));
 
   const toggleVideo = () => {
@@ -45,8 +44,22 @@ const Office = () => {
     }
   };
 
-  const togglePopup = () => {
-    setIsOpen(!isOpen);
+  const togglePopup = event => {
+    let id = event.target.id;
+    switch (id) {
+      case 'how-to':
+        setIsOpen(true);
+        break;
+      case 'map':
+        setMapOpen(true);
+        break;
+      case 'close-icon':
+        setIsOpen(false);
+        setMapOpen(false);
+        break;
+      default:
+        break;
+    }
   };
 
   useEffect(() => {
@@ -93,25 +106,29 @@ const Office = () => {
 
       // should disconnect peerJS so others can't see you anymore
       if (window.peer) window.peer.disconnect();
-      console.log(window.peer.disconnected)
 
       // leave the room when going office page unmounts
       socket.emit('leaveRoom', userData.roomKey);
     };
-  });
+  }, []);
 
   return (
     <div>
       <div id="header">
-        <div
-          className="webcam-controller"
-          style={{display: 'none' }}
-        >
+        <div className="webcam-controller" style={{ display: 'none' }}>
           <p>{userData.name}</p>
-          <div id="stopVideo" className="controller_buttons" onClick={toggleVideo}>
+          <div
+            id="stopVideo"
+            className="controller_buttons"
+            onClick={toggleVideo}
+          >
             <i className="fa fa-video-camera"></i>
           </div>
-          <div id="muteButton" className="controller_buttons" onClick={toggleMute}>
+          <div
+            id="muteButton"
+            className="controller_buttons"
+            onClick={toggleMute}
+          >
             <i className="fa fa-microphone"></i>
           </div>
         </div>
@@ -122,11 +139,18 @@ const Office = () => {
             </li>
 
             <li className="button-three">
-              <a onClick={togglePopup}> How To Play </a>
+              <a id="how-to" onClick={togglePopup}>
+                {' '}
+                How To Play{' '}
+              </a>
             </li>
 
             <li className="button-four">
-              <a href="assets/potentialcropped.png">Map</a>
+              <a id="map" onClick={togglePopup}>
+                {' '}
+                Map{' '}
+              </a>
+              {/* <a href="assets/potentialcropped.png">Map</a> */}
             </li>
           </ul>
         </div>
@@ -148,6 +172,16 @@ const Office = () => {
                   <img className="coworkers" src="assets/coworkers.png" />
                 </div>
               </div>
+            </>
+          }
+          handleClose={togglePopup}
+        />
+      )}
+      {mapOpen && (
+        <Popup
+          content={
+            <>
+              <img src="assets/potentialcropped.png" style={{width: '100%'}}></img>
             </>
           }
           handleClose={togglePopup}

@@ -228,7 +228,7 @@ form button:hover {
 /*////instructions////*/
 
 /* Popup style */
-.popup-box {
+#popup-box {
   position: fixed;
   background: #00000050;
   width: 100%;
@@ -270,7 +270,7 @@ form button:hover {
   left: 40%;
 }
 
-.close-icon {
+#close-icon {
   content: 'x';
   cursor: pointer;
   position: fixed;
