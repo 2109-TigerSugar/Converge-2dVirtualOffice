@@ -8,6 +8,7 @@ export default class MainScene extends Phaser.Scene {
     super('MainScene');
     this.state = {};
     this.overlappingSprites = {};
+    // this.officeLayer;
   }
 
   preload() {
@@ -20,42 +21,33 @@ export default class MainScene extends Phaser.Scene {
     this.load.image('office', TILEMAP_PNG);
     this.load.tilemapTiledJSON('map', TILEMAP_JSON);
 
-    this.load.spritesheet('employeeBody', 'assets/body.png', {
-      frameWidth: 48,
-      frameHeight: 96,
-    });
-    this.load.spritesheet('hairstyle1', 'assets/hair.png', {
-      frameWidth: 48,
-      frameHeight: 96,
-    });
+    // this.load.spritesheet('employeeBody', 'assets/body.png', {
+    //   frameWidth: 48,
+    //   frameHeight: 96,
+    // });
+    // this.load.spritesheet('hairstyle1', 'assets/hair.png', {
+    //   frameWidth: 48,
+    //   frameHeight: 96,
+    // });
 
-    this.load.spritesheet('outfit1', 'assets/outfit.png', {
-      frameWidth: 48,
-      frameHeight: 96,
-    });
-    this.load.spritesheet('eye', 'assets/eye.png', {
-      frameWidth: 48,
-      frameHeight: 96,
-    });
+    // this.load.spritesheet('outfit1', 'assets/outfit.png', {
+    //   frameWidth: 48,
+    //   frameHeight: 96,
+    // });
+    // this.load.spritesheet('eye', 'assets/eye.png', {
+    //   frameWidth: 48,
+    //   frameHeight: 96,
+    // });
+
+    loadSpriteSheets(this);
+
   }
 
   create() {
     this.state.active = true;
     const scene = this;
 
-    //Dakota: Load map JSON from tiled we preloaded just above
-    const map = this.make.tilemap({ key: 'map' });
-    //Add image of tileset using map.addTileSetImage(tilesetName, phaserKey)
-    //Note: The tilesetName can be found in the JSON file exported from Tiled (likely in our assets folder)
-    const tileset = map.addTilesetImage('potential', 'office', 48, 48);
-
-    //Below we create each layer just as they were created in tiled. By default tiled names layers things like "Tile Layer 1", but we can change this in Tiled!
-    //map.createStaticLayer(layerNameFromTiled, tileset, x, y)
-
-    officeLayer = map.createLayer('Tile Layer 1', tileset, 0, 0);
-
-    //Set collision property (in this case I called it collide in tiled and set collision tiles to true)
-    officeLayer.setCollisionByProperty({ collide: true });
+    buildMap(scene);
 
     //CREATE SOCKET HERE//
     this.socket = socket;
@@ -184,7 +176,6 @@ export default class MainScene extends Phaser.Scene {
       };
 
       //iterates over children and add overlap
-      //look into coworkers.children.iterate()
       //stange bug causing the callback to happen twice at each of the overlap
       this.coworkers.children.iterate(coworker =>
         scene.addEmployeeOverlap(scene, coworker)
@@ -199,28 +190,16 @@ export default class MainScene extends Phaser.Scene {
   addEmployee(scene, employeeInfo) {
     scene.joined = true;
     //the line below adds the sprite to the game map.
-
-    let testEmployeeInfo = {
-      name: 'Kelsey',
-      skinColor: 0xf0ddd7,
-      eyeColor: 0x000000,
-      hairStyle: 'hairstyle1',
-      hairColor: 0xf1cc8f,
-      outfitStyle: 'outfit1',
-      x: 3400,
-      y: 3600,
-    };
-
-    scene.sprite = new Employee(scene, testEmployeeInfo);
+    scene.sprite = new Employee(scene, employeeInfo);
     // .setCollideWorldBounds(true);
     console.log('employee Info', employeeInfo);
-
-    scene.sprite.employeeId = employeeInfo.employeeId;
 
     //Set collision plsworkthx
     scene.physics.add.collider(scene.sprite, officeLayer);
   }
   addCoworkers(scene, employeeInfo) {
+    // const coworker = new Employee(scene, testEmployeeInfo);
+
     const coworker = scene.physics.add
       .sprite(employeeInfo.x + 40, employeeInfo.y + 40, employeeInfo.avatar)
       .setVisible(true);
@@ -294,4 +273,40 @@ export default class MainScene extends Phaser.Scene {
       }
     });
   }
+}
+
+function buildMap(scene) {
+  //Dakota: Load map JSON from tiled we preloaded just above
+  const map = scene.make.tilemap({ key: 'map' });
+  //Add image of tileset using map.addTileSetImage(tilesetName, phaserKey)
+  //Note: The tilesetName can be found in the JSON file exported from Tiled (likely in our assets folder)
+  const tileset = map.addTilesetImage('potential', 'office', 48, 48);
+
+  //Below we create each layer just as they were created in tiled. By default tiled names layers things like "Tile Layer 1", but we can change this in Tiled!
+  //map.createStaticLayer(layerNameFromTiled, tileset, x, y)
+
+  officeLayer = map.createLayer('Tile Layer 1', tileset, 0, 0);
+
+  //Set collision property (in this case I called it collide in tiled and set collision tiles to true)
+  officeLayer.setCollisionByProperty({ collide: true });
+}
+
+function loadSpriteSheets(scene){
+  scene.load.spritesheet('employeeBody', 'assets/body.png', {
+    frameWidth: 48,
+    frameHeight: 96,
+  });
+  scene.load.spritesheet('hairstyle1', 'assets/hair.png', {
+    frameWidth: 48,
+    frameHeight: 96,
+  });
+
+  scene.load.spritesheet('outfit1', 'assets/outfit.png', {
+    frameWidth: 48,
+    frameHeight: 96,
+  });
+  scene.load.spritesheet('eye', 'assets/eye.png', {
+    frameWidth: 48,
+    frameHeight: 96,
+  });
 }

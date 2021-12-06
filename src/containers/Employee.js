@@ -12,7 +12,10 @@ class Employee extends Phaser.GameObjects.Container {
     this.setSize(48, 96); //container needs a size to enable physics
     this.speed = 275; //easily change our walking speed
     scene.physics.world.enable(this); //now we can use this.body
-    console.log(this.body); //can be used later on: this.body.setVelocity..etc
+
+    this.employeeId = employeeInfo.employeeId;
+
+
 
     //Cameraplsworkthx
     const camera = scene.cameras.main;
