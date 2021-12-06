@@ -33,6 +33,12 @@ module.exports = io => {
         avatar,
         name,
         roomKey,
+
+        skinColor: 0xf0ddd7,
+        eyeColor: 0x000000,
+        hairStyle: 'hairstyle1',
+        hairColor: 0xf1cc8f,
+        outfitStyle: 'outfit1',
       };
 
       roomInfo.numEmployees = Object.keys(roomInfo.employees).length;
