@@ -163,14 +163,14 @@ export default class MainScene extends Phaser.Scene {
       if (this.cursors.left.isDown) {
         this.sprite.left();
       } else if (this.cursors.right.isDown) {
-        this.sprite.body.setVelocityX(speed);
+        this.sprite.right();
       }
 
       //up and down movements
       if (this.cursors.up.isDown) {
-        this.sprite.body.setVelocityY(-speed);
+        this.sprite.up();
       } else if (this.cursors.down.isDown) {
-        this.sprite.body.setVelocityY(speed);
+        this.sprite.down();
       }
 
       this.sprite.body.velocity.normalize().scale(speed);

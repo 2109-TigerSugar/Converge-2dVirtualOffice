@@ -14,37 +14,35 @@ class Employee extends Phaser.GameObjects.Container {
     scene.physics.world.enable(this); //now we can use this.body
     console.log(this.body); //can be used later on: this.body.setVelocity..etc
 
-    // this.children = getChildren(scene, employeeInfo);
-
-    this.spriteParts = {};
-    //[body, eye, hair, outfit, userName];
-    // this.spriteParts.body = this.children[0];
-    // this.spriteParts.eye = this.children[1];
-    // this.spriteParts.hair = this.children[2];
-    // this.spriteParts.outfit = this.children[3];
-    // this.spriteParts.userName = this.children[4];
-
-    // let config;
-    // config = {
-    //   key: 'walkLeftRight',
-    //   frames: this.spriteParts.body.anims.generateFrameNumbers('employeeBody', {
-    //     start: 112,
-    //     end: 117,
-    //   }),
-    //   frameRate: 10,
-    //   repeat: 0,
-    // };
-    // console.log(config);
-    // scene.anims.create(config);
+    // All animation setup!
     this.list.forEach(sprite => {
       if (sprite.type === 'Sprite') {
         const spriteName = sprite.texture.key;
+
         //Left/Right
-        scene.anims.create({
+        sprite.anims.create({
           key: 'walkLeftRight',
           frames: sprite.anims.generateFrameNumbers(spriteName, {
-            start: 112,
+            start: 111,
             end: 117,
+          }),
+          frameRate: 10,
+          repeat: 0,
+        });
+        sprite.anims.create({
+          key: 'walkUp',
+          frames: sprite.anims.generateFrameNumbers(spriteName, {
+            start: 118,
+            end: 123,
+          }),
+          frameRate: 10,
+          repeat: 0,
+        });
+        sprite.anims.create({
+          key: 'walkDown',
+          frames: sprite.anims.generateFrameNumbers(spriteName, {
+            start: 130,
+            end: 135,
           }),
           frameRate: 10,
           repeat: 0,
@@ -58,37 +56,40 @@ class Employee extends Phaser.GameObjects.Container {
 
   left() {
     this.body.setVelocityX(-this.speed);
-    // this.spriteParts.body.anims.play('walkLeftRight', true);
     this.list.forEach(sprite => {
       if (sprite.type === 'Sprite') {
         sprite.anims.play('walkLeftRight', true);
+        sprite.flipX = true;
       }
     });
-    this.flipX = false;
   }
+  right() {
+    this.body.setVelocityX(this.speed);
+    this.list.forEach(sprite => {
+      if (sprite.type === 'Sprite') {
+        sprite.anims.play('walkLeftRight', true);
+        sprite.flipX = false;
+      }
+    });
+  }
+  up() {
+    this.body.setVelocityY(-this.speed);
+    this.list.forEach(sprite => {
+      if (sprite.type === 'Sprite') {
+        sprite.anims.play('walkUp', true);
+      }
+    });
+  }
+  down() {
+    this.body.setVelocityY(this.speed);
+    this.list.forEach(sprite => {
+      if (sprite.type === 'Sprite') {
+        sprite.anims.play('walkDown', true);
+      }
+    });
+  }
+
   // ...
-
-  // All animation setup!
-
-  // this.scene.anims.create({
-  //   key: 'walkUp',
-  //   frames: this.anims.generateFrameNumbers(avatarChoice, {
-  //     start: 118,
-  //     end: 123,
-  //   }),
-  //   frameRate: 10,
-  //   repeat: 0,
-  // });
-
-  // this.scene.anims.create({
-  //   key: 'walkDown',
-  //   frames: this.anims.generateFrameNumbers(avatarChoice, {
-  //     start: 130,
-  //     end: 135,
-  //   }),
-  //   frameRate: 10,
-  //   repeat: 0,
-  // });
 }
 
 function getChildren(scene, employeeInfo) {
