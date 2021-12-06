@@ -276,20 +276,38 @@ function buildMap(scene) {
 }
 
 function loadSpriteSheets(scene) {
-  scene.load.spritesheet('employeeBody', 'assets/body.png', {
-    frameWidth: 48,
-    frameHeight: 96,
-  });
-  scene.load.spritesheet('hairstyle1', 'assets/hair.png', {
+  scene.load.spritesheet('employeeBody', 'assets/avatars/body.png', {
     frameWidth: 48,
     frameHeight: 96,
   });
 
-  scene.load.spritesheet('outfit1', 'assets/outfit.png', {
-    frameWidth: 48,
-    frameHeight: 96,
-  });
-  scene.load.spritesheet('eye', 'assets/eye.png', {
+  //All hairstyles are named hairstyle# like hairstyle1, hairstyle2, etc
+  const hairstyleCount = 29;
+  for (let i = 0; i < hairstyleCount; i++) {
+    scene.load.spritesheet(
+      `hairstyle${i}`,
+      `assets/avatars/hairstyles/hairstyle${i}.png`,
+      {
+        frameWidth: 48,
+        frameHeight: 96,
+      }
+    );
+  }
+
+  //All outfits are named outfit# like outfit1, outfit2, etc
+  const outfitCount = 10;
+  for (let i = 0; i < outfitCount; i++) {
+    scene.load.spritesheet(
+      `outfit${i}`,
+      `assets/avatars/outfits/outfit${i}.png`,
+      {
+        frameWidth: 48,
+        frameHeight: 96,
+      }
+    );
+  }
+
+  scene.load.spritesheet('eye', 'assets/avatars/eye.png', {
     frameWidth: 48,
     frameHeight: 96,
   });
