@@ -10,7 +10,7 @@ class Employee extends Phaser.GameObjects.Container {
       getChildren(scene, employeeInfo)
     );
     this.scene = scene; // so we can have reference to main scene outside of constructor
-    this.setSize(48, 96); //container needs a size to enable physics
+    this.setSize(48, 60); //container needs a size to enable physics
     this.speed = 275; //easily change our walking speed
     scene.physics.world.enable(this); //now we can use this.body
 

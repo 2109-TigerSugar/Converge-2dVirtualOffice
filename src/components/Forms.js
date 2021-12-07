@@ -9,9 +9,9 @@ const initialUserData = {
   avatar: 'avatar',
   hairStyle: 'hairStyle',
   outfit: 'outfit',
-  skinColor: 0xf0ddd7,
+  skinColor: 'skinColor',
+  hairColor: 'hairColor',
   eyeColor: 0x000000,
-  hairColor: 0xf1cc8f,
 };
 
 export const JoinOrCreateForm = (props) => {
@@ -80,6 +80,8 @@ export const JoinOrCreateForm = (props) => {
 
     navigate('/office');
   };
+
+  const skinColors = [0xf0ddd7, 0xf0ddd7, 0xf0ddd7, 0xf0ddd7, 0xf0ddd7];
 
   return (
     <form onSubmit={handleSubmit}>
@@ -194,6 +196,37 @@ export const JoinOrCreateForm = (props) => {
           <option value="outfit10">10</option>
         </select>
       </div>
+      <div>
+        <label htmlFor="skinColor">Skin Color:</label>
+        <select
+          name="skinColor"
+          id="skinColor"
+          value={userData.skinColor}
+          onChange={handleChange}
+        >
+          <option value="0xf0ddd7">1</option>
+          <option value="0x8d5524">2</option>
+          <option value="0xc68642">3</option>
+          <option value="0xe0ac69">4</option>
+          <option value="0xf1c27d">5</option>
+        </select>
+      </div>
+      <div>
+        <label htmlFor="hairColor">Hair Color:</label>
+        <select
+          name="hairColor"
+          id="hairColor"
+          value={userData.hairColor}
+          onChange={handleChange}
+        >
+          <option value="0xf1cc8f">blonde</option>
+          <option value="0x8fe5f1">blue</option>
+          <option value="0xf18fb4">pink</option>
+          <option value="0x8d5524">brown</option>
+          <option value="0xffa500">orange</option>
+        </select>
+      </div>
+
       <div>
         <label htmlFor="officeType">Office Type</label>
         <input
