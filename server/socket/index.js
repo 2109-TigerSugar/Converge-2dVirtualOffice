@@ -8,8 +8,8 @@ const officeRooms = {
 
 const connectedSockets = [];
 
-module.exports = io => {
-  io.on('connection', socket => {
+module.exports = (io) => {
+  io.on('connection', (socket) => {
     console.log(
       `A socket connection to the server has been made: ${socket.id}`
     );
@@ -18,27 +18,34 @@ module.exports = io => {
     connectedSockets.push(socket.id);
     // socket.broadcast.emit('someoneJoined', socket.id);
 
-    socket.on('joinRoom', userData => {
-      const { name, roomKey, avatar, officeType } = userData;
+    socket.on('joinRoom', (userData) => {
+      const {
+        name,
+        roomKey,
+        officeType,
+        hairStyle,
+        outfit,
+        skinColor,
+        hairColor,
+      } = userData;
       if (socket.rooms.has(roomKey) || !officeRooms[roomKey]) {
         return;
       }
       socket.join(roomKey);
       const roomInfo = officeRooms[roomKey];
+
       roomInfo.employees[socket.id] = {
         rotation: 0,
-        x: 3400,
+        x: 4000,
         y: 3600,
         employeeId: socket.id,
-        avatar,
         name,
         roomKey,
-
-        skinColor: 0xf0ddd7,
+        hairStyle,
+        outfit,
+        skinColor,
+        hairColor,
         eyeColor: 0x000000,
-        hairStyle: 'hairStyle10',
-        hairColor: 0xf1cc8f,
-        outfitStyle: 'outfitStyle5',
       };
 
       roomInfo.numEmployees = Object.keys(roomInfo.employees).length;
@@ -80,7 +87,7 @@ module.exports = io => {
     });
 
     // user leaves room (socket not disconnected)
-    socket.on('leaveRoom', roomKey => {
+    socket.on('leaveRoom', (roomKey) => {
       socket.leave(roomKey);
       if (!officeRooms[roomKey]) return;
       delete officeRooms[roomKey].employees[socket.id];
@@ -100,7 +107,7 @@ module.exports = io => {
       // can access the rooms socket belonged to
       console.log('user disconnecting belonged to', socket.rooms);
 
-      socket.rooms.forEach(roomKey => {
+      socket.rooms.forEach((roomKey) => {
         if (officeRooms[roomKey]) {
           // remove that employee from the employee list
           // decrease the numEmployee of that room
@@ -142,7 +149,7 @@ module.exports = io => {
     });
   });
 
-  io.of('/').adapter.on('create-room', room => {
+  io.of('/').adapter.on('create-room', (room) => {
     console.log(`room ${room} was created`);
   });
 
