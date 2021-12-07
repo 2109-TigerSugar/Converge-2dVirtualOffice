@@ -424,3 +424,23 @@ form button:hover {
   width: 350px;
   font-size: 30px;
 }
+/* name display on join */
+.nameJoined {
+  align-items: center;
+  background-color: #143e88;
+  color: white;
+  border-radius: 7px;
+  position: absolute;
+  width: 200px;
+  height: 50px;
+  top: 235px;
+  left: 160px;
+  text-align: center;
+  margin-left: 50%;
+  margin-right: 50%;
+}
+
+.noNameJoined {
+  display:none;
+}
+
