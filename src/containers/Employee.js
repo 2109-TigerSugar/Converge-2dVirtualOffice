@@ -115,10 +115,10 @@ function getChildren(scene, employeeInfo) {
   //outfit (x number of outfits)
   const outfitStyle = scene.add.sprite(0, 0, outfit);
 
-  const userName = scene.add.text(-25, -50, name, {
-    font: '16px Courier',
+  const userName = scene.add.text(0, -50, name, {
+    font: '30px Courier',
     fill: '#0f0f',
-  });
+  }).setOrigin(0.5);
 
   //return all sprites in children array
   return [body, eye, hair, outfitStyle, userName];
