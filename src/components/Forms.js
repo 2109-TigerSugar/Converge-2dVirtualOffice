@@ -8,11 +8,10 @@ const initialUserData = {
   officeType: '',
   avatar: 'avatar',
   hairStyle: 'hairStyle',
-
+  outfit: 'outfit',
   skinColor: 0xf0ddd7,
   eyeColor: 0x000000,
   hairColor: 0xf1cc8f,
-  outfitStyle: 'outfit1',
 };
 
 export const JoinOrCreateForm = (props) => {
@@ -175,7 +174,26 @@ export const JoinOrCreateForm = (props) => {
           <option value="hairStyle29">29</option>
         </select>
       </div>
-
+      <div>
+        <label htmlFor="outfit">Outfit:</label>
+        <select
+          name="outfit"
+          id="outfit"
+          value={userData.outfit}
+          onChange={handleChange}
+        >
+          <option value="outfit1">1</option>
+          <option value="outfit2">2</option>
+          <option value="outfit3">3</option>
+          <option value="outfit4">4</option>
+          <option value="outfit5">5</option>
+          <option value="outfit6">6</option>
+          <option value="outfit7">7</option>
+          <option value="outfit8">8</option>
+          <option value="outfit9">9</option>
+          <option value="outfit10">10</option>
+        </select>
+      </div>
       <div>
         <label htmlFor="officeType">Office Type</label>
         <input

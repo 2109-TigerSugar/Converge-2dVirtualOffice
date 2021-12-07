@@ -20,7 +20,7 @@ class Employee extends Phaser.GameObjects.Container {
     console.log(this);
 
     // All animation setup!
-    this.list.forEach(sprite => {
+    this.list.forEach((sprite) => {
       if (sprite.type === 'Sprite') {
         const spriteName = sprite.texture.key;
 
@@ -84,7 +84,7 @@ class Employee extends Phaser.GameObjects.Container {
   }
 
   animate(direction) {
-    this.list.forEach(sprite => {
+    this.list.forEach((sprite) => {
       if (sprite.type === 'Sprite') {
         //Left Or Right
         if (direction === 'left' || direction === 'right') {
@@ -100,7 +100,7 @@ class Employee extends Phaser.GameObjects.Container {
 }
 
 function getChildren(scene, employeeInfo) {
-  let { hairStyle, hairColor, skinColor, eyeColor, outfitStyle, name } =
+  let { hairStyle, hairColor, skinColor, eyeColor, outfit, name } =
     employeeInfo;
 
   //body (applying tint to the one spritesheet)
@@ -115,7 +115,7 @@ function getChildren(scene, employeeInfo) {
   hair.setTintFill(hairColor);
 
   //outfit (x number of outfits)
-  const outfit = scene.add.sprite(0, 0, outfitStyle);
+  const outfitStyle = scene.add.sprite(0, 0, outfit);
 
   const userName = scene.add.text(-25, -50, name, {
     font: '16px Courier',
@@ -123,7 +123,7 @@ function getChildren(scene, employeeInfo) {
   });
 
   //return all sprites in children array
-  return [body, eye, hair, outfit, userName];
+  return [body, eye, hair, outfitStyle, userName];
 }
 
 // take in direction

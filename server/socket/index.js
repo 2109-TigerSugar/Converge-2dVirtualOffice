@@ -19,7 +19,7 @@ module.exports = (io) => {
     // socket.broadcast.emit('someoneJoined', socket.id);
 
     socket.on('joinRoom', (userData) => {
-      const { name, roomKey, avatar, officeType, hairStyle } = userData;
+      const { name, roomKey, avatar, officeType, hairStyle, outfit } = userData;
       if (socket.rooms.has(roomKey) || !officeRooms[roomKey]) {
         return;
       }
@@ -34,11 +34,10 @@ module.exports = (io) => {
         name,
         roomKey,
         hairStyle,
+        outfit,
         skinColor: 0xf0ddd7,
         eyeColor: 0x000000,
-
         hairColor: 0xf1cc8f,
-        outfitStyle: 'outfit1',
       };
 
       roomInfo.numEmployees = Object.keys(roomInfo.employees).length;
