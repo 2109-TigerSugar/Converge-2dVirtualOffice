@@ -6,10 +6,10 @@ const initialUserData = {
   name: '',
   roomKey: '',
   officeType: '',
-  hairStyle: 'hairStyle',
-  outfit: 'outfit',
-  skinColor: 'skinColor',
-  hairColor: 'hairColor',
+  hairStyle: 'hairStyle1',
+  outfit: 'outfit1',
+  skinColor: 0xf0ddd7,
+  hairColor: 0xf18fb4,
   eyeColor: 0x000000,
 };
 
