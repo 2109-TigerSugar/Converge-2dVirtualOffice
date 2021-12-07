@@ -3,6 +3,14 @@ font-family: 'Noto Sans', sans-serif;
 font-family: 'Nunito', sans-serif;
 font-family: 'Roboto Condensed', sans-serif;
 font-family: 'Roboto Slab', serif; */
+
+:root {
+  --main-darklg: #72819a;
+  --main-dark: #161d29;
+  --primary-color: #2f80ec;
+  --main-light: #ebebeb;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -11,10 +19,22 @@ body {
 
 .webcam-panel {
   display: flex;
+  position: absolute;
   margin-left: 10vw;
   width: 80vw;
   height: 10vh;
-  background-color: rgb(89, 90, 88);
+  top: 150px;
+  justify-content: center;
+  z-index: 1;
+}
+
+video{
+  border-radius: 10px;
+}
+
+#mygame{
+  margin-top:3rem;
+  z-index: -1;
 }
 
 /* navbar styling */
@@ -220,13 +240,14 @@ form button:hover {
 /*////instructions////*/
 
 /* Popup style */
-.popup-box {
+#popup-box {
   position: fixed;
   background: #00000050;
   width: 100%;
   height: 100vh;
   top: 0;
   left: 0;
+  z-index: 2;
 }
 
 .box {
@@ -262,7 +283,7 @@ form button:hover {
   left: 40%;
 }
 
-.close-icon {
+#close-icon {
   content: 'x';
   cursor: pointer;
   position: fixed;
@@ -424,3 +445,52 @@ form button:hover {
   width: 350px;
   font-size: 30px;
 }
+
+
+/* webcam controller */
+.webcam-controller {
+  padding: 0.5rem;
+  display: flex;
+  background-color: var(--main-darklg);
+  border-radius: 15px;
+}
+
+.controller_buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--primary-color);
+  height: 50px;
+  border-radius: 30px;
+  color: var(--main-light);
+  font-size: 1.2rem;
+  width: 50px;
+  margin: 0 0.5rem;
+  opacity: 0.75;
+}
+
+.controller_buttons:hover {
+  opacity: 1;
+
+/* name display on join */
+.nameJoined {
+  align-items: center;
+  background-color: #143e88;
+  color: white;
+  border-radius: 7px;
+  position: absolute;
+  width: 200px;
+  height: 50px;
+  top: 235px;
+  left: 160px;
+  text-align: center;
+  margin-left: 50%;
+  margin-right: 50%;
+  padding-top: 20px;
+
+}
+
+.background__red {
+  background-color: #e15554;
+}
+

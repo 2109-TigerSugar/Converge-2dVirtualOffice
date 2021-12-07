@@ -98,16 +98,6 @@ export default class MainScene extends Phaser.Scene {
       scene.coworkers.clear(true, true);
     });
 
-    this.socket.on('coworkerLeftRoom', function (arg) {
-      const { coworkerId, numEmployees } = arg;
-      scene.state.numEmployees = numEmployees;
-      scene.coworkers.getChildren().forEach(function (coworker) {
-        if (coworkerId === coworker.employeeId) {
-          coworker.destroy();
-        }
-      });
-    });
-
     // DISCONNECT
     this.socket.on('coworker disconnected', function (arg) {
       const { coworkerId, numEmployees } = arg;
@@ -224,7 +214,7 @@ export default class MainScene extends Phaser.Scene {
           : coworker.employeeId;
 
       const showVideo = document.querySelector(`#${CSS.escape(showId)}`);
-      console.log(showVideo);
+      // console.dir(showVideo);
       if (showVideo) {
         showVideo.style.display = 'inline';
         showVideo.muted = false;
