@@ -36,9 +36,9 @@ module.exports = io => {
 
         skinColor: 0xf0ddd7,
         eyeColor: 0x000000,
-        hairStyle: 'hairstyle1',
+        hairStyle: 'hairStyle10',
         hairColor: 0xf1cc8f,
-        outfitStyle: 'outfit1',
+        outfitStyle: 'outfitStyle5',
       };
 
       roomInfo.numEmployees = Object.keys(roomInfo.employees).length;
@@ -58,23 +58,25 @@ module.exports = io => {
       socket.to(roomKey).emit('newEmployee', {
         employeeInfo: roomInfo.employees[socket.id],
         numEmployees: roomInfo.numEmployees,
+        coworkerName: roomInfo.employees[socket.id].name
       });
     });
 
     // HERE UPDATE THE EMPLOYEES MOVEMENT DATA
     socket.on('employeeMovement', function (data) {
-      const { x, y, roomKey } = data;
+      const { x, y, roomKey, direction } = data;
 
       // only if socket is still in the room
       if (!socket.rooms.has(roomKey) || !officeRooms[roomKey]) return;
 
       officeRooms[roomKey].employees[socket.id].x = x;
       officeRooms[roomKey].employees[socket.id].y = y;
+      officeRooms[roomKey].employees[socket.id].direction = direction;
 
       //emit a message to all employees about the movement of coworker
       socket
         .to(roomKey)
-        .emit('employeeMoved', officeRooms[roomKey].employees[socket.id]);
+        .emit('coworkerMoved', officeRooms[roomKey].employees[socket.id]);
     });
 
     // user leaves room (socket not disconnected)
@@ -102,6 +104,7 @@ module.exports = io => {
         if (officeRooms[roomKey]) {
           // remove that employee from the employee list
           // decrease the numEmployee of that room
+          let name = officeRooms[roomKey].employees[socket.id].name;
           delete officeRooms[roomKey].employees[socket.id];
           officeRooms[roomKey].numEmployees = Object.keys(
             officeRooms[roomKey].employees
@@ -112,6 +115,7 @@ module.exports = io => {
           io.to(roomKey).emit('coworker disconnected', {
             coworkerId: socket.id,
             numEmployees: officeRooms[roomKey].numEmployees,
+            coworkerName: name,
           });
         }
       });

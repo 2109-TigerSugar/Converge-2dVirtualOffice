@@ -8,7 +8,6 @@ export default class MainScene extends Phaser.Scene {
     super('MainScene');
     this.state = {};
     this.overlappingSprites = {};
-
   }
 
   preload() {
@@ -41,7 +40,6 @@ export default class MainScene extends Phaser.Scene {
     this.socket.on('setState', function (state) {
       const { roomKey, employees, numEmployees } = state;
 
-
       scene.physics.world.enable(this);
       // scene.physics.world.setBounds(0, 0, 800, 600);
 
@@ -49,9 +47,7 @@ export default class MainScene extends Phaser.Scene {
       scene.state.roomKey = roomKey;
       scene.state.employees = employees;
       scene.state.numEmployees = numEmployees;
-
     });
-
 
     // SOCKET LISTENER FOR CURRENT EMPLOYEES
     this.socket.on('currentEmployees', function (arg) {
@@ -79,10 +75,11 @@ export default class MainScene extends Phaser.Scene {
     });
 
     // SOCKET LISTENER FOR EMPLOYEE MOVEMENT
-    this.socket.on('employeeMoved', function (employeeInfo) {
+    this.socket.on('coworkerMoved', function (employeeInfo) {
       scene.coworkers.getChildren().forEach(function (coworker) {
         if (employeeInfo.employeeId === coworker.employeeId) {
           coworker.setPosition(employeeInfo.x, employeeInfo.y);
+          coworker.animate(employeeInfo.direction);
         }
       });
     });
@@ -95,13 +92,11 @@ export default class MainScene extends Phaser.Scene {
       });
     });
 
-
     // LEAVE ROOM (not socket disconnection)
-    this.socket.on('leftRoom', function(arg){
+    this.socket.on('leftRoom', function (arg) {
       //remove all coworker avatars
       scene.coworkers.clear(true, true);
-
-    })
+    });
 
     // DISCONNECT
     this.socket.on('coworker disconnected', function (arg) {
@@ -113,7 +108,6 @@ export default class MainScene extends Phaser.Scene {
         }
       });
     });
-
 
     ///////////////////////////////////////////////
     //set movement keys to arrow keys
@@ -161,7 +155,7 @@ export default class MainScene extends Phaser.Scene {
   //have to add a method on mainscene to add an employee --- used it in our create method
 
   addEmployee(scene, employeeInfo) {
-    if(scene.joined) return; //don't add if joined already
+    if (scene.joined) return; //don't add if joined already
     scene.joined = true;
     //the line below adds the sprite to the game map.
     scene.sprite = new Employee(scene, employeeInfo);
@@ -272,20 +266,38 @@ function buildMap(scene) {
 }
 
 function loadSpriteSheets(scene) {
-  scene.load.spritesheet('employeeBody', 'assets/body.png', {
-    frameWidth: 48,
-    frameHeight: 96,
-  });
-  scene.load.spritesheet('hairstyle1', 'assets/hair.png', {
+  scene.load.spritesheet('employeeBody', 'assets/avatars/body.png', {
     frameWidth: 48,
     frameHeight: 96,
   });
 
-  scene.load.spritesheet('outfit1', 'assets/outfit.png', {
-    frameWidth: 48,
-    frameHeight: 96,
-  });
-  scene.load.spritesheet('eye', 'assets/eye.png', {
+  //All hairstyles are named hairstyle# like hairstyle1, hairstyle2, etc
+  const hairstyleCount = 29;
+  for (let i = 1; i <= hairstyleCount; i++) {
+    scene.load.spritesheet(
+      `hairStyle${i}`,
+      `assets/avatars/hairstyles/hairstyle${i}.png`,
+      {
+        frameWidth: 48,
+        frameHeight: 96,
+      }
+    );
+  }
+
+  //All outfits are named outfit# like outfit1, outfit2, etc
+  const outfitCount = 10;
+  for (let i = 1; i <= outfitCount; i++) {
+    scene.load.spritesheet(
+      `outfitStyle${i}`,
+      `assets/avatars/outfits/outfit${i}.png`,
+      {
+        frameWidth: 48,
+        frameHeight: 96,
+      }
+    );
+  }
+
+  scene.load.spritesheet('eye', 'assets/avatars/eye.png', {
     frameWidth: 48,
     frameHeight: 96,
   });

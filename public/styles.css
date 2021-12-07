@@ -446,6 +446,7 @@ form button:hover {
   font-size: 30px;
 }
 
+
 /* webcam controller */
 .webcam-controller {
   padding: 0.5rem;
@@ -470,10 +471,26 @@ form button:hover {
 
 .controller_buttons:hover {
   opacity: 1;
+
+/* name display on join */
+.nameJoined {
+  align-items: center;
+  background-color: #143e88;
+  color: white;
+  border-radius: 7px;
+  position: absolute;
+  width: 200px;
+  height: 50px;
+  top: 235px;
+  left: 160px;
+  text-align: center;
+  margin-left: 50%;
+  margin-right: 50%;
+  padding-top: 20px;
+
 }
-
-
 
 .background__red {
   background-color: #e15554;
 }
+

@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { socket, makePeer } from '../socket';
 import runWebRTC from '../webcam';
 import { hidePanels, showPanels } from '../helperFunctions';
+import NameDisplay from './NameDisplay';
+
 
 const Office = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -96,7 +98,6 @@ const Office = () => {
     } else {
       alert(`Please create or join a room first.`);
     }
-
     // cleanup function
     return () => {
       // when going to another page, hide the webcam panel and phaser game
@@ -197,6 +198,7 @@ const Office = () => {
           handleClose={togglePopup}
         />
       )}
+        <NameDisplay/>
     </div>
   );
 };
