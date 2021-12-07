@@ -8,12 +8,12 @@ const initialUserData = {
   officeType: '',
   hairStyle: 'hairStyle1',
   outfit: 'outfit1',
-  skinColor: 0xf0ddd7,
-  hairColor: 0xf18fb4,
-  eyeColor: 0x000000,
+  skinColor: '#f0ddd7',
+  hairColor: '#000000',
+  eyeColor: '#000000',
 };
 
-export const JoinOrCreateForm = props => {
+export const JoinOrCreateForm = (props) => {
   // to make the form controlled, have a state to keep track of input values
   const [userData, setUserData] = useState(initialUserData);
   const [err, setErr] = useState(''); //if we need to show an error
@@ -24,7 +24,11 @@ export const JoinOrCreateForm = props => {
       // only fetch from localStorage if formType is 'join'
       let storedData = window.localStorage.getItem('userData');
       if (storedData) {
-        setUserData(JSON.parse(storedData));
+        storedData = JSON.parse(storedData);
+        //Wizard stuff
+        storedData.hairColor = '#' + storedData.hairColor.toString(16);
+        storedData.skinColor = '#' + storedData.skinColor.toString(16);
+        setUserData(storedData);
       }
     } else {
       setUserData(initialUserData);
@@ -33,18 +37,18 @@ export const JoinOrCreateForm = props => {
     return () => setUserData(initialUserData);
   }, [props.formType]);
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     setUserData({ ...userData, [event.target.name]: event.target.value });
     setErr('');
   };
 
-  const handleSubmit = event => {
+  const handleSubmit = (event) => {
     event.preventDefault();
 
     // pressing create
     if (props.formType === 'create') {
       socket.emit('isKeyUnique', userData.roomKey);
-      socket.on('roomUniqueCheck', unique => {
+      socket.on('roomUniqueCheck', (unique) => {
         // key is unique so user will join the room
         if (unique) validKey(userData);
         // key is not unique, cannot create room with same key
@@ -58,7 +62,7 @@ export const JoinOrCreateForm = props => {
     // pressing join bottom
     if (props.formType === 'join') {
       socket.emit('doesKeyExist', userData.roomKey);
-      socket.on('roomExistCheck', exists => {
+      socket.on('roomExistCheck', (exists) => {
         // room is created, user can join room
         if (exists) validKey(userData);
         else {
@@ -71,14 +75,22 @@ export const JoinOrCreateForm = props => {
     }
   };
 
-  const validKey = userData => {
+  const validKey = (userData) => {
+    //Correct hair color and skin color
+    if (typeof userData.hairColor !== 'number') {
+      userData.hairColor = Number('0x' + userData.hairColor.slice(1));
+      console.log('Hair in valid: ' + userData.hairColor);
+    }
+
+    if (typeof userData.skinColor !== 'number') {
+      userData.skinColor = Number('0x' + userData.skinColor.slice(1));
+      console.log('Skin in valid: ' + userData.skinColor);
+    }
     // user data is saved on local storage
     window.localStorage.setItem('userData', JSON.stringify(userData));
     // join the office
     navigate('/office');
   };
-
-  const skinColors = [0xf0ddd7, 0xf0ddd7, 0xf0ddd7, 0xf0ddd7, 0xf0ddd7];
 
   return (
     <form onSubmit={handleSubmit}>
@@ -130,35 +142,35 @@ export const JoinOrCreateForm = props => {
           value={userData.hairStyle}
           onChange={handleChange}
         >
-          <option value="hairStyle1">1</option>
-          <option value="hairStyle2">2</option>
-          <option value="hairStyle3">3</option>
-          <option value="hairStyle4">4</option>
-          <option value="hairStyle5">5</option>
-          <option value="hairStyle6">6</option>
-          <option value="hairStyle7">7</option>
-          <option value="hairStyle8">8</option>
-          <option value="hairStyle9">9</option>
-          <option value="hairStyle10">10</option>
+          <option value="hairStyle1">Short - Spiked front bangs</option>
+          {/* <option value="hairStyle2">2</option>
+          <option value="hairStyle3">3</option> */}
+          <option value="hairStyle4">Shoulder length - bangs</option>
+          <option value="hairStyle5">Justin Bieber</option>
+          {/* <option value="hairStyle6">6</option> */}
+          <option value="hairStyle7">medium length - side part</option>
+          <option value="hairStyle8">afro</option>
+          {/* <option value="hairStyle9">9</option> */}
+          {/* <option value="hairStyle10">10</option>
           <option value="hairStyle11">11</option>
           <option value="hairStyle12">12</option>
-          <option value="hairStyle13">13</option>
-          <option value="hairStyle14">14</option>
+          <option value="hairStyle13"></option> */}
+          {/* <option value="hairStyle14">14</option>
           <option value="hairStyle15">15</option>
-          <option value="hairStyle16">16</option>
-          <option value="hairStyle17">17</option>
-          <option value="hairStyle18">18</option>
-          <option value="hairStyle19">19</option>
-          <option value="hairStyle20">20</option>
-          <option value="hairStyle21">21</option>
-          <option value="hairStyle22">22</option>
-          <option value="hairStyle23">23</option>
-          <option value="hairStyle24">24</option>
-          <option value="hairStyle25">25</option>
-          <option value="hairStyle26">26</option>
-          <option value="hairStyle27">27</option>
-          <option value="hairStyle28">28</option>
-          <option value="hairStyle29">29</option>
+          <option value="hairStyle16">16</option> */}
+          <option value="hairStyle17">boufant</option>
+          <option value="hairStyle18">shaggy</option>
+          <option value="hairStyle19">short- polished</option>
+          <option value="hairStyle20">bowl cut</option>
+          {/* <option value="hairStyle21">21</option>
+          <option value="hairStyle22">22</option> */}
+          <option value="hairStyle23">short bob-bangs</option>
+          {/* <option value="hairStyle24">24</option> */}
+          <option value="hairStyle25">short bob - no bangs</option>
+          {/* <option value="hairStyle26">26</option> */}
+          <option value="hairStyle27">long - bangs</option>
+          {/* <option value="hairStyle28">28</option> */}
+          <option value="hairStyle29">short - spiky</option>
         </select>
       </div>
       <div>
@@ -169,47 +181,37 @@ export const JoinOrCreateForm = props => {
           value={userData.outfit}
           onChange={handleChange}
         >
-          <option value="outfit1">1</option>
-          <option value="outfit2">2</option>
-          <option value="outfit3">3</option>
-          <option value="outfit4">4</option>
-          <option value="outfit5">5</option>
-          <option value="outfit6">6</option>
-          <option value="outfit7">7</option>
-          <option value="outfit8">8</option>
-          <option value="outfit9">9</option>
-          <option value="outfit10">10</option>
+          <option value="outfit1">aqua shirt/white pants</option>
+          <option value="outfit2">grey sweater/white pants</option>
+          <option value="outfit3">business suit</option>
+          <option value="outfit4">tan jacket/jeans</option>
+          <option value="outfit5">white shirt/yellow pants</option>
+          <option value="outfit6">white hoodie/green pants</option>
+          <option value="outfit7">red blazer/brown pants</option>
+          <option value="outfit8">green onesie</option>
+          <option value="outfit9">grey suit</option>
+          <option value="outfit10">white dress</option>
         </select>
       </div>
       <div>
-        <label htmlFor="skinColor">Skin Color:</label>
-        <select
-          name="skinColor"
+        <input
+          type="color"
           id="skinColor"
+          name="skinColor"
           value={userData.skinColor}
           onChange={handleChange}
-        >
-          <option value="0xf0ddd7">1</option>
-          <option value="0x8d5524">2</option>
-          <option value="0xc68642">3</option>
-          <option value="0xe0ac69">4</option>
-          <option value="0xf1c27d">5</option>
-        </select>
+        />
+        <label htmlFor="skinColor">Skin Color</label>
       </div>
       <div>
-        <label htmlFor="hairColor">Hair Color:</label>
-        <select
-          name="hairColor"
+        <input
+          type="color"
           id="hairColor"
+          name="hairColor"
           value={userData.hairColor}
           onChange={handleChange}
-        >
-          <option value="0xf1cc8f">blonde</option>
-          <option value="0x8fe5f1">blue</option>
-          <option value="0xf18fb4">pink</option>
-          <option value="0x8d5524">brown</option>
-          <option value="0xffa500">orange</option>
-        </select>
+        />
+        <label htmlFor="hairColor">Hair Color</label>
       </div>
 
       <div>
