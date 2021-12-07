@@ -3,12 +3,13 @@ import Popup from './Popup';
 import { Link } from 'react-router-dom';
 import { socket } from '../socket';
 import runWebRTC from '../webcam';
+import NameDisplay from './NameDisplay';
+
 
 const Office = () => {
   console.log(socket);
 
   const [isOpen, setIsOpen] = useState(false);
-
   const togglePopup = () => {
     setIsOpen(!isOpen);
   };
@@ -43,7 +44,6 @@ const Office = () => {
     } else {
       alert(`Please create or join a room first.`);
     }
-
     // cleanup function
     return () => {
       // when going to another page, hide the webcam panel and phaser game
@@ -101,6 +101,7 @@ const Office = () => {
           handleClose={togglePopup}
         />
       )}
+        <NameDisplay/>
     </div>
   );
 };

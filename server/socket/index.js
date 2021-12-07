@@ -58,6 +58,7 @@ module.exports = io => {
       socket.to(roomKey).emit('newEmployee', {
         employeeInfo: roomInfo.employees[socket.id],
         numEmployees: roomInfo.numEmployees,
+        coworkerName: roomInfo.employees[socket.id].name
       });
     });
 
@@ -103,6 +104,7 @@ module.exports = io => {
         if (officeRooms[roomKey]) {
           // remove that employee from the employee list
           // decrease the numEmployee of that room
+          let name = officeRooms[roomKey].employees[socket.id].name;
           delete officeRooms[roomKey].employees[socket.id];
           officeRooms[roomKey].numEmployees = Object.keys(
             officeRooms[roomKey].employees
@@ -113,6 +115,7 @@ module.exports = io => {
           io.to(roomKey).emit('coworker disconnected', {
             coworkerId: socket.id,
             numEmployees: officeRooms[roomKey].numEmployees,
+            coworkerName: name,
           });
         }
       });
