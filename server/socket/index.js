@@ -36,7 +36,7 @@ module.exports = (io) => {
 
       roomInfo.employees[socket.id] = {
         rotation: 0,
-        x: 3400,
+        x: 4000,
         y: 3600,
         employeeId: socket.id,
         name,

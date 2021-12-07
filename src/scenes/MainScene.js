@@ -13,10 +13,10 @@ export default class MainScene extends Phaser.Scene {
   preload() {
     //PNG of Tilemap (The image of the tilemap that you used to build the map in Tiled application)
     //passed into this.load.image(phaserKey, pathToFile)
-    const TILEMAP_PNG = 'assets/potential.png';
+    const TILEMAP_PNG = 'assets/map.png';
     ///JSON file of exported Tilemap from Tiled
     //passed into this.load.tilemapTiledJSON(phaserKey, pathToFile)
-    const TILEMAP_JSON = 'assets/potential.json';
+    const TILEMAP_JSON = 'assets/map.json';
     this.load.image('office', TILEMAP_PNG);
     this.load.tilemapTiledJSON('map', TILEMAP_JSON);
 
@@ -264,7 +264,7 @@ function buildMap(scene) {
   const map = scene.make.tilemap({ key: 'map' });
   //Add image of tileset using map.addTileSetImage(tilesetName, phaserKey)
   //Note: The tilesetName can be found in the JSON file exported from Tiled (likely in our assets folder)
-  const tileset = map.addTilesetImage('potential', 'office', 48, 48);
+  const tileset = map.addTilesetImage('map', 'office', 48, 48);
 
   //Below we create each layer just as they were created in tiled. By default tiled names layers things like "Tile Layer 1", but we can change this in Tiled!
   //map.createStaticLayer(layerNameFromTiled, tileset, x, y)
