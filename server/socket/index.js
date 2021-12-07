@@ -22,7 +22,6 @@ module.exports = (io) => {
       const {
         name,
         roomKey,
-        avatar,
         officeType,
         hairStyle,
         outfit,
@@ -40,7 +39,6 @@ module.exports = (io) => {
         x: 3400,
         y: 3600,
         employeeId: socket.id,
-        avatar,
         name,
         roomKey,
         hairStyle,

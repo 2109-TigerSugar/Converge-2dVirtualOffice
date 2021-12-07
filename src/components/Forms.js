@@ -6,7 +6,6 @@ const initialUserData = {
   name: '',
   roomKey: '',
   officeType: '',
-  avatar: 'avatar',
   hairStyle: 'hairStyle',
   outfit: 'outfit',
   skinColor: 'skinColor',
@@ -124,18 +123,6 @@ export const JoinOrCreateForm = (props) => {
           value={userData.roomKey}
           onChange={handleChange}
         />
-      </div>
-      <div>
-        <label htmlFor="avatar">Avatar:</label>
-        <select
-          name="avatar"
-          id="avatar"
-          value={userData.avatar}
-          onChange={handleChange}
-        >
-          <option value="avatar">avatar1</option>
-          <option value="sprite2">avatar2</option>
-        </select>
       </div>
       <div>
         <label htmlFor="hairStyle">Hair Style:</label>
