@@ -8,9 +8,9 @@ const initialUserData = {
   officeType: '',
   hairStyle: 'hairStyle1',
   outfit: 'outfit1',
-  skinColor: 0xf0ddd7,
-  hairColor: 0xf18fb4,
-  eyeColor: 0x000000,
+  skinColor: '#f0ddd7',
+  hairColor: '#000000',
+  eyeColor: '#000000',
 };
 
 export const JoinOrCreateForm = props => {
@@ -24,7 +24,9 @@ export const JoinOrCreateForm = props => {
       // only fetch from localStorage if formType is 'join'
       let storedData = window.localStorage.getItem('userData');
       if (storedData) {
-        setUserData(JSON.parse(storedData));
+        storedData = JSON.parse(storedData);
+        storedData.hairColor = '#' + storedData.hairColor.toString(16);
+        setUserData(storedData);
       }
     } else {
       setUserData(initialUserData);
@@ -72,6 +74,9 @@ export const JoinOrCreateForm = props => {
   };
 
   const validKey = userData => {
+    //Correct hair color and skin color
+    userData.hairColor = Number('0x' + userData.hairColor.slice(1));
+
     // user data is saved on local storage
     window.localStorage.setItem('userData', JSON.stringify(userData));
     // join the office
@@ -197,19 +202,14 @@ export const JoinOrCreateForm = props => {
         </select>
       </div>
       <div>
-        <label htmlFor="hairColor">Hair Color:</label>
-        <select
-          name="hairColor"
+        <input
+          type="color"
           id="hairColor"
+          name="hairColor"
           value={userData.hairColor}
           onChange={handleChange}
-        >
-          <option value="0xf1cc8f">blonde</option>
-          <option value="0x8fe5f1">blue</option>
-          <option value="0xf18fb4">pink</option>
-          <option value="0x8d5524">brown</option>
-          <option value="0xffa500">orange</option>
-        </select>
+        />
+        <label htmlFor="hairColor">Hair Color</label>
       </div>
 
       <div>
