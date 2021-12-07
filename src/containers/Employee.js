@@ -17,7 +17,6 @@ class Employee extends Phaser.GameObjects.Container {
     this.employeeId = employeeInfo.employeeId;
     this.roomKey = employeeInfo.roomKey;
 
-    console.log(this);
 
     // All animation setup!
     this.list.forEach(sprite => {
@@ -56,7 +55,6 @@ class Employee extends Phaser.GameObjects.Container {
     });
 
     scene.add.existing(this); // will add our container to our scene
-    console.log(this);
   }
 
   left() {

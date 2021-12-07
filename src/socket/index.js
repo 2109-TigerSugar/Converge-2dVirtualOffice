@@ -32,7 +32,6 @@ export const makePeer = (socketId) => {
       sdpSemantics: 'unified-plan',
     },
   });
-  console.log('peer made')
 
   peer.on('open', id => {
     console.log('My peer ID is: ' + id);

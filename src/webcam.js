@@ -46,7 +46,6 @@ const runWebRTC = async (socket, peer) => {
   // });
 
   // const peer = window.peer;
-  console.log('peer in webcam.js',peer)
 
   //Answer calls :)
   peer.on('call', call => {
@@ -55,7 +54,6 @@ const runWebRTC = async (socket, peer) => {
 
     //Got called and answered so build webcam panel
     call.on('stream', remoteStream => {
-      console.log('stream after call.answer ');
       if (callList[call.peer] === undefined) {
         addVideo(remoteStream, true, call.peer);
         callList[call.peer] = true;
@@ -66,15 +64,14 @@ const runWebRTC = async (socket, peer) => {
   //Call new user when they join
   socket.on('newEmployee', ({ employeeInfo }) => {
     const socketId = employeeInfo.employeeId;
-    console.log('peer', peer)
-    console.log('socketid coworker', socketId)
-    console.log('stream', stream)
+    // console.log('peer', peer)
+    // console.log('socketid coworker', socketId)
+    // console.log('stream', stream)
     const call = peer.call(socketId, stream);
     console.log('Call just happened', call);
 
     //Other end answered call so build webcam panel
     call.on('stream', remoteStream => {
-      console.log('stream after peer.call ');
       if (callList[socketId] === undefined) {
         addVideo(remoteStream, true, socketId);
         callList[socketId] = true;
@@ -85,6 +82,7 @@ const runWebRTC = async (socket, peer) => {
   socket.on('coworker disconnected', ({ coworkerId: socketId }) => {
     let videoToRemove = document.querySelectorAll(`#${CSS.escape(socketId)}`);
     videoToRemove.forEach(video => video.remove());
+    delete callList[socketId];
   });
 
   function addVideo(stream, hide, socketId) {
