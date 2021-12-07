@@ -28,6 +28,7 @@ module.exports = (io) => {
         skinColor,
         hairColor,
       } = userData;
+      console.log(userData)
       if (socket.rooms.has(roomKey) || !officeRooms[roomKey]) {
         return;
       }
@@ -36,8 +37,8 @@ module.exports = (io) => {
 
       roomInfo.employees[socket.id] = {
         rotation: 0,
-        x: 4000,
-        y: 3600,
+        x: 6300,
+        y: 4500,
         employeeId: socket.id,
         name,
         roomKey,
@@ -65,7 +66,7 @@ module.exports = (io) => {
       socket.to(roomKey).emit('newEmployee', {
         employeeInfo: roomInfo.employees[socket.id],
         numEmployees: roomInfo.numEmployees,
-        coworkerName: roomInfo.employees[socket.id].name
+        coworkerName: roomInfo.employees[socket.id].name,
       });
     });
 
