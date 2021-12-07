@@ -1,8 +1,8 @@
 import React from 'react';
+import { hidePanels } from '../helperFunctions';
 
 const About = () => {
-  document.getElementById('mygame').style.display = 'none';
-  document.querySelector('.webcam-panel').style.display = 'none';
+  hidePanels();
   return (
     <div className="about">
       <span>

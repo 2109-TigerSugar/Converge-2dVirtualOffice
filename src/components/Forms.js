@@ -2,15 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { socket } from '../socket';
 
-
 const initialUserData = {
   name: '',
   roomKey: '',
   officeType: '',
   avatar: 'avatar',
-}
+};
 
-export const JoinOrCreateForm = (props) => {
+export const JoinOrCreateForm = props => {
   // to make the form controlled, have a state to keep track of input values
   const [userData, setUserData] = useState(initialUserData);
   const [err, setErr] = useState(''); //if we need to show an error
@@ -30,18 +29,18 @@ export const JoinOrCreateForm = (props) => {
     return () => setUserData(initialUserData);
   }, [props.formType]);
 
-  const handleChange = (event) => {
+  const handleChange = event => {
     setUserData({ ...userData, [event.target.name]: event.target.value });
     setErr('');
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = event => {
     event.preventDefault();
 
     // pressing create
     if (props.formType === 'create') {
       socket.emit('isKeyUnique', userData.roomKey);
-      socket.on('roomUniqueCheck', (unique) => {
+      socket.on('roomUniqueCheck', unique => {
         // key is unique so user will join the room
         if (unique) validKey(userData);
         // key is not unique, cannot create room with same key
@@ -55,7 +54,7 @@ export const JoinOrCreateForm = (props) => {
     // pressing join bottom
     if (props.formType === 'join') {
       socket.emit('doesKeyExist', userData.roomKey);
-      socket.on('roomExistCheck', (exists) => {
+      socket.on('roomExistCheck', exists => {
         // room is created, user can join room
         if (exists) validKey(userData);
         else {
@@ -68,12 +67,10 @@ export const JoinOrCreateForm = (props) => {
     }
   };
 
-  const validKey = (userData) => {
+  const validKey = userData => {
     // user data is saved on local storage
     window.localStorage.setItem('userData', JSON.stringify(userData));
-
     // join the office
-
     navigate('/office');
   };
 
@@ -120,11 +117,16 @@ export const JoinOrCreateForm = (props) => {
         />
       </div>
       <div>
-      <label htmlFor="avatar">Avatar:</label>
-      <select name="avatar" id="avatar" value={userData.avatar} onChange={handleChange}>
-        <option value="avatar">avatar1</option>
-        <option value="sprite2">avatar2</option>
-      </select>
+        <label htmlFor="avatar">Avatar:</label>
+        <select
+          name="avatar"
+          id="avatar"
+          value={userData.avatar}
+          onChange={handleChange}
+        >
+          <option value="avatar">avatar1</option>
+          <option value="sprite2">avatar2</option>
+        </select>
       </div>
       <div>
         <label htmlFor="officeType">Office Type</label>
@@ -137,7 +139,7 @@ export const JoinOrCreateForm = (props) => {
         />
       </div>
       <button type="submit" disabled={!userData.name || !userData.roomKey}>
-      {props.formType}
+        {props.formType}
       </button>
       {/* Error div that wil show if err (state) is not an empty string */}
       {err && <p style={{ color: 'red' }}>{err}</p>}

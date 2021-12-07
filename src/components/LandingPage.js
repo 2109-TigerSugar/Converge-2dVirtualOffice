@@ -1,12 +1,11 @@
 import React, {useState} from 'react';
+import { hidePanels } from '../helperFunctions';
 import { JoinOrCreateForm } from './Forms';
 
 const LandingPage = () => {
   const [formType, setFormType] = useState('')
   const [isActive, setActive] = useState('false');
-  document.getElementById('mygame').style.display = 'none';
-  document.querySelector('.webcam-panel').style.display = 'none';
-
+  hidePanels();
   const handleClick = (e) => {
     let chosen = e.target.id;
     (formType !== chosen) ? setFormType(chosen) : setFormType('');

@@ -55,7 +55,6 @@ class Employee extends Phaser.GameObjects.Container {
     });
 
     scene.add.existing(this); // will add our container to our scene
-    console.log(this);
   }
 
   left() {

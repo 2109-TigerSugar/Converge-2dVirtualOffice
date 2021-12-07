@@ -1,17 +1,68 @@
 import React, { useEffect, useState } from 'react';
 import Popup from './Popup';
 import { Link } from 'react-router-dom';
-import { socket } from '../socket';
+import { socket, makePeer } from '../socket';
 import runWebRTC from '../webcam';
+import { hidePanels, showPanels } from '../helperFunctions';
 import NameDisplay from './NameDisplay';
 
 
 const Office = () => {
-  console.log(socket);
-
   const [isOpen, setIsOpen] = useState(false);
-  const togglePopup = () => {
-    setIsOpen(!isOpen);
+  const [mapOpen, setMapOpen] = useState(false);
+  let userData = JSON.parse(window.localStorage.getItem('userData'));
+
+  const toggleVideo = () => {
+    const stopVideo = document.querySelector('#stopVideo');
+    const myStream = window.myStream;
+    const enabled = myStream.getVideoTracks()[0].enabled;
+    let newHTML;
+    if (enabled) {
+      myStream.getVideoTracks()[0].enabled = false;
+      newHTML = `<i class="fas fa-video-slash"></i>`;
+      stopVideo.classList.toggle('background__red');
+      stopVideo.innerHTML = newHTML;
+    } else {
+      myStream.getVideoTracks()[0].enabled = true;
+      newHTML = `<i class="fas fa-video"></i>`;
+      stopVideo.classList.toggle('background__red');
+      stopVideo.innerHTML = newHTML;
+    }
+  };
+  const toggleMute = () => {
+    const muteButton = document.querySelector('#muteButton');
+    const myStream = window.myStream;
+    const enabled = myStream.getAudioTracks()[0].enabled;
+    let newHTML;
+    if (enabled) {
+      myStream.getAudioTracks()[0].enabled = false;
+      newHTML = `<i class="fas fa-microphone-slash"></i>`;
+      muteButton.classList.toggle('background__red');
+      muteButton.innerHTML = newHTML;
+    } else {
+      myStream.getAudioTracks()[0].enabled = true;
+      newHTML = `<i class="fas fa-microphone"></i>`;
+      muteButton.classList.toggle('background__red');
+      muteButton.innerHTML = newHTML;
+    }
+  };
+
+  const togglePopup = event => {
+    let id = event.target.id;
+    switch (id) {
+      case 'how-to':
+        setIsOpen(true);
+        break;
+      case 'map':
+        setMapOpen(true);
+        break;
+      case 'close-icon':
+        setIsOpen(false);
+        setMapOpen(false);
+        break;
+      default:
+        break;
+    }
   };
 
   useEffect(() => {
@@ -20,19 +71,22 @@ const Office = () => {
       window.game.scene.wake('MainScene');
 
     // will show video panel and game panel
-    const userData = JSON.parse(window.localStorage.getItem('userData'));
-    document.getElementById('mygame').style.display = 'block';
-    document.querySelector('.webcam-panel').style.display = 'flex';
+    userData = JSON.parse(window.localStorage.getItem('userData'));
+
+    showPanels();
 
     //starts peerjs code for video
     (async () => {
-      if (window.peer) window.peer.reconnect();
-      else await runWebRTC(socket);
+      if (!window.peer) {
+        console.log('need to make peer')
+        window.peer = await makePeer(socket.id);
+      }
+      await runWebRTC(socket, window.peer);
     })();
     // when the user refreshes the page, make them join the room again if key exists
     if (userData && userData.roomKey) {
       socket.emit('doesKeyExist', userData.roomKey);
-      socket.on('roomExistCheck', (exists) => {
+      socket.on('roomExistCheck', exists => {
         if (exists) {
           socket.emit('joinRoom', userData); //
         } else {
@@ -47,22 +101,45 @@ const Office = () => {
     // cleanup function
     return () => {
       // when going to another page, hide the webcam panel and phaser game
-      document.getElementById('mygame').style.display = 'none';
-      document.querySelector('.webcam-panel').style.display = 'none';
+      hidePanels();
 
       window.game.scene.sleep('MainScene');
 
       // should disconnect peerJS so others can't see you anymore
-      if (window.peer) window.peer.disconnect();
+      // if (window.peer) window.peer.disconnect();
+      if (window.peer) {
+        window.peer.destroy();
+        window.peer = undefined;
+      }
+
+      let allWebCams = document.querySelectorAll(`video`);
+      if (allWebCams) allWebCams.forEach(video => video.remove());
 
       // leave the room when going office page unmounts
       socket.emit('leaveRoom', userData.roomKey);
     };
-  });
+  }, []);
 
   return (
     <div>
       <div id="header">
+        <div className="webcam-controller" style={{ display: 'none' }}>
+          <p>{userData.name}</p>
+          <div
+            id="stopVideo"
+            className="controller_buttons"
+            onClick={toggleVideo}
+          >
+            <i className="fa fa-video-camera"></i>
+          </div>
+          <div
+            id="muteButton"
+            className="controller_buttons"
+            onClick={toggleMute}
+          >
+            <i className="fa fa-microphone"></i>
+          </div>
+        </div>
         <div id="nav">
           <ul>
             <li className="button-two">
@@ -70,11 +147,18 @@ const Office = () => {
             </li>
 
             <li className="button-three">
-              <a onClick={togglePopup}> How To Play </a>
+              <a id="how-to" onClick={togglePopup}>
+                {' '}
+                How To Play{' '}
+              </a>
             </li>
 
             <li className="button-four">
-              <a href="assets/potentialcropped.png">Map</a>
+              <a id="map" onClick={togglePopup}>
+                {' '}
+                Map{' '}
+              </a>
+              {/* <a href="assets/potentialcropped.png">Map</a> */}
             </li>
           </ul>
         </div>
@@ -96,6 +180,19 @@ const Office = () => {
                   <img className="coworkers" src="assets/coworkers.png" />
                 </div>
               </div>
+            </>
+          }
+          handleClose={togglePopup}
+        />
+      )}
+      {mapOpen && (
+        <Popup
+          content={
+            <>
+              <img
+                src="assets/potentialcropped.png"
+                style={{ width: '100%' }}
+              ></img>
             </>
           }
           handleClose={togglePopup}
