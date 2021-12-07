@@ -28,6 +28,7 @@ module.exports = (io) => {
         skinColor,
         hairColor,
       } = userData;
+      console.log(userData)
       if (socket.rooms.has(roomKey) || !officeRooms[roomKey]) {
         return;
       }
