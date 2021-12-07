@@ -1,15 +1,15 @@
-const path = require("path");
-const express = require("express");
-const morgan = require("morgan");
+const path = require('path');
+const express = require('express');
+const morgan = require('morgan');
 const PORT = process.env.PORT || 8080;
 const app = express();
-const compression = require("compression");
-const socketio = require("socket.io");
+const compression = require('compression');
+const socketio = require('socket.io');
 module.exports = app;
 
 const createApp = () => {
   // logging middleware
-  app.use(morgan("dev"));
+  app.use(morgan('dev'));
 
   // body parsing middleware
   app.use(express.json());
@@ -17,12 +17,34 @@ const createApp = () => {
 
   app.use(compression());
 
+  //HTTPS Redirects
+  app.use((req, res, next) => {
+    //Redirect to https if not development environment
+    if (process.env.NODE_ENV !== 'development') {
+      //Redirect heroku default domain to our custom domain
+      if (req.headers.host === 'con-verge.herokuapp.com') {
+        return res.redirect(301, 'https://www.converge-app.com');
+      }
+
+      //Otherwise if we need HTTPS then redirect to HTTPS
+      if (req.headers['x-forwarded-proto'] !== 'https') {
+        return res.redirect('https://' + req.headers.host + req.url);
+        //Redirect not needed
+      } else {
+        return next();
+      }
+      //Development mode so just next()
+    } else {
+      return next();
+    }
+  });
+
   // static file-serving middleware
-  app.use(express.static(path.join(__dirname, "..", "public")));
+  app.use(express.static(path.join(__dirname, '..', 'public')));
 
   // any remaining requests with an extension (.js, .css, etc.) send 404
   app.use((req, res, next) => {
-    if (req.originalUrl && req.originalUrl.split("/").pop() === "favicon.ico") {
+    if (req.originalUrl && req.originalUrl.split('/').pop() === 'favicon.ico') {
       return res.sendStatus(204);
     }
 
@@ -30,15 +52,15 @@ const createApp = () => {
   });
 
   // sends index.html
-  app.use("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "..", "public/index.html"));
+  app.use('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'public/index.html'));
   });
 
   // error handling endware
   app.use((err, req, res, next) => {
     console.error(err);
     console.error(err.stack);
-    res.status(err.status || 500).send(err.message || "Internal server error.");
+    res.status(err.status || 500).send(err.message || 'Internal server error.');
   });
 };
 
@@ -48,7 +70,7 @@ const startListening = () => {
     console.log(`Mixing it up on port ${PORT}`)
   );
   const io = socketio(server);
-  require("./socket")(io);
+  require('./socket')(io);
 };
 
 async function bootApp() {

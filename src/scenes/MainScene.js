@@ -298,7 +298,7 @@ function loadSpriteSheets(scene) {
   const outfitCount = 10;
   for (let i = 1; i <= outfitCount; i++) {
     scene.load.spritesheet(
-      `outfit${i}`,
+      `outfitStyle${i}`,
       `assets/avatars/outfits/outfit${i}.png`,
       {
         frameWidth: 48,

@@ -17,7 +17,6 @@ class Employee extends Phaser.GameObjects.Container {
     this.employeeId = employeeInfo.employeeId;
     this.roomKey = employeeInfo.roomKey;
 
-    console.log(this);
 
     // All animation setup!
     this.list.forEach((sprite) => {
