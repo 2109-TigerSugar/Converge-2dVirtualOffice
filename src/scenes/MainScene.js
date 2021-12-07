@@ -230,10 +230,12 @@ export default class MainScene extends Phaser.Scene {
           : coworker.employeeId;
 
       const showVideo = document.querySelector(`#${CSS.escape(showId)}`);
-      console.log(showVideo);
+      // console.dir(showVideo);
       if (showVideo) {
         showVideo.style.display = 'inline';
         showVideo.muted = false;
+        // showVideo.srcObject.getAudioTracks()[0].enabled = true;
+        console.dir(showVideo);
       }
     }
   }
@@ -259,6 +261,8 @@ export default class MainScene extends Phaser.Scene {
         if (hideVideo) {
           hideVideo.style.display = 'none';
           hideVideo.muted = true;
+          // hideVideo.srcObject.getAudioTracks()[0].enabled = false;
+          console.dir(hideVideo);
         }
       }
     });

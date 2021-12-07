@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Popup from './Popup';
 import { Link } from 'react-router-dom';
-import { socket } from '../socket';
+import { socket, makePeer } from '../socket';
 import runWebRTC from '../webcam';
 
 const Office = () => {
@@ -75,10 +75,11 @@ const Office = () => {
 
     //starts peerjs code for video
     (async () => {
-      if (window.peer) {
-        window.peer.reconnect();
-        document.querySelector('.webcam-controller').style.display = 'flex';
-      } else await runWebRTC(socket);
+      if (!window.peer) {
+        console.log('need to make peer')
+        window.peer = await makePeer(socket.id);
+      }
+      await runWebRTC(socket, window.peer);
     })();
     // when the user refreshes the page, make them join the room again if key exists
     if (userData && userData.roomKey) {
@@ -99,13 +100,20 @@ const Office = () => {
     // cleanup function
     return () => {
       // when going to another page, hide the webcam panel and phaser game
-      document.getElementById('mygame').style.display = 'none';
-      document.querySelector('.webcam-panel').style.display = 'none';
+      // document.getElementById('mygame').style.display = 'none';
+      // document.querySelector('.webcam-panel').style.display = 'none';
 
       window.game.scene.sleep('MainScene');
 
       // should disconnect peerJS so others can't see you anymore
-      if (window.peer) window.peer.disconnect();
+      // if (window.peer) window.peer.disconnect();
+      if (window.peer) {
+        window.peer.destroy();
+        window.peer = undefined;
+      }
+
+      let allWebCams = document.querySelectorAll(`video`);
+      if (allWebCams) allWebCams.forEach(video => video.remove());
 
       // leave the room when going office page unmounts
       socket.emit('leaveRoom', userData.roomKey);
@@ -181,7 +189,10 @@ const Office = () => {
         <Popup
           content={
             <>
-              <img src="assets/potentialcropped.png" style={{width: '100%'}}></img>
+              <img
+                src="assets/potentialcropped.png"
+                style={{ width: '100%' }}
+              ></img>
             </>
           }
           handleClose={togglePopup}

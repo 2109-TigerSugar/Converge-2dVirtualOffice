@@ -4,8 +4,8 @@ import { JoinOrCreateForm } from './Forms';
 const LandingPage = () => {
   const [formType, setFormType] = useState('')
   const [isActive, setActive] = useState('false');
-  document.getElementById('mygame').style.display = 'none';
-  document.querySelector('.webcam-panel').style.display = 'none';
+  // document.getElementById('mygame').style.display = 'none';
+  // document.querySelector('.webcam-panel').style.display = 'none';
 
   const handleClick = (e) => {
     let chosen = e.target.id;

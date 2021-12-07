@@ -1,6 +1,5 @@
-import Peer from 'peerjs';
 
-const runWebRTC = async socket => {
+const runWebRTC = async (socket, peer) => {
   const webcamPanel = document.querySelector('.webcam-panel');
   const webcamController = document.querySelector('.webcam-controller');
 
@@ -16,32 +15,38 @@ const runWebRTC = async socket => {
     audio: true,
   });
 
+  // attach stream to window so we can use in Office.js
+  window.myStream = stream;
+
   //Build our webcam
   addVideo(stream, false, socket.id);
 
   // show the controller my stream is loaded
   webcamController.style.display = 'flex';
-  window.myStream = stream;
+
 
   //Dakota: Setup new peer object! Yay!
-  const peer = new Peer(socket.id, {
-    config: {
-      iceServers: [
-        { urls: 'stun:stun.l.google.com:19302' },
-        {
-          url: 'turn:numb.viagenie.ca',
-          credential: 'muazkh',
-          username: 'webrtc@live.com',
-        },
-      ],
-      sdpSemantics: 'unified-plan',
-    },
-  });
+  // const peer = new Peer(socket.id, {
+  //   config: {
+  //     iceServers: [
+  //       { urls: 'stun:stun.l.google.com:19302' },
+  //       {
+  //         url: 'turn:numb.viagenie.ca',
+  //         credential: 'muazkh',
+  //         username: 'webrtc@live.com',
+  //       },
+  //     ],
+  //     sdpSemantics: 'unified-plan',
+  //   },
+  // });
 
-  peer.on('open', id => {
-    console.log('My peer ID is: ' + id);
-    window.peer = peer;
-  });
+  // peer.on('open', id => {
+  //   console.log('My peer ID is: ' + id);
+  //   window.peer = peer;
+  // });
+
+  // const peer = window.peer;
+  console.log('peer in webcam.js',peer)
 
   //Answer calls :)
   peer.on('call', call => {
@@ -61,8 +66,11 @@ const runWebRTC = async socket => {
   //Call new user when they join
   socket.on('newEmployee', ({ employeeInfo }) => {
     const socketId = employeeInfo.employeeId;
+    console.log('peer', peer)
+    console.log('socketid coworker', socketId)
+    console.log('stream', stream)
     const call = peer.call(socketId, stream);
-    console.log('Call just happened');
+    console.log('Call just happened', call);
 
     //Other end answered call so build webcam panel
     call.on('stream', remoteStream => {
@@ -88,7 +96,10 @@ const runWebRTC = async socket => {
     videoElement.srcObject = stream;
     videoElement.setAttribute('id', socketId);
     videoElement.muted = true;
+    // videoElement.srcObject.getAudioTracks()[0].enabled = false;
     videoElement.style.display = hide ? 'none' : 'inline';
+    if (hide) console.log('coworker stream created', stream)
+    else console.log('my stream created', stream);
   }
 };
 

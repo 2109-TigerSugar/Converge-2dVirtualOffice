@@ -3,6 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/App';
 import config from './config/config';
+import { socket } from './socket';
 import MainScene from './scenes/MainScene';
 
 //Create socket to import elsewhere instead of attaching to window
