@@ -26,8 +26,15 @@ const NameDisplay = () => {
              setNames(names.slice(1))
           }, 5000);
           return () => clearTimeout(timer);
-  },);
+  },[]);
 
+  useEffect(() => {
+
+    const timer = setTimeout(() => {
+             setNames(names.slice(1))
+          }, 5000);
+          return () => clearTimeout(timer);
+  },[names.length]);
 
 
   return(
