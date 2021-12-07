@@ -438,9 +438,8 @@ form button:hover {
   text-align: center;
   margin-left: 50%;
   margin-right: 50%;
+  padding-top: 20px;
 }
 
-.noNameJoined {
-  display:none;
-}
+
 

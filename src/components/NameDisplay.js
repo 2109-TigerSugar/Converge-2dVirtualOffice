@@ -1,22 +1,13 @@
 import React, { useEffect, useState } from 'react';
-
 import { socket } from '../socket';
 
-// const initialState = [{
-//   employeeid: null,
-//   name:''
-// }]
 
 const NameDisplay = () => {
   console.log(socket);
 
 
   const [names, setNames] = useState([]);
-  const [isActive, setActive] = useState(true);
 
-  // const clearState = () => {
-  //   setNames([...initialState])
-  //    }
 
   useEffect(() => {
 
@@ -41,11 +32,9 @@ const NameDisplay = () => {
 
   return(
     <div>
-      <div className={isActive ? "nameJoined" : "noNameJoined"}>
        {names.map((name, index) => {
-         return <div key={index}>{name}</div>
+         return <div className= 'nameJoined' key={index}>{name}</div>
        })}
-      </div>
     </div>
 
   )
