@@ -28,12 +28,12 @@ body {
   z-index: 1;
 }
 
-video{
+video {
   border-radius: 10px;
 }
 
-#mygame{
-  margin-top:3rem;
+#mygame {
+  margin-top: 3rem;
   z-index: -1;
 }
 
@@ -445,7 +445,6 @@ form button:hover {
   width: 350px;
   font-size: 30px;
 }
-
 
 /* webcam controller */
 .webcam-controller {
