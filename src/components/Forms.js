@@ -25,7 +25,9 @@ export const JoinOrCreateForm = props => {
       let storedData = window.localStorage.getItem('userData');
       if (storedData) {
         storedData = JSON.parse(storedData);
+        //Wizard stuff
         storedData.hairColor = '#' + storedData.hairColor.toString(16);
+        storedData.skinColor = '#' + storedData.skinColor.toString(16);
         setUserData(storedData);
       }
     } else {
@@ -75,15 +77,20 @@ export const JoinOrCreateForm = props => {
 
   const validKey = userData => {
     //Correct hair color and skin color
-    userData.hairColor = Number('0x' + userData.hairColor.slice(1));
+    if (typeof userData.hairColor !== 'number') {
+      userData.hairColor = Number('0x' + userData.hairColor.slice(1));
+      console.log('Hair in valid: ' + userData.hairColor);
+    }
 
+    if (typeof userData.skinColor !== 'number') {
+      userData.skinColor = Number('0x' + userData.skinColor.slice(1));
+      console.log('Skin in valid: ' + userData.skinColor);
+    }
     // user data is saved on local storage
     window.localStorage.setItem('userData', JSON.stringify(userData));
     // join the office
     navigate('/office');
   };
-
-  const skinColors = [0xf0ddd7, 0xf0ddd7, 0xf0ddd7, 0xf0ddd7, 0xf0ddd7];
 
   return (
     <form onSubmit={handleSubmit}>
@@ -187,19 +194,14 @@ export const JoinOrCreateForm = props => {
         </select>
       </div>
       <div>
-        <label htmlFor="skinColor">Skin Color:</label>
-        <select
-          name="skinColor"
+        <input
+          type="color"
           id="skinColor"
+          name="skinColor"
           value={userData.skinColor}
           onChange={handleChange}
-        >
-          <option value="0xf0ddd7">1</option>
-          <option value="0x8d5524">2</option>
-          <option value="0xc68642">3</option>
-          <option value="0xe0ac69">4</option>
-          <option value="0xf1c27d">5</option>
-        </select>
+        />
+        <label htmlFor="skinColor">Skin Color</label>
       </div>
       <div>
         <input
