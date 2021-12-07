@@ -474,20 +474,25 @@ form button:hover {
 }
 /* name display on join */
 .nameJoined {
+
+  background-color: #4d9de0;
+  padding: 10px 10px;
+  border-radius: 10%;
+  box-shadow: -3px 3px 3px #2f8dda;
+  font-family: monospace;
+  font-size: 20px;
   align-items: center;
-  background-color: #143e88;
   color: white;
   border-radius: 7px;
   position: absolute;
   width: 200px;
-  height: 50px;
-  top: 235px;
-  left: 160px;
+  height: 30px;
+  top: 150px;
+  left: 400px;
   text-align: center;
   margin-left: 50%;
   margin-right: 50%;
   padding-top: 20px;
-
 }
 
 .background__red {
