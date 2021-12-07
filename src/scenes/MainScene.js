@@ -103,16 +103,6 @@ export default class MainScene extends Phaser.Scene {
 
     })
 
-    this.socket.on('coworkerLeftRoom', function (arg) {
-      const { coworkerId, numEmployees } = arg;
-      scene.state.numEmployees = numEmployees;
-      scene.coworkers.getChildren().forEach(function (coworker) {
-        if (coworkerId === coworker.employeeId) {
-          coworker.destroy();
-        }
-      });
-    });
-
     // DISCONNECT
     this.socket.on('coworker disconnected', function (arg) {
       const { coworkerId, numEmployees } = arg;
