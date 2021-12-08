@@ -1,7 +1,7 @@
 import Peer from 'peerjs';
+import { addVideo, createPeer } from './helperFunctions';
 
 const runWebRTC = async (socket, myName) => {
-  const webcamPanel = document.querySelector('.webcam-panel');
   const webcamController = document.querySelector('.webcam-controller');
 
   const callList = {};
@@ -16,7 +16,7 @@ const runWebRTC = async (socket, myName) => {
       navigator.mediaDevices.getUserMedia ||
       navigator.webkitGetUserMedia ||
       navigator.mozGetUserMedia;
-    stream = await navigator.mediaDevices.getUserMedia({
+    stream = await navigator.getUserMedia({
       video: true,
       audio: true,
     });
@@ -32,20 +32,9 @@ const runWebRTC = async (socket, myName) => {
   webcamController.style.display = 'flex';
 
   //Dakota: Setup new peer object! Yay!
-  const peer = new Peer(socket.id, {
-    config: {
-      iceServers: [
-        { urls: 'stun:stun.l.google.com:19302' },
-        {
-          url: 'turn:numb.viagenie.ca',
-          credential: 'muazkh',
-          username: 'webrtc@live.com',
-        },
-      ],
-      sdpSemantics: 'unified-plan',
-    },
-  });
+  const peer = createPeer(socket.id);
 
+  // when peer is open, make a call and receive a call
   peer.on('open', id => {
     console.log('My peer ID is: ' + id);
     window.peer = peer;
@@ -54,7 +43,6 @@ const runWebRTC = async (socket, myName) => {
     peer.on('call', call => {
       //Getting called  so answer
       call.answer(stream);
-
       //Got called and answered so build webcam panel
       call.on('stream', remoteStream => {
         if (callList[call.peer] === undefined) {
@@ -67,9 +55,10 @@ const runWebRTC = async (socket, myName) => {
     //Call new user when they join
     socket.on('newEmployee', ({ employeeInfo }) => {
       const socketId = employeeInfo.employeeId;
+      let count = 0;
       let timer = setInterval(() => {
         let call = peer.call(socketId, stream);
-        if (call) {
+        if (call || count >= 10) { //will only call 10 times max
           clearInterval(timer);
           call.on('stream', remoteStream => {
             if (callList[socketId] === undefined) {
@@ -78,7 +67,10 @@ const runWebRTC = async (socket, myName) => {
             }
           });
           console.log('timer stopped');
-        } else console.log('calling again, ', socketId);
+        } else {
+          console.log(`calling again (${count})`, socketId);
+          count++;
+        }
       }, 500);
     });
 
@@ -88,40 +80,6 @@ const runWebRTC = async (socket, myName) => {
       delete callList[socketId];
     });
   });
-
-  // const peer = window.peer;
-
-  // const callPeer = socketId => {
-  //   let call = peer.call(socketId, stream);
-  //   console.log('calling again');
-  //   if (call) {
-  //     call.on('stream', remoteStream => {
-  //       if (callList[socketId] === undefined) {
-  //         addVideo(remoteStream, true, socketId, remoteStream.name);
-  //         callList[socketId] = true;
-  //       }
-  //     });
-  //   } else {
-  //     console.log('call undefined for', socketId);
-  //   }
-  // };
-
-  function addVideo(stream, hide, socketId, name = '') {
-    const videoElement = document.createElement('video');
-    videoElement.addEventListener('loadedmetadata', function (e) {
-      videoElement.play();
-    });
-
-    videoElement.srcObject = stream;
-    videoElement.setAttribute('id', socketId);
-    videoElement.muted = true;
-
-    webcamPanel.appendChild(videoElement);
-    // videoElement.srcObject.getAudioTracks()[0].enabled = false;
-    videoElement.style.display = hide ? 'none' : 'inline';
-    if (hide) console.log('coworker stream created', stream);
-    else console.log('my stream created', stream);
-  }
 };
 
 export default runWebRTC;
