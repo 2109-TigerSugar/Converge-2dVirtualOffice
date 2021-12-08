@@ -22,13 +22,11 @@ module.exports = io => {
       const {
         name,
         roomKey,
-        officeType,
         hairStyle,
         outfit,
         skinColor,
         hairColor,
       } = userData;
-      console.log(userData);
       if (socket.rooms.has(roomKey) || !officeRooms[roomKey]) {
         return;
       }

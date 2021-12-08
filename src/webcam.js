@@ -73,7 +73,7 @@ const runWebRTC = async (socket, myName) => {
           callList[socketId] = true;
         }
       });
-    } else setTimeout(() => callPeer(socketId), 1000);
+    } else setInterval(() => callPeer(socketId), 500);
   }
 
 
