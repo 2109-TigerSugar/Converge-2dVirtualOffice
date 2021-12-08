@@ -145,11 +145,12 @@ export default class MainScene extends Phaser.Scene {
       //iterates over children and add overlap
       //stange bug causing the callback to happen twice at each of the overlap
       this.coworkers.children.iterate(coworker =>
-        scene.addEmployeeOverlap(scene, coworker)
+        // scene.addEmployeeOverlap(scene, coworker)
+        scene.testOverlap(scene, coworker)
       );
       // check the coworkers we were previously overlapping with
       // remove any where that's no longer the case
-      this.checkOverlap(scene);
+      // this.checkOverlap(scene);
     }
   }
   //have to add a method on mainscene to add an employee --- used it in our create method
@@ -180,72 +181,102 @@ export default class MainScene extends Phaser.Scene {
     scene.coworkers.add(coworker);
   }
   // Add overlap for a pair of players
-  addEmployeeOverlap(scene, coworker) {
-    if (!coworker.collider) {
-      coworker.collider = scene.physics.add.overlap(
-        scene.sprite,
-        coworker,
-        scene.employeeOverlap,
-        null,
-        this
-      );
-    }
-  }
+  // addEmployeeOverlap(scene, coworker) {
+  // if (!coworker.collider) {
+  //   coworker.collider = scene.physics.add.overlap(
+  //     scene.sprite.getAt(5),
+  //     coworker.getAt(5),
+  //     scene.employeeOverlap,
+  //     null,
+  //     this
+  //   );
+  // }
+  // }
   //callback for overlap
-  employeeOverlap(employee, coworker) {
-    const employeeBounds = employee.getBounds();
+  // employeeOverlap(employee, coworker) {
+  // console.log('overlap');
+  // const employeeBounds = employee.getBounds();
+  // const coworkerBounds = coworker.getBounds();
+  // if (
+  //   !this.overlappingSprites[coworker.employeeId] &&
+  //   Phaser.Geom.Intersects.RectangleToRectangle(
+  //     employeeBounds,
+  //     coworkerBounds
+  //   )
+  // ) {
+  //   console.log(employeeBounds);
+  //   console.log(coworkerBounds);
+  //   this.overlappingSprites[coworker.employeeId] = coworker;
+  //   const showId =
+  //     this.socket.id === coworker.employeeId
+  //       ? employee.employeeId
+  //       : coworker.employeeId;
+  //   const showVideo = document.querySelector(`#${CSS.escape(showId)}`);
+  //   // console.dir(showVideo);
+  //   if (showVideo) {
+  //     showVideo.style.display = 'inline';
+  //     showVideo.muted = false;
+  //   }
+  // }
+  // }
 
-    const coworkerBounds = coworker.getBounds();
+  // checkOverlap(scene) {
+  // const spriteBounds = scene.sprite.getAt(5).getBounds();
+  // Object.keys(scene.overlappingSprites).forEach(employeeId => {
+  //   const coworker = scene.overlappingSprites[employeeId];
+  //   const coworkerBounds = coworker.getAt(5).getBounds();
+  //   // https://phaser.io/examples/v3/view/geom/intersects/get-rectangle-intersection
+  //   // https://photonstorm.github.io/phaser3-docs/Phaser.Geom.Intersects.html
+  //   if (
+  //     !Phaser.Geom.Intersects.RectangleToRectangle(
+  //       spriteBounds,
+  //       coworkerBounds
+  //     )
+  //   ) {
+  //     delete scene.overlappingSprites[employeeId];
+  //     // console.log('NO LONGER OVERLAPPING');
+  //     const hideVideo = document.querySelector(
+  //       `#${CSS.escape(coworker.employeeId)}`
+  //     );
+  //     if (hideVideo) {
+  //       hideVideo.style.display = 'none';
+  //       hideVideo.muted = true;
+  //     }
+  //   }
+  // });
+  // }
 
-    if (
-      !this.overlappingSprites[coworker.employeeId] &&
-      Phaser.Geom.Intersects.RectangleToRectangle(
-        employeeBounds,
-        coworkerBounds
-      )
-    ) {
-      console.log(employeeBounds);
-      console.log(coworkerBounds);
+  testOverlap(scene, coworker) {
+    // check if circles on my sprite and coworker's sprite is overlapping
+    let myCircle = scene.sprite.getAt(5).getBounds();
+    let coworkerCircle = coworker.getAt(5).getBounds();
+
+    let overlapping = Phaser.Geom.Intersects.RectangleToRectangle(
+      myCircle,
+      coworkerCircle
+    );
+
+    //if overlapping -> add to overlappingSprite and show video
+    if (overlapping) {
       this.overlappingSprites[coworker.employeeId] = coworker;
-
-      const showId =
-        this.socket.id === coworker.employeeId
-          ? employee.employeeId
-          : coworker.employeeId;
-
-      const showVideo = document.querySelector(`#${CSS.escape(showId)}`);
-      // console.dir(showVideo);
+      const showVideo = document.querySelector(
+        `#${CSS.escape(coworker.employeeId)}`
+      );
       if (showVideo) {
         showVideo.style.display = 'inline';
         showVideo.muted = false;
       }
-    }
-  }
-
-  checkOverlap(scene) {
-    const spriteBounds = scene.sprite.getBounds();
-    Object.keys(scene.overlappingSprites).forEach(employeeId => {
-      const coworker = scene.overlappingSprites[employeeId];
-      const coworkerBounds = coworker.getBounds();
-      // https://phaser.io/examples/v3/view/geom/intersects/get-rectangle-intersection
-      // https://photonstorm.github.io/phaser3-docs/Phaser.Geom.Intersects.html
-      if (
-        !Phaser.Geom.Intersects.RectangleToRectangle(
-          spriteBounds,
-          coworkerBounds
-        )
-      ) {
-        delete scene.overlappingSprites[employeeId];
-        // console.log('NO LONGER OVERLAPPING');
-        const hideVideo = document.querySelector(
-          `#${CSS.escape(coworker.employeeId)}`
-        );
-        if (hideVideo) {
-          hideVideo.style.display = 'none';
-          hideVideo.muted = true;
-        }
+    } else {
+      //if not overlapping -> remove from overlappingSprite and hide video
+      delete this.overlappingSprites[coworker.employeeId];
+      const hideVideo = document.querySelector(
+        `#${CSS.escape(coworker.employeeId)}`
+      );
+      if (hideVideo) {
+        hideVideo.style.display = 'none';
+        hideVideo.muted = true;
       }
-    });
+    }
   }
 }
 
