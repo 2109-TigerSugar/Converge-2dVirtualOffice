@@ -26,7 +26,7 @@ const LandingPage = () => {
           <p>Create an office and invite your team, or join with a key from a previous invite.</p>
       </div>
       <div className='button-hero'>
-      <img src="../assets/potentialcropped.png"/>
+      <img src="../assets/potentialcropped-min.png"/>
       <div className="buttonsAndForm">
       <div className={isActive ? "buttons" : "noButtons"}>
         <button onClick={handleClick} type="button" id='create'>Create</button>
