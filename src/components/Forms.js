@@ -228,6 +228,9 @@ export const JoinOrCreateForm = (props) => {
       <button type="submit" disabled={!userData.name || !userData.roomKey}>
         {props.formType}
       </button>
+      <button type="button" onClick= {() => props.clickBack('')}>
+        Back
+      </button>
       {/* Error div that wil show if err (state) is not an empty string */}
       {err && <p style={{ color: 'red' }}>{err}</p>}
     </form>

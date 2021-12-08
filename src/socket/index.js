@@ -7,7 +7,7 @@ export const socket = io();
 socket.on('connect', () => {
   console.log('socket connection ', socket.id);
 
-  let buttons = document.querySelector('.buttons');
+  let buttons = document.querySelector('.buttonsAndForm');
   buttons.style.display = 'flex';
 
   window.game = new Game();
