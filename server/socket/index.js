@@ -66,7 +66,7 @@ module.exports = (io) => {
       socket.to(roomKey).emit('newEmployee', {
         employeeInfo: roomInfo.employees[socket.id],
         numEmployees: roomInfo.numEmployees,
-        coworkerName: roomInfo.employees[socket.id].name,
+        coworkerName: roomInfo.employees[socket.id].name + ' joined',
       });
     });
 
@@ -101,7 +101,7 @@ module.exports = (io) => {
       io.to(roomKey).emit('coworker disconnected', {
         coworkerId: socket.id,
         numEmployees: officeRooms[roomKey].numEmployees,
-        coworkerName: name,
+        coworkerName: name +' left',
       });
     });
 
@@ -125,7 +125,7 @@ module.exports = (io) => {
           io.to(roomKey).emit('coworker disconnected', {
             coworkerId: socket.id,
             numEmployees: officeRooms[roomKey].numEmployees,
-            coworkerName: name,
+            coworkerName: name +' left',
           });
         }
       });
