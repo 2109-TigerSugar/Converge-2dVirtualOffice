@@ -77,11 +77,11 @@ const Office = () => {
 
     //starts peerjs code for video
     (async () => {
-      if (!window.peer) {
-        console.log('need to make peer')
-        window.peer = await makePeer(socket.id);
-      }
-      await runWebRTC(socket, window.peer);
+      // if (!window.peer) {
+      //   console.log('need to make peer')
+      //   window.peer = await makePeer(socket.id);
+      // }
+      await runWebRTC(socket, userData.name);
     })();
     // when the user refreshes the page, make them join the room again if key exists
     if (userData && userData.roomKey) {
