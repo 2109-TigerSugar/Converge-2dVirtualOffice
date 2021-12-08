@@ -216,6 +216,16 @@ export const JoinOrCreateForm = props => {
         />
         <label htmlFor="hairColor">Hair Color</label>
       </div>
+      <div>
+        <input
+          type="color"
+          id="proximityColor"
+          name="proximityColor"
+          value={userData.proximityColor}
+          onChange={handleChange}
+        />
+        <label htmlFor="proximityColor">Proximity Color</label>
+      </div>
 
       {/* <div>
         <label htmlFor="officeType">Office Type</label>
