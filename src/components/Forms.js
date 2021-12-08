@@ -217,7 +217,7 @@ export const JoinOrCreateForm = props => {
         <label htmlFor="hairColor">Hair Color</label>
       </div>
 
-      <div>
+      {/* <div>
         <label htmlFor="officeType">Office Type</label>
         <input
           type="text"
@@ -226,7 +226,7 @@ export const JoinOrCreateForm = props => {
           value={userData.officeType}
           onChange={handleChange}
         />
-      </div>
+      </div> */}
       <div
         className="submit-buttons"
         style={{ display: 'flex', justifyContent: 'space-between' }}
