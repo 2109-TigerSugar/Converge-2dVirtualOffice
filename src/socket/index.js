@@ -2,23 +2,26 @@ import Peer from 'peerjs';
 import { Game } from '..';
 export const socket = io();
 
-
 //  start the game once socket is connected
 socket.on('connect', () => {
   console.log('socket connection ', socket.id);
 
   let buttons = document.querySelector('.buttonsAndForm');
-  buttons.style.display = 'flex';
+  if (buttons) buttons.style.display = 'flex';
+  if (window.location.pathname === '/office') {
+    window.location.replace(window.location.origin);
 
-  window.game = new Game();
-
+  }else window.game = new Game();
 
   // makes the peer once socket is connected
   // window.peer = makePeer(socket.id)
-
 });
 
-export const makePeer = (socketId) => {
+socket.on('disconnect', () => {
+  console.log(' i disconnected');
+});
+
+export const makePeer = socketId => {
   const peer = new Peer(socket.id, {
     config: {
       iceServers: [
@@ -38,5 +41,4 @@ export const makePeer = (socketId) => {
     // window.peer = peer;
   });
   return peer;
-
-}
+};

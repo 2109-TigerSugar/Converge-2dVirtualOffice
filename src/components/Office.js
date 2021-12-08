@@ -67,8 +67,8 @@ const Office = () => {
 
   useEffect(() => {
     // if game scene is sleeping, wake it
-    if (window.game.scene.isSleeping('MainScene'))
-      window.game.scene.wake('MainScene');
+    // if (window.game.scene.isSleeping('MainScene'))
+    //   window.game.scene.wake('MainScene');
 
     // will show video panel and game panel
     userData = JSON.parse(window.localStorage.getItem('userData'));

@@ -30,5 +30,5 @@ window.onload = async function () {
   ReactDOM.render(<App />, document.getElementById('root'));
 
   let buttons = document.querySelector('.buttonsAndForm');
-  buttons.style.display = 'none';
+  if (buttons) buttons.style.display = 'none';
 };
