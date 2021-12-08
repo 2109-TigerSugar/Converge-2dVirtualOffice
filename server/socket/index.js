@@ -102,6 +102,7 @@ module.exports = (io) => {
         coworkerId: socket.id,
         numEmployees: officeRooms[roomKey].numEmployees,
         coworkerName: name + ' left',
+
       });
     });
 
@@ -126,6 +127,7 @@ module.exports = (io) => {
             coworkerId: socket.id,
             numEmployees: officeRooms[roomKey].numEmployees,
             coworkerName: name + ' left',
+
           });
         }
       });
