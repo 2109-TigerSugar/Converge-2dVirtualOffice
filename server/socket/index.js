@@ -66,7 +66,7 @@ module.exports = (io) => {
       socket.to(roomKey).emit('newEmployee', {
         employeeInfo: roomInfo.employees[socket.id],
         numEmployees: roomInfo.numEmployees,
-        coworkerName: roomInfo.employees[socket.id].name,
+        coworkerName: roomInfo.employees[socket.id].name + ' joined',
       });
     });
 
@@ -91,6 +91,7 @@ module.exports = (io) => {
     socket.on('leaveRoom', (roomKey) => {
       socket.leave(roomKey);
       if (!officeRooms[roomKey]) return;
+      let name = officeRooms[roomKey].employees[socket.id].name;
       delete officeRooms[roomKey].employees[socket.id];
       officeRooms[roomKey].numEmployees = Object.keys(
         officeRooms[roomKey].employees
@@ -100,6 +101,8 @@ module.exports = (io) => {
       io.to(roomKey).emit('coworker disconnected', {
         coworkerId: socket.id,
         numEmployees: officeRooms[roomKey].numEmployees,
+        coworkerName: name + ' left',
+
       });
     });
 
@@ -123,10 +126,14 @@ module.exports = (io) => {
           io.to(roomKey).emit('coworker disconnected', {
             coworkerId: socket.id,
             numEmployees: officeRooms[roomKey].numEmployees,
-            coworkerName: name,
+            coworkerName: name + ' left',
+
           });
         }
       });
+
+
+
     });
 
     socket.on('isKeyUnique', function (roomKey) {

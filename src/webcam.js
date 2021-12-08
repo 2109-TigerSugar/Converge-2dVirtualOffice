@@ -3,21 +3,24 @@ const runWebRTC = async (socket, myName) => {
   const webcamController = document.querySelector('.webcam-controller');
 
   const callList = {};
+  let stream;
 
-  //Dakota: Ask for permission to use webcam :) We await because we have no clue when they will accept it!
-  navigator.getUserMedia =
-    navigator.mediaDevices.getUserMedia ||
-    navigator.webkitGetUserMedia ||
-    navigator.mozGetUserMedia;
-  const stream = await navigator.mediaDevices.getUserMedia({
-    video: true,
-    audio: true,
-  });
-
-  stream.name = myName;
+  if (window.myStream) stream = window.myStream;
+  else {
+    //Dakota: Ask for permission to use webcam :) We await because we have no clue when they will accept it!
+    navigator.getUserMedia =
+      navigator.mediaDevices.getUserMedia ||
+      navigator.webkitGetUserMedia ||
+      navigator.mozGetUserMedia;
+     stream = await navigator.mediaDevices.getUserMedia({
+      video: true,
+      audio: true,
+    });
+    window.myStream = stream;
+  }
 
   // attach stream to window so we can use in Office.js
-  window.myStream = stream;
+
 
   //Build our webcam
   addVideo(stream, false, socket.id, myName);
@@ -55,26 +58,30 @@ const runWebRTC = async (socket, myName) => {
     //Got called and answered so build webcam panel
     call.on('stream', remoteStream => {
       if (callList[call.peer] === undefined) {
-        console.log(call);
         addVideo(remoteStream, true, call.peer, remoteStream.name);
         callList[call.peer] = true;
       }
     });
   });
 
+  const callPeer = (socketId) => {
+    let call = peer.call(socketId, stream);
+    if (call) {
+      call.on('stream', remoteStream => {
+        if (callList[socketId] === undefined) {
+          addVideo(remoteStream, true, socketId, remoteStream.name);
+          callList[socketId] = true;
+        }
+      });
+    } else setTimeout(() => callPeer(socketId), 1000);
+  }
+
+
   //Call new user when they join
   socket.on('newEmployee', ({ employeeInfo }) => {
     const socketId = employeeInfo.employeeId;
-    const call = peer.call(socketId, stream);
-    console.log('Call just happened', call);
+    callPeer(socketId);
 
-    //Other end answered call so build webcam panel
-    call.on('stream', remoteStream => {
-      if (callList[socketId] === undefined) {
-        addVideo(remoteStream, true, socketId, remoteStream.name);
-        callList[socketId] = true;
-      }
-    });
   });
 
   socket.on('coworker disconnected', ({ coworkerId: socketId }) => {
@@ -83,7 +90,7 @@ const runWebRTC = async (socket, myName) => {
     delete callList[socketId];
   });
 
-  function addVideo(stream, hide, socketId, name='') {
+  function addVideo(stream, hide, socketId, name = '') {
     const videoElement = document.createElement('video');
     videoElement.addEventListener('loadedmetadata', function (e) {
       videoElement.play();

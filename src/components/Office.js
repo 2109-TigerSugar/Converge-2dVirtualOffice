@@ -5,12 +5,14 @@ import { socket, makePeer } from '../socket';
 import runWebRTC from '../webcam';
 import { hidePanels, showPanels } from '../helperFunctions';
 import NameDisplay from './NameDisplay';
+import { useLocation } from 'react-router';
 
 
 const Office = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [mapOpen, setMapOpen] = useState(false);
-  let userData = JSON.parse(window.localStorage.getItem('userData'));
+  const {state : userData} = useLocation();
+
 
   const toggleVideo = () => {
     const stopVideo = document.querySelector('#stopVideo');
@@ -66,12 +68,6 @@ const Office = () => {
   };
 
   useEffect(() => {
-    // if game scene is sleeping, wake it
-    if (window.game.scene.isSleeping('MainScene'))
-      window.game.scene.wake('MainScene');
-
-    // will show video panel and game panel
-    userData = JSON.parse(window.localStorage.getItem('userData'));
 
     showPanels();
 
@@ -86,7 +82,7 @@ const Office = () => {
     // when the user refreshes the page, make them join the room again if key exists
     if (userData && userData.roomKey) {
       socket.emit('doesKeyExist', userData.roomKey);
-      socket.on('roomExistCheck', exists => {
+      socket.once('roomExistCheck', exists => {
         if (exists) {
           socket.emit('joinRoom', userData); //
         } else {
@@ -103,15 +99,14 @@ const Office = () => {
       // when going to another page, hide the webcam panel and phaser game
       hidePanels();
 
-      window.game.scene.sleep('MainScene');
 
       // should disconnect peerJS so others can't see you anymore
       // if (window.peer) window.peer.disconnect();
       if (window.peer) {
         window.peer.destroy();
-        window.peer = undefined;
+        console.log(window.peer);
+        // window.peer = undefined;
       }
-
       let allWebCams = document.querySelectorAll(`video`);
       if (allWebCams) allWebCams.forEach(video => video.remove());
 
