@@ -8,9 +8,9 @@ socket.on('connect', () => {
 
   let buttons = document.querySelector('.buttonsAndForm');
   if (buttons) buttons.style.display = 'flex';
+  // console.log('buttons shown');
   if (window.location.pathname === '/office') {
     window.location.replace(window.location.origin);
-
   }else window.game = new Game();
 
   // makes the peer once socket is connected
