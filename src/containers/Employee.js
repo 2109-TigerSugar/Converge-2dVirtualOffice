@@ -17,9 +17,8 @@ class Employee extends Phaser.GameObjects.Container {
     this.employeeId = employeeInfo.employeeId;
     this.roomKey = employeeInfo.roomKey;
 
-
     // All animation setup!
-    this.list.forEach((sprite) => {
+    this.list.forEach(sprite => {
       if (sprite.type === 'Sprite') {
         const spriteName = sprite.texture.key;
 
@@ -82,7 +81,7 @@ class Employee extends Phaser.GameObjects.Container {
   }
 
   animate(direction) {
-    this.list.forEach((sprite) => {
+    this.list.forEach(sprite => {
       if (sprite.type === 'Sprite') {
         //Left Or Right
         if (direction === 'left' || direction === 'right') {
@@ -115,10 +114,12 @@ function getChildren(scene, employeeInfo) {
   //outfit (x number of outfits)
   const outfitStyle = scene.add.sprite(0, 0, outfit);
 
-  const userName = scene.add.text(0, -50, name, {
-    font: '30px Courier',
-    fill: '#0f0f',
-  }).setOrigin(0.5);
+  const userName = scene.add
+    .text(0, -50, name, {
+      font: '30px Courier',
+      fill: '#FFFFFF',
+    })
+    .setOrigin(0.5).setBackgroundColor('#000000');
 
   //return all sprites in children array
   return [body, eye, hair, outfitStyle, userName];
