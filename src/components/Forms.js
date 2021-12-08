@@ -11,6 +11,7 @@ const initialUserData = {
   skinColor: '#f0ddd7',
   hairColor: '#000000',
   eyeColor: '#000000',
+  proximityColor: '#000000',
 };
 
 export const JoinOrCreateForm = props => {
@@ -28,6 +29,9 @@ export const JoinOrCreateForm = props => {
         //Wizard stuff
         storedData.hairColor = '#' + storedData.hairColor.toString(16);
         storedData.skinColor = '#' + storedData.skinColor.toString(16);
+        storedData.proximityColor = storedData.proximityColor
+          ? '#' + storedData.proximityColor.toString(16)
+          : initialUserData.proximityColor;
         setUserData(storedData);
       }
     } else {
@@ -87,8 +91,13 @@ export const JoinOrCreateForm = props => {
       userData.skinColor = Number('0x' + userData.skinColor.slice(1));
       console.log('Skin in valid: ' + userData.skinColor);
     }
-    // user data is saved on local storage
 
+    if (typeof userData.proximityColor !== 'number') {
+      userData.proximityColor = Number('0x' + userData.proximityColor.slice(1));
+      console.log('Skin in valid: ' + userData.proximityColor);
+    }
+
+    // user data is saved on local storage
     window.localStorage.setItem('userData', JSON.stringify(userData));
 
     // join the office
