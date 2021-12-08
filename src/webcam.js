@@ -66,6 +66,7 @@ const runWebRTC = async (socket, myName) => {
 
   const callPeer = (socketId) => {
     let call = peer.call(socketId, stream);
+    console.log('calling again')
     if (call) {
       call.on('stream', remoteStream => {
         if (callList[socketId] === undefined) {
@@ -73,7 +74,7 @@ const runWebRTC = async (socket, myName) => {
           callList[socketId] = true;
         }
       });
-    } else setInterval(() => callPeer(socketId), 500);
+    } else setTimeout(() => callPeer(socketId), 1500);
   }
 
 
