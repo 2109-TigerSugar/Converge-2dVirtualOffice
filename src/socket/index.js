@@ -17,9 +17,9 @@ socket.on('connect', () => {
   // window.peer = makePeer(socket.id)
 });
 
-socket.on('disconnect', () => {
-  console.log(' i disconnected');
-});
+// socket.on('disconnect', () => {
+//   console.log(' i disconnected');
+// });
 
 export const makePeer = socketId => {
   const peer = new Peer(socket.id, {
