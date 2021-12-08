@@ -10,7 +10,7 @@ import { hidePanels } from './helperFunctions';
 //Create socket to import elsewhere instead of attaching to window
 // export const socket = io();
 
-class Game extends Phaser.Game {
+export class Game extends Phaser.Game {
   constructor() {
     super(config);
     // << ADD ALL SCENES HERE >>
@@ -18,15 +18,17 @@ class Game extends Phaser.Game {
 
     // Start the game with the mainscene
     // << START GAME WITH MAIN SCENE HERE >>
-    // this.scene.start('MainScene');
+    this.scene.start('MainScene');
+    console.log('MainScene started');
   }
 }
 
 // Create new instance of game
 window.onload = async function () {
-  window.game = new Game();
   hidePanels();
 
-
   ReactDOM.render(<App />, document.getElementById('root'));
+
+  let buttons = document.querySelector('.buttons');
+  buttons.style.display = 'none';
 };

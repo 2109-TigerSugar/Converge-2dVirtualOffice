@@ -91,6 +91,7 @@ export const JoinOrCreateForm = (props) => {
       console.log('Skin in valid: ' + userData.skinColor);
     }
     // user data is saved on local storage
+
     window.localStorage.setItem('userData', JSON.stringify(userData));
     // join the office
     navigate('/office');
