@@ -12,7 +12,7 @@ const runWebRTC = async (socket, myName) => {
       navigator.mediaDevices.getUserMedia ||
       navigator.webkitGetUserMedia ||
       navigator.mozGetUserMedia;
-     stream = await navigator.mediaDevices.getUserMedia({
+    stream = await navigator.mediaDevices.getUserMedia({
       video: true,
       audio: true,
     });
@@ -20,7 +20,6 @@ const runWebRTC = async (socket, myName) => {
   }
 
   // attach stream to window so we can use in Office.js
-
 
   //Build our webcam
   addVideo(stream, false, socket.id, myName);
@@ -64,25 +63,37 @@ const runWebRTC = async (socket, myName) => {
     });
   });
 
-  const callPeer = (socketId) => {
-    let call = peer.call(socketId, stream);
-    console.log('calling again')
-    if (call) {
-      call.on('stream', remoteStream => {
-        if (callList[socketId] === undefined) {
-          addVideo(remoteStream, true, socketId, remoteStream.name);
-          callList[socketId] = true;
-        }
-      });
-    } else setTimeout(() => callPeer(socketId), 1500);
-  }
-
+  // const callPeer = socketId => {
+  //   let call = peer.call(socketId, stream);
+  //   console.log('calling again');
+  //   if (call) {
+  //     call.on('stream', remoteStream => {
+  //       if (callList[socketId] === undefined) {
+  //         addVideo(remoteStream, true, socketId, remoteStream.name);
+  //         callList[socketId] = true;
+  //       }
+  //     });
+  //   } else {
+  //     console.log('call undefined for', socketId);
+  //   }
+  // };
 
   //Call new user when they join
   socket.on('newEmployee', ({ employeeInfo }) => {
     const socketId = employeeInfo.employeeId;
-    callPeer(socketId);
-
+    let timer = setInterval(() => {
+      let call = peer.call(socketId, stream);
+      if (call) {
+        clearInterval(timer);
+        call.on('stream', remoteStream => {
+          if (callList[socketId] === undefined) {
+            addVideo(remoteStream, true, socketId, remoteStream.name);
+            callList[socketId] = true;
+          }
+        });
+        console.log('timer stopped');
+      } else console.log('calling again, ', socketId);
+    }, 500);
   });
 
   socket.on('coworker disconnected', ({ coworkerId: socketId }) => {
