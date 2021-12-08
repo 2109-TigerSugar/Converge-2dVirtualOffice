@@ -11,8 +11,8 @@ socket.on('connect', () => {
   // window.peer = makePeer(socket.id)
 
   // start the game scene once once both peer and socket is connected
-  window.game.scene.start('MainScene');
-  console.log('game started');
+  // window.game.scene.start('MainScene');
+  // console.log('game started');
 
 
 });
