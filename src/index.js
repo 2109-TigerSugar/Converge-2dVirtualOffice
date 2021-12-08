@@ -10,7 +10,7 @@ import { hidePanels } from './helperFunctions';
 //Create socket to import elsewhere instead of attaching to window
 // export const socket = io();
 
-class Game extends Phaser.Game {
+export class Game extends Phaser.Game {
   constructor() {
     super(config);
     // << ADD ALL SCENES HERE >>
@@ -24,7 +24,6 @@ class Game extends Phaser.Game {
 
 // Create new instance of game
 window.onload = async function () {
-  window.game = new Game();
   hidePanels();
 
 

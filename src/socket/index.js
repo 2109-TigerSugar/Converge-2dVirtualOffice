@@ -1,4 +1,5 @@
 import Peer from 'peerjs';
+import { Game } from '..';
 export const socket = io();
 
 
@@ -8,6 +9,9 @@ socket.on('connect', () => {
 
   let buttons = document.querySelector('.buttons');
   buttons.style.display = 'flex';
+
+  window.game = new Game;
+
 
   // makes the peer once socket is connected
   // window.peer = makePeer(socket.id)
