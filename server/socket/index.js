@@ -6,8 +6,6 @@ const officeRooms = {
   },
 };
 
-const connectedSockets = [];
-
 module.exports = io => {
   io.on('connection', socket => {
     console.log(
@@ -15,7 +13,6 @@ module.exports = io => {
     );
 
     console.log('on connection office rooms', officeRooms);
-    connectedSockets.push(socket.id);
     // socket.broadcast.emit('someoneJoined', socket.id);
 
     socket.on('joinRoom', userData => {
@@ -48,7 +45,6 @@ module.exports = io => {
       };
 
       roomInfo.numEmployees = Object.keys(roomInfo.employees).length;
-      console.log('roomInfo in joinRoom', roomInfo);
 
       // why only emit it to a single socket?
       //set initial state HERE
