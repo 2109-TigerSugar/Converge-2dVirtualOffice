@@ -6,17 +6,20 @@ const NameDisplay = () => {
   const [names, setNames] = useState([]);
 
   // componentDidMount
+  const updateNames = (data) => {
+    const { coworkerName } = data;
+    setNames([...names, coworkerName])
+  }
+
   useEffect(() => {
-    socket.on('newEmployee', function (data) {
-      const { coworkerName } = data;
-      setNames([...names, coworkerName + ' joined']);
-    });
+    socket.on('newEmployee', updateNames);
 
-    socket.on('coworker disconnected', function (data) {
-      const { coworkerName } = data;
-      setNames([...names, coworkerName + ' left']);
-    });
+    socket.on('coworker disconnected', updateNames);
 
+    return () => {
+      socket.off('newEmployee',updateNames)
+      socket.off('coworker disconnected',updateNames)
+    }
 
   }, []);
 

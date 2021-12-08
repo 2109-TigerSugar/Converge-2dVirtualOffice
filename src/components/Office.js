@@ -103,7 +103,6 @@ const Office = () => {
       // when going to another page, hide the webcam panel and phaser game
       hidePanels();
 
-      window.game.scene.sleep('MainScene');
 
       // should disconnect peerJS so others can't see you anymore
       // if (window.peer) window.peer.disconnect();
