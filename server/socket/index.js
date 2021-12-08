@@ -22,7 +22,6 @@ module.exports = io => {
       const {
         name,
         roomKey,
-        officeType,
         hairStyle,
         outfit,
         skinColor,
