@@ -204,6 +204,8 @@ export default class MainScene extends Phaser.Scene {
         coworkerBounds
       )
     ) {
+      console.log(employeeBounds);
+      console.log(coworkerBounds);
       this.overlappingSprites[coworker.employeeId] = coworker;
 
       const showId =

@@ -119,10 +119,14 @@ function getChildren(scene, employeeInfo) {
       font: '30px Courier',
       fill: '#FFFFFF',
     })
-    .setOrigin(0.5).setBackgroundColor('#000000');
+    .setOrigin(0.5)
+    .setBackgroundColor('#000000');
+
+  const circle = scene.add.circle(0, 0, 80);
+  circle.setStrokeStyle(2,0xff6699 )
 
   //return all sprites in children array
-  return [body, eye, hair, outfitStyle, userName];
+  return [body, eye, hair, outfitStyle, userName, circle];
 }
 
 // take in direction
