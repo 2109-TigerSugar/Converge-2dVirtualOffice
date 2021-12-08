@@ -10,16 +10,11 @@ socket.on('connect', () => {
   let buttons = document.querySelector('.buttons');
   buttons.style.display = 'flex';
 
-  window.game = new Game;
+  window.game = new Game();
 
 
   // makes the peer once socket is connected
   // window.peer = makePeer(socket.id)
-
-  // start the game scene once once both peer and socket is connected
-  // window.game.scene.start('MainScene');
-  // console.log('game started');
-
 
 });
 

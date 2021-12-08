@@ -19,6 +19,7 @@ export class Game extends Phaser.Game {
     // Start the game with the mainscene
     // << START GAME WITH MAIN SCENE HERE >>
     this.scene.start('MainScene');
+    console.log('MainScene started');
   }
 }
 
@@ -26,12 +27,8 @@ export class Game extends Phaser.Game {
 window.onload = async function () {
   hidePanels();
 
-
-
-
   ReactDOM.render(<App />, document.getElementById('root'));
 
   let buttons = document.querySelector('.buttons');
   buttons.style.display = 'none';
-
 };
