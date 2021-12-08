@@ -75,16 +75,8 @@ export const JoinOrCreateForm = props => {
     }
   };
 
-<<<<<<< HEAD
-<<<<<<< HEAD
   const validKey = userData => {
-=======
-  const validKey = (userData) => {
->>>>>>> eec5c6699719a65e44e976cd6535008fe5522a08
-=======
-  const validKey = userData => {
-    if(window.location.pathname === '/office') return;
->>>>>>> 19778ca1278594790cb13e85b507292a8de5df74
+    if (window.location.pathname === '/office') return;
     //Correct hair color and skin color
     if (typeof userData.hairColor !== 'number') {
       userData.hairColor = Number('0x' + userData.hairColor.slice(1));
@@ -100,7 +92,7 @@ export const JoinOrCreateForm = props => {
     window.localStorage.setItem('userData', JSON.stringify(userData));
 
     // join the office
-    navigate('/office', {state: userData});
+    navigate('/office', { state: userData });
   };
 
   return (
@@ -242,7 +234,11 @@ export const JoinOrCreateForm = props => {
         <button type="submit" disabled={!userData.name || !userData.roomKey}>
           {props.formType}
         </button>
-        <button type="button" className='back-button' onClick={() => props.clickBack('')}>
+        <button
+          type="button"
+          className="back-button"
+          onClick={() => props.clickBack('')}
+        >
           Back
         </button>
       </div>
