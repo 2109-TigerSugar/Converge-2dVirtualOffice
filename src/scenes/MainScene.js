@@ -52,7 +52,6 @@ export default class MainScene extends Phaser.Scene {
     // SOCKET LISTENER FOR CURRENT EMPLOYEES
     this.socket.on('currentEmployees', function (arg) {
       const { employees, numEmployees } = arg;
-      console.log('currentEmployees received', employees);
 
       scene.state.numEmployees = numEmployees;
 
@@ -93,8 +92,9 @@ export default class MainScene extends Phaser.Scene {
     });
 
     // LEAVE ROOM (not socket disconnection)
-    this.socket.on('leftRoom', function (arg) {
+    this.socket.on('leftRoom', (arg) => {
       //remove all coworker avatars
+      this.sprite.destroy();
       scene.coworkers.clear(true, true);
     });
 
@@ -123,7 +123,7 @@ export default class MainScene extends Phaser.Scene {
     const scene = this;
 
     //employee movement
-    if (this.sprite) {
+    if (this.sprite && this.sprite.body) {
       this.sprite.body.setVelocity(0);
 
       // left to right movements
@@ -155,12 +155,11 @@ export default class MainScene extends Phaser.Scene {
   //have to add a method on mainscene to add an employee --- used it in our create method
 
   addEmployee(scene, employeeInfo) {
-    if (scene.joined) return; //don't add if joined already
     scene.joined = true;
     //the line below adds the sprite to the game map.
     scene.sprite = new Employee(scene, employeeInfo);
     // .setCollideWorldBounds(true);
-    console.log('employee Info', employeeInfo);
+    console.log('my avatar made', scene.sprite);
 
     //Cameraplsworkthx
     const camera = this.cameras.main;
@@ -172,11 +171,10 @@ export default class MainScene extends Phaser.Scene {
     scene.physics.add.collider(scene.sprite, officeLayer);
   }
   addCoworkers(scene, employeeInfo) {
-    const coworker = new Employee(scene, employeeInfo);
+    employeeInfo.x += 70;
+    employeeInfo.y += 100;
 
-    // const coworker = scene.physics.add
-    //   .sprite(employeeInfo.x + 40, employeeInfo.y + 40, employeeInfo.avatar)
-    //   .setVisible(true);
+    const coworker = new Employee(scene, employeeInfo);
 
     coworker.employeeId = employeeInfo.employeeId;
     scene.coworkers.add(coworker);
