@@ -8,8 +8,7 @@ socket.on('connect', () => {
 
 
   // makes the peer once socket is connected
-
-  window.peer = makePeer(socket.id)
+  // window.peer = makePeer(socket.id)
 
   // start the game scene once once both peer and socket is connected
   window.game.scene.start('MainScene');

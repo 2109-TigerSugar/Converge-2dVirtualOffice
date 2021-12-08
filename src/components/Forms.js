@@ -73,6 +73,7 @@ export const JoinOrCreateForm = props => {
 
   const validKey = userData => {
     // user data is saved on local storage
+
     window.localStorage.setItem('userData', JSON.stringify(userData));
     // join the office
     navigate('/office');
