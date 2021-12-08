@@ -28,5 +28,11 @@ window.onload = async function () {
   hidePanels();
 
 
+
+
   ReactDOM.render(<App />, document.getElementById('root'));
+
+  let buttons = document.querySelector('.buttons');
+  buttons.style.display = 'none';
+
 };

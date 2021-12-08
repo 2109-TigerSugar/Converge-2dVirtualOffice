@@ -6,6 +6,8 @@ export const socket = io();
 socket.on('connect', () => {
   console.log('socket connection ', socket.id);
 
+  let buttons = document.querySelector('.buttons');
+  buttons.style.display = 'flex';
 
   // makes the peer once socket is connected
   // window.peer = makePeer(socket.id)
