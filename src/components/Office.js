@@ -7,12 +7,10 @@ import { hidePanels, showPanels } from '../helperFunctions';
 import NameDisplay from './NameDisplay';
 import { useLocation } from 'react-router';
 
-
 const Office = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [mapOpen, setMapOpen] = useState(false);
-  const {state : userData} = useLocation();
-
+  const { state: userData } = useLocation();
 
   const toggleVideo = () => {
     const stopVideo = document.querySelector('#stopVideo');
@@ -68,7 +66,6 @@ const Office = () => {
   };
 
   useEffect(() => {
-
     showPanels();
 
     //starts peerjs code for video
@@ -98,7 +95,6 @@ const Office = () => {
     return () => {
       // when going to another page, hide the webcam panel and phaser game
       hidePanels();
-
 
       // should disconnect peerJS so others can't see you anymore
       // if (window.peer) window.peer.disconnect();
@@ -184,16 +180,13 @@ const Office = () => {
         <Popup
           content={
             <>
-              <img
-                src="assets/potentialcropped.png"
-                style={{ width: '100%' }}
-              ></img>
+              <img src="assets/mapcrop.png" style={{ width: '100%' }}></img>
             </>
           }
           handleClose={togglePopup}
         />
       )}
-        <NameDisplay/>
+      <NameDisplay />
     </div>
   );
 };
