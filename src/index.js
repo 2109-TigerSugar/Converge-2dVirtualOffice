@@ -29,6 +29,6 @@ window.onload = async function () {
 
   ReactDOM.render(<App />, document.getElementById('root'));
 
-  let buttons = document.querySelector('.buttons');
-  buttons.style.display = 'none';
+  let buttons = document.querySelector('.buttonsAndForm');
+  if (buttons) buttons.style.display = 'none';
 };
