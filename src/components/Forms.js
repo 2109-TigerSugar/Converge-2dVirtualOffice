@@ -13,7 +13,7 @@ const initialUserData = {
   eyeColor: '#000000',
 };
 
-export const JoinOrCreateForm = (props) => {
+export const JoinOrCreateForm = props => {
   // to make the form controlled, have a state to keep track of input values
   const [userData, setUserData] = useState(initialUserData);
   const [err, setErr] = useState(''); //if we need to show an error
@@ -37,18 +37,18 @@ export const JoinOrCreateForm = (props) => {
     return () => setUserData(initialUserData);
   }, [props.formType]);
 
-  const handleChange = (event) => {
+  const handleChange = event => {
     setUserData({ ...userData, [event.target.name]: event.target.value });
     setErr('');
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = event => {
     event.preventDefault();
 
     // pressing create
     if (props.formType === 'create') {
       socket.emit('isKeyUnique', userData.roomKey);
-      socket.on('roomUniqueCheck', (unique) => {
+      socket.on('roomUniqueCheck', unique => {
         // key is unique so user will join the room
         if (unique) validKey(userData);
         // key is not unique, cannot create room with same key
@@ -62,7 +62,7 @@ export const JoinOrCreateForm = (props) => {
     // pressing join bottom
     if (props.formType === 'join') {
       socket.emit('doesKeyExist', userData.roomKey);
-      socket.on('roomExistCheck', (exists) => {
+      socket.on('roomExistCheck', exists => {
         // room is created, user can join room
         if (exists) validKey(userData);
         else {
@@ -75,7 +75,7 @@ export const JoinOrCreateForm = (props) => {
     }
   };
 
-  const validKey = (userData) => {
+  const validKey = userData => {
     //Correct hair color and skin color
     if (typeof userData.hairColor !== 'number') {
       userData.hairColor = Number('0x' + userData.hairColor.slice(1));
@@ -225,12 +225,17 @@ export const JoinOrCreateForm = (props) => {
           onChange={handleChange}
         />
       </div>
-      <button type="submit" disabled={!userData.name || !userData.roomKey}>
-        {props.formType}
-      </button>
-      <button type="button" onClick= {() => props.clickBack('')}>
-        Back
-      </button>
+      <div
+        className="submit-buttons"
+        style={{ display: 'flex', justifyContent: 'space-between' }}
+      >
+        <button type="submit" disabled={!userData.name || !userData.roomKey}>
+          {props.formType}
+        </button>
+        <button type="button" className='back-button' onClick={() => props.clickBack('')}>
+          Back
+        </button>
+      </div>
       {/* Error div that wil show if err (state) is not an empty string */}
       {err && <p style={{ color: 'red' }}>{err}</p>}
     </form>

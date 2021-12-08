@@ -193,7 +193,7 @@ form {
   padding: 1rem;
 }
 
-input {
+input, select {
   margin: 1rem;
   font-family: 'Noto Sans', sans-serif;
   color: #143e88;
@@ -204,11 +204,6 @@ label {
   color: #143e88;
 }
 
-select {
-  margin-left: 3rem;
-  font-family: 'Noto Sans', sans-serif;
-  color: #143e88;
-}
 
 form button {
   display: inline-flex;
@@ -229,7 +224,20 @@ form button {
 form button:hover {
   color: white;
   background-color: #143e88;
+
 }
+
+.back-button {
+  border: 0.1em solid salmon;
+  color: salmon;
+}
+
+.back-button:hover {
+  color: white;
+  background-color: salmon;
+}
+
+
 @media all and (max-width: 30em) {
    .buttons button {
     display: block;
