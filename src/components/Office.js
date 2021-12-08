@@ -107,7 +107,6 @@ const Office = () => {
         console.log(window.peer);
         // window.peer = undefined;
       }
-
       let allWebCams = document.querySelectorAll(`video`);
       if (allWebCams) allWebCams.forEach(video => video.remove());
 

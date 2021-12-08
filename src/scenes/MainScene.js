@@ -171,11 +171,10 @@ export default class MainScene extends Phaser.Scene {
     scene.physics.add.collider(scene.sprite, officeLayer);
   }
   addCoworkers(scene, employeeInfo) {
-    const coworker = new Employee(scene, employeeInfo);
+    employeeInfo.x += 70;
+    employeeInfo.y += 100;
 
-    // const coworker = scene.physics.add
-    //   .sprite(employeeInfo.x + 40, employeeInfo.y + 40, employeeInfo.avatar)
-    //   .setVisible(true);
+    const coworker = new Employee(scene, employeeInfo);
 
     coworker.employeeId = employeeInfo.employeeId;
     scene.coworkers.add(coworker);
