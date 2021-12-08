@@ -95,15 +95,26 @@ video {
   flex-direction: column;
 }
 
+/* name and logo banner */
+.companyName {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
 .companyName p {
   align-items: center;
   font-family: 'EB Garamond', serif;
-  font-size: 1.5rem;
+  font-size: 1.1rem;
   margin-top: -2rem;
-  padding-bottom: 1rem;
+  padding-bottom: 0.9rem;
   color: #143e88;
 }
 
+h6 {
+  font-family: 'Press Start 2P', cursive;
+  color: #143e88;
+}
 .nameLogo {
   display: flex;
   flex-direction: row;
@@ -123,15 +134,6 @@ video {
   height: 4rem;
   margin-left: 0;
   margin-right: 0;
-}
-
-/* create and join buttons */
-.buttons {
-  display: flex;
-  flex-direction: row;
-  align-items: baseline;
-  padding-top: 8rem;
-  margin-left: 4rem;
 }
 
 .noButtons {
@@ -473,7 +475,6 @@ form button:hover {
 }
 /* name display on join */
 .nameJoined {
-
   background-color: #4d9de0;
   padding: 10px 10px;
   border-radius: 10%;

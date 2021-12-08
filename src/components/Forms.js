@@ -5,7 +5,6 @@ import { socket } from '../socket';
 const initialUserData = {
   name: '',
   roomKey: '',
-  officeType: '',
   hairStyle: 'hairStyle1',
   outfit: 'outfit1',
   skinColor: '#f0ddd7',
@@ -142,10 +141,10 @@ export const JoinOrCreateForm = (props) => {
           value={userData.hairStyle}
           onChange={handleChange}
         >
-          <option value="hairStyle1">Short - Spiked front bangs</option>
+          <option value="hairStyle1">short - spiked front bangs</option>
           {/* <option value="hairStyle2">2</option>
           <option value="hairStyle3">3</option> */}
-          <option value="hairStyle4">Shoulder length - bangs</option>
+          <option value="hairStyle4">medium length length - bangs</option>
           <option value="hairStyle5">Justin Bieber</option>
           {/* <option value="hairStyle6">6</option> */}
           <option value="hairStyle7">medium length - side part</option>
@@ -158,13 +157,13 @@ export const JoinOrCreateForm = (props) => {
           {/* <option value="hairStyle14">14</option>
           <option value="hairStyle15">15</option>
           <option value="hairStyle16">16</option> */}
-          <option value="hairStyle17">boufant</option>
+          {/* <option value="hairStyle17">boufant</option> */}
           <option value="hairStyle18">shaggy</option>
           <option value="hairStyle19">short- polished</option>
           <option value="hairStyle20">bowl cut</option>
           {/* <option value="hairStyle21">21</option>
           <option value="hairStyle22">22</option> */}
-          <option value="hairStyle23">short bob-bangs</option>
+          <option value="hairStyle23">short bob - bangs</option>
           {/* <option value="hairStyle24">24</option> */}
           <option value="hairStyle25">short bob - no bangs</option>
           {/* <option value="hairStyle26">26</option> */}
@@ -173,8 +172,9 @@ export const JoinOrCreateForm = (props) => {
           <option value="hairStyle29">short - spiky</option>
         </select>
       </div>
+      <br />
       <div>
-        <label htmlFor="outfit">Outfit:</label>
+        <label htmlFor="outfit">Outfit Choice:</label>
         <select
           name="outfit"
           id="outfit"
@@ -212,17 +212,6 @@ export const JoinOrCreateForm = (props) => {
           onChange={handleChange}
         />
         <label htmlFor="hairColor">Hair Color</label>
-      </div>
-
-      <div>
-        <label htmlFor="officeType">Office Type</label>
-        <input
-          type="text"
-          name="officeType"
-          id="officeType"
-          value={userData.officeType}
-          onChange={handleChange}
-        />
       </div>
       <button type="submit" disabled={!userData.name || !userData.roomKey}>
         {props.formType}

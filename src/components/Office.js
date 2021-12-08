@@ -6,7 +6,6 @@ import runWebRTC from '../webcam';
 import { hidePanels, showPanels } from '../helperFunctions';
 import NameDisplay from './NameDisplay';
 
-
 const Office = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [mapOpen, setMapOpen] = useState(false);
@@ -47,7 +46,7 @@ const Office = () => {
     }
   };
 
-  const togglePopup = event => {
+  const togglePopup = (event) => {
     let id = event.target.id;
     switch (id) {
       case 'how-to':
@@ -78,7 +77,7 @@ const Office = () => {
     //starts peerjs code for video
     (async () => {
       if (!window.peer) {
-        console.log('need to make peer')
+        console.log('need to make peer');
         window.peer = await makePeer(socket.id);
       }
       await runWebRTC(socket, window.peer);
@@ -86,7 +85,7 @@ const Office = () => {
     // when the user refreshes the page, make them join the room again if key exists
     if (userData && userData.roomKey) {
       socket.emit('doesKeyExist', userData.roomKey);
-      socket.on('roomExistCheck', exists => {
+      socket.on('roomExistCheck', (exists) => {
         if (exists) {
           socket.emit('joinRoom', userData); //
         } else {
@@ -113,7 +112,7 @@ const Office = () => {
       }
 
       let allWebCams = document.querySelectorAll(`video`);
-      if (allWebCams) allWebCams.forEach(video => video.remove());
+      if (allWebCams) allWebCams.forEach((video) => video.remove());
 
       // leave the room when going office page unmounts
       socket.emit('leaveRoom', userData.roomKey);
@@ -189,16 +188,13 @@ const Office = () => {
         <Popup
           content={
             <>
-              <img
-                src="assets/potentialcropped.png"
-                style={{ width: '100%' }}
-              ></img>
+              <img src="assets/mapcrop.png" style={{ width: '100%' }}></img>
             </>
           }
           handleClose={togglePopup}
         />
       )}
-        <NameDisplay/>
+      <NameDisplay />
     </div>
   );
 };

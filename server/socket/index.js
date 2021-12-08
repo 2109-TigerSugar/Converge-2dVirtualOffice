@@ -19,16 +19,9 @@ module.exports = (io) => {
     // socket.broadcast.emit('someoneJoined', socket.id);
 
     socket.on('joinRoom', (userData) => {
-      const {
-        name,
-        roomKey,
-        officeType,
-        hairStyle,
-        outfit,
-        skinColor,
-        hairColor,
-      } = userData;
-      console.log(userData)
+      const { name, roomKey, hairStyle, outfit, skinColor, hairColor } =
+        userData;
+      console.log(userData);
       if (socket.rooms.has(roomKey) || !officeRooms[roomKey]) {
         return;
       }
@@ -37,8 +30,8 @@ module.exports = (io) => {
 
       roomInfo.employees[socket.id] = {
         rotation: 0,
-        x: 6300,
-        y: 4500,
+        x: 4700,
+        y: 6200,
         employeeId: socket.id,
         name,
         roomKey,
