@@ -1,6 +1,5 @@
 import Peer from 'peerjs';
 
-
 // to show and hide webcam panels and game panels
 export const hidePanels = () => {
   document.getElementById('mygame').style.display = 'none';
@@ -32,18 +31,22 @@ export const createPeer = socketId => {
 
 export const addVideo = (stream, hide, socketId, name = '') => {
   const webcamPanel = document.querySelector('.webcam-panel');
+  const webcamController = document.querySelector('.webcam-controller');
+
   const videoElement = document.createElement('video');
   videoElement.addEventListener('loadedmetadata', function (e) {
     videoElement.play();
   });
-
   videoElement.srcObject = stream;
   videoElement.setAttribute('id', socketId);
   videoElement.muted = true;
-
   webcamPanel.appendChild(videoElement);
-  // videoElement.srcObject.getAudioTracks()[0].enabled = false;
+
   videoElement.style.display = hide ? 'none' : 'inline';
   if (hide) console.log('coworker stream created', stream);
-  else console.log('my stream created', stream);
+  else {
+    // show the controller my stream is loaded
+    webcamController.style.display = 'flex';
+    console.log('my stream created', stream);
+  }
 };

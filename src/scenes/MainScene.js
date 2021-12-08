@@ -160,7 +160,6 @@ export default class MainScene extends Phaser.Scene {
     //the line below adds the sprite to the game map.
     scene.sprite = new Employee(scene, employeeInfo);
     // .setCollideWorldBounds(true);
-    console.log('my avatar made', scene.sprite);
 
     //Cameraplsworkthx
     const camera = this.cameras.main;

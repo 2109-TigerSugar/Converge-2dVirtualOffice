@@ -2,7 +2,12 @@ import Peer from 'peerjs';
 import { addVideo, createPeer } from './helperFunctions';
 
 const runWebRTC = async (socket, myName) => {
-  const webcamController = document.querySelector('.webcam-controller');
+
+  socket.on('newEmployee', ({ employeeInfo }) => {
+    if(window.peer === undefined) {
+      console.log('missed calls', employeeInfo.employeeId);
+    }
+  });
 
   const callList = {};
   let stream;
@@ -28,16 +33,13 @@ const runWebRTC = async (socket, myName) => {
   //Build our webcam
   addVideo(stream, false, socket.id, myName);
 
-  // show the controller my stream is loaded
-  webcamController.style.display = 'flex';
-
   //Dakota: Setup new peer object! Yay!
   const peer = createPeer(socket.id);
 
   // when peer is open, make a call and receive a call
   peer.on('open', id => {
-    console.log('My peer ID is: ' + id);
     window.peer = peer;
+    console.log('My peer ID is: ' + id);
 
     //Answer calls :)
     peer.on('call', call => {
@@ -57,8 +59,10 @@ const runWebRTC = async (socket, myName) => {
       const socketId = employeeInfo.employeeId;
       let count = 0;
       let timer = setInterval(() => {
+        // call the new employee
         let call = peer.call(socketId, stream);
-        if (call || count >= 10) { //will only call 10 times max
+        if (call || count >= 10 || peer.connections[socketId]) {
+          //will only call 10 times max
           clearInterval(timer);
           call.on('stream', remoteStream => {
             if (callList[socketId] === undefined) {
@@ -74,6 +78,7 @@ const runWebRTC = async (socket, myName) => {
       }, 500);
     });
 
+    // when someone leave the office, remove that video
     socket.on('coworker disconnected', ({ coworkerId: socketId }) => {
       let videoToRemove = document.querySelectorAll(`#${CSS.escape(socketId)}`);
       videoToRemove.forEach(video => video.remove());

@@ -11,6 +11,9 @@ socket.on('connect', () => {
   // console.log('buttons shown');
   if (window.location.pathname === '/office') {
     window.location.replace(window.location.origin);
-  }else window.game = new Game();
-
+  } else window.game = new Game();
 });
+
+// socket.on('newEmployee', ({ employeeInfo }) => {
+//   console.log('current peer', window.peer);
+// });
