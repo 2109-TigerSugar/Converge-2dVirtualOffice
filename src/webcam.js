@@ -53,7 +53,7 @@ const runWebRTC = async (socket, myName) => {
 
     //Call new user when they join
     socket.on('newEmployee', ({ employeeInfo }) => {
-      const {socketId} = employeeInfo.employeeId;
+      const socketId = employeeInfo.employeeId;
       let count = 0;
       let timer = setInterval(() => {
         // call the new employee
@@ -63,7 +63,7 @@ const runWebRTC = async (socket, myName) => {
           clearInterval(timer);
           call.on('stream', remoteStream => {
             if (callList[socketId] === undefined) {
-              addVideo(remoteStream, true, socketId, employeeInfo);
+              addVideo(remoteStream, true, socketId);
               callList[socketId] = true;
             }
           });
