@@ -15,6 +15,9 @@ const Navbar = () => {
       <div className="navLink">
         <Link to="/about">About</Link>
       </div>
+      <div className="navLink">
+        <Link to="/team">Team</Link>
+      </div>
     </nav>
   );
 };

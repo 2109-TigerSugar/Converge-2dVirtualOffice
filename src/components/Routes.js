@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router';
 import About from './About';
 import LandingPage from './LandingPage';
 import Office from './Office';
+import Team from './Team';
 
 const RouteContent = () => {
   return (
@@ -11,6 +12,7 @@ const RouteContent = () => {
         <Route exact path="/" element={<LandingPage />} />
         <Route exact path="/about" element={<About />} />
         <Route exact path="/office" element={<Office />} />
+        <Route exact path="/team" element={<Team />} />
       </Routes>
     </div>
   );
