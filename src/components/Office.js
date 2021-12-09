@@ -82,7 +82,9 @@ const Office = () => {
       socket.emit('doesKeyExist', userData.roomKey);
       socket.once('roomExistCheck', exists => {
         if (exists) {
-          socket.emit('joinRoom', userData); //
+          setTimeout(() => {
+            socket.emit('joinRoom', userData); //
+          }, 100);
         } else {
           alert(
             `room ${userData.roomKey} is invalid. Please join with another key.`
