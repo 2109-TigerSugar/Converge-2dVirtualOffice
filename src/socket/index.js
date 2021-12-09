@@ -6,12 +6,14 @@ export const socket = io();
 socket.on('connect', () => {
   console.log('socket connection ', socket.id);
 
-  let buttons = document.querySelector('.buttonsAndForm');
-  if (buttons) buttons.style.display = 'flex';
   // console.log('buttons shown');
   if (window.location.pathname === '/office') {
     window.location.replace(window.location.origin);
   } else window.game = new Game();
+
+  let buttons = document.querySelector('.buttonsAndForm');
+  if (buttons) buttons.style.display = 'flex';
+
 });
 
 // socket.on('newEmployee', ({ employeeInfo }) => {

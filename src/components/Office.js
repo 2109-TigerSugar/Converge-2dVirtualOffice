@@ -67,8 +67,7 @@ const Office = () => {
   };
 
   useEffect(() => {
-    const leftMargin = showPanels();
-    console.log(leftMargin);
+    showPanels();
 
     //starts peerjs code for video
     (async () => {
