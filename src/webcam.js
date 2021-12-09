@@ -1,4 +1,5 @@
 import Peer from 'peerjs';
+import adapter from 'webrtc-adapter';
 import { addVideo, createPeer } from './helperFunctions';
 
 const runWebRTC = async (socket, myName) => {
@@ -17,11 +18,11 @@ const runWebRTC = async (socket, myName) => {
     console.log('stream exists', stream);
   } else {
     //Dakota: Ask for permission to use webcam :) We await because we have no clue when they will accept it!
-    navigator.getUserMedia =
-      navigator.mediaDevices.getUserMedia ||
-      navigator.webkitGetUserMedia ||
-      navigator.mozGetUserMedia;
-    stream = await navigator.getUserMedia({
+    // navigator.getUserMedia =
+    //   navigator.mediaDevices.getUserMedia ||
+    //   navigator.webkitGetUserMedia ||
+    //   navigator.mozGetUserMedia;
+    stream = await navigator.mediaDevices.getUserMedia({
       video: true,
       audio: true,
     });
