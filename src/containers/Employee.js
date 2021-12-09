@@ -97,8 +97,15 @@ class Employee extends Phaser.GameObjects.Container {
 }
 
 function getChildren(scene, employeeInfo) {
-  let { hairStyle, hairColor, skinColor, eyeColor, outfit, name,  } =
-    employeeInfo;
+  let {
+    hairStyle,
+    hairColor,
+    skinColor,
+    eyeColor,
+    proximityColor,
+    outfit,
+    name,
+  } = employeeInfo;
 
   //body (applying tint to the one spritesheet)
   const body = scene.add.sprite(0, 0, 'employeeBody');
@@ -123,7 +130,7 @@ function getChildren(scene, employeeInfo) {
     .setBackgroundColor('#000000');
 
   const circle = scene.add.circle(0, 0, 160);
-  circle.setStrokeStyle(2,0xff6699)
+  circle.setStrokeStyle(2, proximityColor);
   circle.employeeId = employeeInfo.employeeId;
 
   //return all sprites in children array

@@ -23,6 +23,7 @@ module.exports = io => {
         outfit,
         skinColor,
         hairColor,
+        proximityColor,
       } = userData;
       if (socket.rooms.has(roomKey) || !officeRooms[roomKey]) {
         return;
@@ -41,6 +42,7 @@ module.exports = io => {
         outfit,
         skinColor,
         hairColor,
+        proximityColor,
         eyeColor: 0x000000,
       };
 
