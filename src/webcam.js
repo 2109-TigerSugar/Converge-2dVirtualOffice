@@ -45,7 +45,7 @@ const runWebRTC = async (socket, myName) => {
       //Got called and answered so build webcam panel
       call.on('stream', remoteStream => {
         if (callList[call.peer] === undefined) {
-          addVideo(remoteStream, true, call.peer, remoteStream.name);
+          addVideo(remoteStream, true, call.peer);
           callList[call.peer] = true;
         }
       });
@@ -53,7 +53,7 @@ const runWebRTC = async (socket, myName) => {
 
     //Call new user when they join
     socket.on('newEmployee', ({ employeeInfo }) => {
-      const socketId = employeeInfo.employeeId;
+      const {socketId} = employeeInfo.employeeId;
       let count = 0;
       let timer = setInterval(() => {
         // call the new employee
@@ -63,7 +63,7 @@ const runWebRTC = async (socket, myName) => {
           clearInterval(timer);
           call.on('stream', remoteStream => {
             if (callList[socketId] === undefined) {
-              addVideo(remoteStream, true, socketId, remoteStream.name);
+              addVideo(remoteStream, true, socketId, employeeInfo);
               callList[socketId] = true;
             }
           });

@@ -94,7 +94,7 @@ export default class MainScene extends Phaser.Scene {
     // LEAVE ROOM (not socket disconnection)
     this.socket.on('leftRoom', arg => {
       //remove all coworker avatars
-      this.sprite.destroy();
+      if (this.sprite) this.sprite.destroy();
       scene.coworkers.clear(true, true);
     });
 

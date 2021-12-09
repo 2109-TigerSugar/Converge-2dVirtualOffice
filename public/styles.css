@@ -23,7 +23,7 @@ body {
   position: absolute;
   margin-left: 10vw;
   width: 80vw;
-  height: 13vh;
+  height: 10vh;
   top: 140px;
   justify-content: center;
   z-index: 1;
@@ -369,7 +369,7 @@ form button:hover {
   display: flex;
   align-items: center;
   padding: 10px 5px;
-  top: 760px;
+  top: 730px;
   left: 100px;
   justify-content: center;
   width: 90%;
@@ -379,6 +379,15 @@ form button:hover {
 #header img {
   width: 52px;
   height: 52px;
+}
+
+#header section {
+  display: inherit;
+  color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 20px;
+  background-color: rgba(74, 74, 74, 0.831);
+  padding: 0 1rem;
 }
 
 /*nav button styling*/
@@ -391,6 +400,7 @@ form button:hover {
   justify-content: right;
   text-transform: uppercase;
   margin: 0 0.25rem;
+  /* height: 1rem */
 }
 
 #nav ul li a {
@@ -426,6 +436,28 @@ form button:hover {
   box-shadow: -3px 3px 3px #c4a31c;
   font-family: monospace;
   font-size: 20px;
+}
+
+.tooltipText {
+  visibility: hidden;
+  background-color: rgba(24, 24, 24, 0.879);
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 3px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+
+  width: 120px;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+}
+
+.tooltip:hover .tooltipText {
+  visibility: visible;
 }
 
 /*button click hover effect*/
@@ -465,11 +497,18 @@ form button:hover {
   padding: 0.5rem;
   /* background-color: var(--main-darklg); */
   border-radius: 15px;
-  margin: 0 1rem;
+  font-family: monospace;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.webcam-controller p {
+  padding-right: 1rem;
+  font-size: 1rem;
 }
 
 .controller_buttons {
-  /* display: flex;
+  display: flex;
   justify-content: center;
   align-items: center;
   background-color: var(--primary-color);
@@ -478,18 +517,13 @@ form button:hover {
   color: var(--main-light);
   font-size: 1.2rem;
   width: 50px;
-  margin: 0 0.5rem;
-  opacity: 0.75; */
-  background-color: #e15554;
-  padding: 10px 10px;
-  border-radius: 10%;
-  box-shadow: -3px 3px 3px #da2f2f;
-  font-family: monospace;
-  font-size: 20px;
+  /* background-color: #e15554; */
+  /* padding: 10px 10px; */
+  /* border-radius: 10%; */
 }
 
 .controller_buttons:hover {
-  opacity: 1;
+  transform: scale(0.9, 0.9);
 }
 /* name display on join */
 .nameJoined {
