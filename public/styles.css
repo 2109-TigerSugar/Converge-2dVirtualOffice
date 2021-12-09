@@ -462,10 +462,14 @@ form button:hover {
 
 /*****team*****/
 .team {
-  margin-top: 100px;
+  margin-top: 2vh;
   margin-left: 5vw;
   text-align: center;
   font-family: monospace;
+}
+
+#team-header {
+  font-size: 30px;
 }
 
 #team-container {
@@ -482,6 +486,15 @@ form button:hover {
   height: 50vh;
   background-color: white;
   box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25);
+}
+
+.team-member > .member-photo {
+  background-color: gray;
+  margin-top: 5%;
+  margin-left: 5%;
+  width: 90%;
+  height: 40%;
+  object-fit: none;
 }
 
 /* webcam controller */
