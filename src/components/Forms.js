@@ -113,6 +113,7 @@ export const JoinOrCreateForm = props => {
           type="text"
           name="name"
           id="name"
+          autoComplete="off"
           value={userData.name}
           onChange={handleChange}
         />
@@ -133,6 +134,7 @@ export const JoinOrCreateForm = props => {
           type="text"
           name="roomKey"
           id="officeKey"
+          autoComplete="off"
           value={userData.roomKey}
           onChange={handleChange}
         />
@@ -144,6 +146,7 @@ export const JoinOrCreateForm = props => {
           id="hairStyle"
           value={userData.hairStyle}
           onChange={handleChange}
+          autoComplete="off"
         >
           <option value="hairStyle1">Short - Spiked front bangs</option>
           {/* <option value="hairStyle2">2</option>
@@ -183,6 +186,7 @@ export const JoinOrCreateForm = props => {
           id="outfit"
           value={userData.outfit}
           onChange={handleChange}
+          autoComplete="off"
         >
           <option value="outfit1">aqua shirt/white pants</option>
           <option value="outfit2">grey sweater/white pants</option>
@@ -217,16 +221,6 @@ export const JoinOrCreateForm = props => {
         <label htmlFor="hairColor">Hair Color</label>
       </div>
 
-      {/* <div>
-        <label htmlFor="officeType">Office Type</label>
-        <input
-          type="text"
-          name="officeType"
-          id="officeType"
-          value={userData.officeType}
-          onChange={handleChange}
-        />
-      </div> */}
       <div
         className="submit-buttons"
         style={{ display: 'flex', justifyContent: 'space-between' }}

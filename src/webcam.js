@@ -18,10 +18,6 @@ const runWebRTC = async (socket, myName) => {
     console.log('stream exists', stream);
   } else {
     //Dakota: Ask for permission to use webcam :) We await because we have no clue when they will accept it!
-    // navigator.getUserMedia =
-    //   navigator.mediaDevices.getUserMedia ||
-    //   navigator.webkitGetUserMedia ||
-    //   navigator.mozGetUserMedia;
     stream = await navigator.mediaDevices.getUserMedia({
       video: true,
       audio: true,
