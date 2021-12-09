@@ -1,3 +1,5 @@
+import adapter from 'webrtc-adapter';
+
 const runWebRTC = async (socket, myName) => {
   const webcamPanel = document.querySelector('.webcam-panel');
   const webcamController = document.querySelector('.webcam-controller');
@@ -8,10 +10,7 @@ const runWebRTC = async (socket, myName) => {
   if (window.myStream) stream = window.myStream;
   else {
     //Dakota: Ask for permission to use webcam :) We await because we have no clue when they will accept it!
-    navigator.getUserMedia =
-      navigator.mediaDevices.getUserMedia ||
-      navigator.webkitGetUserMedia ||
-      navigator.mozGetUserMedia;
+
     stream = await navigator.mediaDevices.getUserMedia({
       video: true,
       audio: true,
