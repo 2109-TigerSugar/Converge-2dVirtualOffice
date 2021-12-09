@@ -26,7 +26,7 @@ const Team = () => {
     name: 'Hyo Kim',
     linkedIn: 'https://www.linkedin.com/in/hyo-kim/',
     github: 'https://github.com/hik010',
-    avatarSrc: 'assets/lydia-avatar.png',
+    avatarSrc: 'assets/hyo-avatar.png',
   };
 
   const dakota = {
