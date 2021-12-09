@@ -63,7 +63,7 @@ const runWebRTC = async (socket, myName) => {
           clearInterval(timer);
           call.on('stream', remoteStream => {
             if (callList[socketId] === undefined) {
-              addVideo(remoteStream, true, socketId);
+              addVideo(remoteStream, true, socketId, employeeInfo.name);
               callList[socketId] = true;
             }
           });
@@ -77,7 +77,7 @@ const runWebRTC = async (socket, myName) => {
 
     // when someone leave the office, remove that video
     socket.on('coworker disconnected', ({ coworkerId: socketId }) => {
-      let videoToRemove = document.querySelectorAll(`#${CSS.escape(socketId)}`);
+      let videoToRemove = document.querySelectorAll(`div#${CSS.escape(socketId)}`);
       videoToRemove.forEach(video => video.remove());
       delete callList[socketId];
     });

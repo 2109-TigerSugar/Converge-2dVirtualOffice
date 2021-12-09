@@ -194,17 +194,22 @@ export default class MainScene extends Phaser.Scene {
     if (overlapping) {
       this.overlappingSprites[coworker.employeeId] = coworker;
       const showVideo = document.querySelector(
-        `#${CSS.escape(coworker.employeeId)}`
+        `div#${CSS.escape(coworker.employeeId)}`
       );
+      const nameElement = document.querySelector(
+        `div#${CSS.escape(coworker.employeeId)} span`
+      );
+      // console.log(nameElement);
       if (showVideo) {
-        showVideo.style.display = 'inline';
+        showVideo.style.display = 'flex';
         showVideo.muted = false;
+        nameElement.innerText === '' ? nameElement.innerText = coworker.employeeName : null;
       }
     } else {
       //if not overlapping -> remove from overlappingSprite and hide video
       delete this.overlappingSprites[coworker.employeeId];
       const hideVideo = document.querySelector(
-        `#${CSS.escape(coworker.employeeId)}`
+        `div#${CSS.escape(coworker.employeeId)}`
       );
       if (hideVideo) {
         hideVideo.style.display = 'none';

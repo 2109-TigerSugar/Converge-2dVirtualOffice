@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { socket } from '../socket';
 
-const NameList = () => {
+const NameList = ({roomKey}) => {
   const [currentEmployees, setCurrentEmployees] = useState([]);
 
 
@@ -39,7 +39,7 @@ const NameList = () => {
 
   return (
     <div className="nameList">
-      <p className="nameListTitle">In Office</p>
+      <p className="nameListTitle">Office: {roomKey}</p>
       {currentEmployees.map((name, index) => {
         return <p key={index}>{name}</p>;
       })}

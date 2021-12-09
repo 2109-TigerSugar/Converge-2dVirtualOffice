@@ -104,7 +104,7 @@ const Office = () => {
       if (window.peer) {
         window.peer.destroy();
       }
-      let allWebCams = document.querySelectorAll(`video`);
+      let allWebCams = document.querySelectorAll(`div.peerjs-video`);
       if (allWebCams) allWebCams.forEach(video => video.remove());
 
       // leave the room when going office page unmounts
@@ -198,7 +198,7 @@ const Office = () => {
       )}
       <div className="top-panel">
         <NameDisplay />
-        <NameList />
+        <NameList roomKey={userData.roomKey}/>
       </div>
     </div>
   );

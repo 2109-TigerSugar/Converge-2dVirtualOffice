@@ -35,6 +35,19 @@ video {
   margin: 0 0.5rem;
 }
 
+.webcam-panel span {
+  position: absolute;
+  left: 10px;
+  top: 3px;
+  font-size: small;
+
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 10px;
+  background-color: rgba(55, 55, 55, 0.9);
+  padding: 0 0.5rem;
+  color: rgb(244, 244, 244)
+}
+
 #mygame {
   margin-top: 3rem;
   z-index: -1;
@@ -388,7 +401,7 @@ form button:hover {
   color: white;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   border-radius: 20px;
-  background-color: rgba(74, 74, 74, 0.831);
+  background-color: rgba(55, 55, 55, 0.9);
   padding: 0 1rem;
 }
 
