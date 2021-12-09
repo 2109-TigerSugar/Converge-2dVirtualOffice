@@ -462,7 +462,7 @@ form button:hover {
 
 /*****team*****/
 .team {
-  margin-top: 2vh;
+  margin-top: 8vh;
   margin-left: 5vw;
   text-align: center;
   font-family: monospace;
@@ -470,6 +470,7 @@ form button:hover {
 
 #team-header {
   font-size: 30px;
+  margin-bottom: 2vh;
 }
 
 #team-container {
@@ -483,7 +484,7 @@ form button:hover {
   margin-top: 1%;
   margin-bottom: 1%;
   width: 20%;
-  height: 50vh;
+  height: 55vh;
   background-color: white;
   box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25);
 }
@@ -495,6 +496,21 @@ form button:hover {
   width: 90%;
   height: 40%;
   object-fit: none;
+}
+
+.team-member > .member-name {
+  margin-top: 2%;
+  font-size: 24px;
+}
+
+.team-member > .member-social-container {
+  display: flex;
+}
+
+.member-avatar {
+  position: relative;
+  top: 15%;
+  left: 40%;
 }
 
 /* webcam controller */
