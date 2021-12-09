@@ -230,6 +230,7 @@ export const JoinOrCreateForm = props => {
         />
       </div>
       <div>
+        <label htmlFor="proximityColor">Proximity Color</label>
         <input
           type="color"
           id="proximityColor"
@@ -237,7 +238,6 @@ export const JoinOrCreateForm = props => {
           value={userData.proximityColor}
           onChange={handleChange}
         />
-        <label htmlFor="proximityColor">Proximity Color</label>
       </div>
 
       <div className="submit-buttons">
