@@ -13,7 +13,8 @@ const TeamMember = props => {
         <img src={imageSrc} />
       </div>
       <div className="member-name">FirstName LastName</div>
-
+      <a href="#" className="fa fa-linkedin" />
+      <a href="#" className="fa fa-github" />
       <div className="member-avatar">
         <img src="assets/kelsey-avatar.png" />
       </div>
