@@ -460,6 +460,29 @@ form button:hover {
   font-size: 30px;
 }
 
+/*****team*****/
+.team {
+  margin-top: 100px;
+  margin-left: 10vw;
+  text-align: center;
+  font-family: monospace;
+}
+
+#team-container {
+  display: flex;
+  justify-content: space-evenly;
+  width: 80vw;
+  background-color: gray;
+}
+
+.team-member {
+  margin-top: 1%;
+  margin-bottom: 1%;
+  width: 20%;
+  height: 50vh;
+  background-color: white;
+}
+
 /* webcam controller */
 .webcam-controller {
   padding: 0.5rem;
