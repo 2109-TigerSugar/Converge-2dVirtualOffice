@@ -24,6 +24,9 @@ const NameDisplay = () => {
   }, []);
 
 
+
+
+
   // Timer to remove message
   useEffect(() => {
     const timer = setTimeout(() => {
