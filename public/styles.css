@@ -503,10 +503,6 @@ form button:hover {
   font-size: 24px;
 }
 
-.team-member > .member-social-container {
-  display: flex;
-}
-
 .member-avatar {
   position: relative;
   top: 15%;

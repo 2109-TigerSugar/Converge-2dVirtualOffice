@@ -14,7 +14,6 @@ const TeamMember = props => {
       </div>
       <div className="member-name">FirstName LastName</div>
 
-      <div className="member-social"></div>
       <div className="member-avatar">
         <img src="assets/kelsey-avatar.png" />
       </div>
