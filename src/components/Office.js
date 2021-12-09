@@ -196,8 +196,10 @@ const Office = () => {
           handleClose={togglePopup}
         />
       )}
-      <NameDisplay />
-      <NameList />
+      <div className="top-panel">
+        <NameDisplay />
+        <NameList />
+      </div>
     </div>
   );
 };

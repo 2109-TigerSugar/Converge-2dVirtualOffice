@@ -45,7 +45,7 @@ const NameList = () => {
 
   return (
     <div className="nameList">
-       <p className="nameListTitle">Who's in the Office?</p>
+       <p className="nameListTitle">In Office</p>
       {currentEmployees.map((name, index) => {
       return (
         <p key={index}>

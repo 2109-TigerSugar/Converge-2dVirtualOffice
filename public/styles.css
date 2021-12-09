@@ -23,7 +23,7 @@ body {
   position: absolute;
   margin-left: 10vw;
   width: 80vw;
-  height: 10vh;
+  height: 8vh;
   top: 140px;
   justify-content: center;
   z-index: 1;
@@ -525,11 +525,18 @@ form button:hover {
 .controller_buttons:hover {
   transform: scale(0.9, 0.9);
 }
+
+/* top panels */
+/* .top-panel {
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+} */
+
 /* name display on join */
 .nameJoined {
   background-color: #4d9de0;
-  padding: 10px 10px;
-  border-radius: 10%;
+  padding: 5px;
   box-shadow: -3px 3px 3px #2f8dda;
   font-family: monospace;
   font-size: 20px;
@@ -539,12 +546,10 @@ form button:hover {
   position: absolute;
   width: 200px;
   height: 30px;
-  top: 150px;
-  left: 400px;
+  top: 140px;
+  left: 410px;
   text-align: center;
   margin-left: 50%;
-  margin-right: 50%;
-  padding-top: 20px;
 }
 
 .background__red {
@@ -553,8 +558,7 @@ form button:hover {
 
 .nameList {
   background-color: #4d9de0;
-  padding: 10px 10px;
-  border-radius: 10%;
+  padding: 5px 3px;
   box-shadow: -3px 3px 3px #2f8dda;
   font-family: monospace;
   font-size: 15px;
@@ -562,13 +566,14 @@ form button:hover {
   color: white;
   border-radius: 7px;
   position: absolute;
-  top: 150px;
-  left: 10px;
-  width: 200px;
+  width: 180px;
+  top: 140px;
+  right: 440px;
   text-align: center;
-  padding-top: 10px;
+  margin-right: 50%;
 }
 
 .nameListTitle {
   font-size: 20px;
+
 }
