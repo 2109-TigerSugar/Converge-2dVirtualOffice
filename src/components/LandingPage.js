@@ -5,6 +5,7 @@ import { JoinOrCreateForm } from './Forms';
 const LandingPage = () => {
   const [formType, setFormType] = useState('');
   const [isActive, setActive] = useState(true);
+
   hidePanels();
   const handleClick = e => {
     let chosen = e.target.id;

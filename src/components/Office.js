@@ -61,12 +61,13 @@ const Office = () => {
         setMapOpen(false);
         break;
       default:
-        break;
+        break
     }
   };
 
   useEffect(() => {
-    showPanels();
+    const leftMargin = showPanels();
+    console.log(leftMargin);
 
     //starts peerjs code for video
     (async () => {

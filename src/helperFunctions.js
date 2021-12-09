@@ -9,6 +9,7 @@ export const hidePanels = () => {
 export const showPanels = () => {
   document.getElementById('mygame').style.display = 'block';
   document.querySelector('.webcam-panel').style.display = 'flex';
+
 };
 
 // For webcam.js + Peer
