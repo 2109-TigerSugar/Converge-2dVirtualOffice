@@ -16,14 +16,14 @@ const TeamMember = props => {
       <div className="member-name">{name}</div>
       <ul className="member-button-list">
         <li>
-          <a href="#" className="fa fa-linkedin" />
+          <a href={linkedIn} className="fa fa-linkedin" target="_blank" />
         </li>
         <li>
-          <a href="#" className="fa fa-github" />
+          <a href={github} className="fa fa-github" target="_blank" />
         </li>
       </ul>
-      <div className="member-avatar">
-        <img src="assets/kelsey-avatar.png" />
+      <div className="member-avatar no-mobile">
+        <img src={avatarSrc} />
       </div>
     </div>
   );
