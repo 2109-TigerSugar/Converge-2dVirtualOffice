@@ -122,6 +122,7 @@ export const JoinOrCreateForm = props => {
           type="text"
           name="name"
           id="name"
+          autoComplete="off"
           value={userData.name}
           onChange={handleChange}
         />
@@ -142,17 +143,19 @@ export const JoinOrCreateForm = props => {
           type="text"
           name="roomKey"
           id="officeKey"
+          autoComplete="off"
           value={userData.roomKey}
           onChange={handleChange}
         />
       </div>
       <div>
-        <label htmlFor="hairStyle">Hair Style:</label>
+        <label htmlFor="hairStyle">Hair Style</label>
         <select
           name="hairStyle"
           id="hairStyle"
           value={userData.hairStyle}
           onChange={handleChange}
+          autoComplete="off"
         >
           <option value="hairStyle1">Short - Spiked front bangs</option>
           {/* <option value="hairStyle2">2</option>
@@ -186,12 +189,13 @@ export const JoinOrCreateForm = props => {
         </select>
       </div>
       <div>
-        <label htmlFor="outfit">Outfit:</label>
+        <label htmlFor="outfit">Outfit</label>
         <select
           name="outfit"
           id="outfit"
           value={userData.outfit}
           onChange={handleChange}
+          autoComplete="off"
         >
           <option value="outfit1">aqua shirt/white pants</option>
           <option value="outfit2">grey sweater/white pants</option>
@@ -206,6 +210,7 @@ export const JoinOrCreateForm = props => {
         </select>
       </div>
       <div>
+        <label htmlFor="skinColor">Skin Color</label>
         <input
           type="color"
           id="skinColor"
@@ -213,9 +218,9 @@ export const JoinOrCreateForm = props => {
           value={userData.skinColor}
           onChange={handleChange}
         />
-        <label htmlFor="skinColor">Skin Color</label>
       </div>
       <div>
+        <label htmlFor="hairColor">Hair Color</label>
         <input
           type="color"
           id="hairColor"
@@ -223,7 +228,6 @@ export const JoinOrCreateForm = props => {
           value={userData.hairColor}
           onChange={handleChange}
         />
-        <label htmlFor="hairColor">Hair Color</label>
       </div>
       <div>
         <input
@@ -236,20 +240,7 @@ export const JoinOrCreateForm = props => {
         <label htmlFor="proximityColor">Proximity Color</label>
       </div>
 
-      {/* <div>
-        <label htmlFor="officeType">Office Type</label>
-        <input
-          type="text"
-          name="officeType"
-          id="officeType"
-          value={userData.officeType}
-          onChange={handleChange}
-        />
-      </div> */}
-      <div
-        className="submit-buttons"
-        style={{ display: 'flex', justifyContent: 'space-between' }}
-      >
+      <div className="submit-buttons">
         <button type="submit" disabled={!userData.name || !userData.roomKey}>
           {props.formType}
         </button>

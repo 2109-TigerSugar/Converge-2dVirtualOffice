@@ -5,6 +5,7 @@ import { JoinOrCreateForm } from './Forms';
 const LandingPage = () => {
   const [formType, setFormType] = useState('');
   const [isActive, setActive] = useState(true);
+
   hidePanels();
   const handleClick = e => {
     let chosen = e.target.id;
@@ -14,7 +15,7 @@ const LandingPage = () => {
 
   const clickBack = form => {
     setFormType(form);
-    setActive(true)
+    setActive(true);
   };
 
   return (
@@ -23,8 +24,10 @@ const LandingPage = () => {
     <div className="landing-page">
       <div className="companyName">
         <div className="nameLogo">
-          <img src="../assets/convergemockup.png" />
-          <h1>Converge</h1>
+          <h1>
+            <img src="../assets/convergemockup.png" />
+            Converge
+          </h1>
         </div>
         <p>
           A virtual office where your whole team can converge to work together
@@ -48,7 +51,9 @@ const LandingPage = () => {
           </div>
         </div>
         <div className="joinOrCreateForm">
-          {formType === '' ? null : <JoinOrCreateForm formType={formType} clickBack= {clickBack}/>}
+          {formType === '' ? null : (
+            <JoinOrCreateForm formType={formType} clickBack={clickBack} />
+          )}
         </div>
       </div>
     </div>

@@ -1,17 +1,23 @@
+import Peer from 'peerjs';
+import adapter from 'webrtc-adapter';
+import { addVideo, createPeer } from './helperFunctions';
+
 const runWebRTC = async (socket, myName) => {
-  const webcamPanel = document.querySelector('.webcam-panel');
-  const webcamController = document.querySelector('.webcam-controller');
+
+  socket.on('newEmployee', ({ employeeInfo }) => {
+    if(window.peer === undefined) {
+      console.log('missed calls', employeeInfo.employeeId);
+    }
+  });
 
   const callList = {};
   let stream;
 
-  if (window.myStream) stream = window.myStream;
-  else {
+  if (window.myStream) {
+    stream = window.myStream;
+    console.log('stream exists', stream);
+  } else {
     //Dakota: Ask for permission to use webcam :) We await because we have no clue when they will accept it!
-    navigator.getUserMedia =
-      navigator.mediaDevices.getUserMedia ||
-      navigator.webkitGetUserMedia ||
-      navigator.mozGetUserMedia;
     stream = await navigator.mediaDevices.getUserMedia({
       video: true,
       audio: true,
@@ -24,100 +30,58 @@ const runWebRTC = async (socket, myName) => {
   //Build our webcam
   addVideo(stream, false, socket.id, myName);
 
-  // show the controller my stream is loaded
-  webcamController.style.display = 'flex';
-
   //Dakota: Setup new peer object! Yay!
-  const peer = new Peer(socket.id, {
-    config: {
-      iceServers: [
-        { urls: 'stun:stun.l.google.com:19302' },
-        {
-          url: 'turn:numb.viagenie.ca',
-          credential: 'muazkh',
-          username: 'webrtc@live.com',
-        },
-      ],
-      sdpSemantics: 'unified-plan',
-    },
-  });
+  const peer = createPeer(socket.id);
 
+  // when peer is open, make a call and receive a call
   peer.on('open', id => {
-    console.log('My peer ID is: ' + id);
     window.peer = peer;
-  });
+    console.log('My peer ID is: ' + id);
 
-  // const peer = window.peer;
-
-  //Answer calls :)
-  peer.on('call', call => {
-    //Getting called  so answer
-    call.answer(stream);
-
-    //Got called and answered so build webcam panel
-    call.on('stream', remoteStream => {
-      if (callList[call.peer] === undefined) {
-        addVideo(remoteStream, true, call.peer, remoteStream.name);
-        callList[call.peer] = true;
-      }
-    });
-  });
-
-  // const callPeer = socketId => {
-  //   let call = peer.call(socketId, stream);
-  //   console.log('calling again');
-  //   if (call) {
-  //     call.on('stream', remoteStream => {
-  //       if (callList[socketId] === undefined) {
-  //         addVideo(remoteStream, true, socketId, remoteStream.name);
-  //         callList[socketId] = true;
-  //       }
-  //     });
-  //   } else {
-  //     console.log('call undefined for', socketId);
-  //   }
-  // };
-
-  //Call new user when they join
-  socket.on('newEmployee', ({ employeeInfo }) => {
-    const socketId = employeeInfo.employeeId;
-    let timer = setInterval(() => {
-      let call = peer.call(socketId, stream);
-      if (call) {
-        clearInterval(timer);
-        call.on('stream', remoteStream => {
-          if (callList[socketId] === undefined) {
-            addVideo(remoteStream, true, socketId, remoteStream.name);
-            callList[socketId] = true;
-          }
-        });
-        console.log('timer stopped');
-      } else console.log('calling again, ', socketId);
-    }, 500);
-  });
-
-  socket.on('coworker disconnected', ({ coworkerId: socketId }) => {
-    let videoToRemove = document.querySelectorAll(`#${CSS.escape(socketId)}`);
-    videoToRemove.forEach(video => video.remove());
-    delete callList[socketId];
-  });
-
-  function addVideo(stream, hide, socketId, name = '') {
-    const videoElement = document.createElement('video');
-    videoElement.addEventListener('loadedmetadata', function (e) {
-      videoElement.play();
+    //Answer calls :)
+    peer.on('call', call => {
+      //Getting called  so answer
+      call.answer(stream);
+      //Got called and answered so build webcam panel
+      call.on('stream', remoteStream => {
+        if (callList[call.peer] === undefined) {
+          addVideo(remoteStream, true, call.peer, remoteStream.name);
+          callList[call.peer] = true;
+        }
+      });
     });
 
-    videoElement.srcObject = stream;
-    videoElement.setAttribute('id', socketId);
-    videoElement.muted = true;
+    //Call new user when they join
+    socket.on('newEmployee', ({ employeeInfo }) => {
+      const socketId = employeeInfo.employeeId;
+      let count = 0;
+      let timer = setInterval(() => {
+        // call the new employee
+        let call = peer.call(socketId, stream);
+        if (call || count >= 10 || peer.connections[socketId]) {
+          //will only call 10 times max
+          clearInterval(timer);
+          call.on('stream', remoteStream => {
+            if (callList[socketId] === undefined) {
+              addVideo(remoteStream, true, socketId, remoteStream.name);
+              callList[socketId] = true;
+            }
+          });
+          console.log('timer stopped');
+        } else {
+          console.log(`calling again (${count})`, socketId);
+          count++;
+        }
+      }, 500);
+    });
 
-    webcamPanel.appendChild(videoElement);
-    // videoElement.srcObject.getAudioTracks()[0].enabled = false;
-    videoElement.style.display = hide ? 'none' : 'inline';
-    if (hide) console.log('coworker stream created', stream);
-    else console.log('my stream created', stream);
-  }
+    // when someone leave the office, remove that video
+    socket.on('coworker disconnected', ({ coworkerId: socketId }) => {
+      let videoToRemove = document.querySelectorAll(`#${CSS.escape(socketId)}`);
+      videoToRemove.forEach(video => video.remove());
+      delete callList[socketId];
+    });
+  });
 };
 
 export default runWebRTC;

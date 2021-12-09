@@ -5,13 +5,15 @@ const Navbar = () => {
   return (
     <nav className="links">
       <div className="navLink">
-     <img src="../assets/convergelogowhite.png" />
+        <Link to="/">
+          <img src="../assets/convergelogowhite.png" />{' '}
+        </Link>
       </div>
       <div className="navLink">
-        <Link to='/'>Home</Link>
+        <Link to="/">Home </Link>
       </div>
       <div className="navLink">
-        <Link to='/about'>About</Link>
+        <Link to="/about">About</Link>
       </div>
     </nav>
   );

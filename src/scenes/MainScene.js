@@ -160,7 +160,6 @@ export default class MainScene extends Phaser.Scene {
     //the line below adds the sprite to the game map.
     scene.sprite = new Employee(scene, employeeInfo);
     // .setCollideWorldBounds(true);
-    console.log('my avatar made', scene.sprite);
 
     //Cameraplsworkthx
     const camera = this.cameras.main;
@@ -172,8 +171,8 @@ export default class MainScene extends Phaser.Scene {
     scene.physics.add.collider(scene.sprite, officeLayer);
   }
   addCoworkers(scene, employeeInfo) {
-    employeeInfo.x += 70;
-    employeeInfo.y += 100;
+    employeeInfo.x += 30;
+    employeeInfo.y += 30;
 
     const coworker = new Employee(scene, employeeInfo);
 

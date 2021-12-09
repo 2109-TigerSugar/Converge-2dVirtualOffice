@@ -8,37 +8,12 @@ socket.on('connect', () => {
 
   let buttons = document.querySelector('.buttonsAndForm');
   if (buttons) buttons.style.display = 'flex';
+  // console.log('buttons shown');
   if (window.location.pathname === '/office') {
     window.location.replace(window.location.origin);
-
-  }else window.game = new Game();
-
-  // makes the peer once socket is connected
-  // window.peer = makePeer(socket.id)
+  } else window.game = new Game();
 });
 
-// socket.on('disconnect', () => {
-//   console.log(' i disconnected');
+// socket.on('newEmployee', ({ employeeInfo }) => {
+//   console.log('current peer', window.peer);
 // });
-
-export const makePeer = socketId => {
-  const peer = new Peer(socket.id, {
-    config: {
-      iceServers: [
-        { urls: 'stun:stun.l.google.com:19302' },
-        {
-          url: 'turn:numb.viagenie.ca',
-          credential: 'muazkh',
-          username: 'webrtc@live.com',
-        },
-      ],
-      sdpSemantics: 'unified-plan',
-    },
-  });
-
-  peer.on('open', id => {
-    console.log('My peer ID is: ' + id);
-    // window.peer = peer;
-  });
-  return peer;
-};
