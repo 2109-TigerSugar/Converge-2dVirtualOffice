@@ -45,7 +45,7 @@ const runWebRTC = async (socket, myName) => {
       //Got called and answered so build webcam panel
       call.on('stream', remoteStream => {
         if (callList[call.peer] === undefined) {
-          addVideo(remoteStream, true, call.peer, remoteStream.name);
+          addVideo(remoteStream, true, call.peer);
           callList[call.peer] = true;
         }
       });
@@ -63,7 +63,7 @@ const runWebRTC = async (socket, myName) => {
           clearInterval(timer);
           call.on('stream', remoteStream => {
             if (callList[socketId] === undefined) {
-              addVideo(remoteStream, true, socketId, remoteStream.name);
+              addVideo(remoteStream, true, socketId, employeeInfo.name);
               callList[socketId] = true;
             }
           });
@@ -77,7 +77,7 @@ const runWebRTC = async (socket, myName) => {
 
     // when someone leave the office, remove that video
     socket.on('coworker disconnected', ({ coworkerId: socketId }) => {
-      let videoToRemove = document.querySelectorAll(`#${CSS.escape(socketId)}`);
+      let videoToRemove = document.querySelectorAll(`div#${CSS.escape(socketId)}`);
       videoToRemove.forEach(video => video.remove());
       delete callList[socketId];
     });

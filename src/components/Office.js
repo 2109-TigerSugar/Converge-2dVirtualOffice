@@ -62,13 +62,12 @@ const Office = () => {
         setMapOpen(false);
         break;
       default:
-        break
+        break;
     }
   };
 
   useEffect(() => {
-    const leftMargin = showPanels();
-    console.log(leftMargin);
+    showPanels();
 
     //starts peerjs code for video
     (async () => {
@@ -83,7 +82,9 @@ const Office = () => {
       socket.emit('doesKeyExist', userData.roomKey);
       socket.once('roomExistCheck', exists => {
         if (exists) {
-          socket.emit('joinRoom', userData); //
+          setTimeout(() => {
+            socket.emit('joinRoom', userData); //
+          }, 100);
         } else {
           alert(
             `room ${userData.roomKey} is invalid. Please join with another key.`
@@ -102,10 +103,8 @@ const Office = () => {
       // if (window.peer) window.peer.disconnect();
       if (window.peer) {
         window.peer.destroy();
-        console.log(window.peer);
-        // window.peer = undefined;
       }
-      let allWebCams = document.querySelectorAll(`video`);
+      let allWebCams = document.querySelectorAll(`div.peerjs-video`);
       if (allWebCams) allWebCams.forEach(video => video.remove());
 
       // leave the room when going office page unmounts
@@ -116,45 +115,54 @@ const Office = () => {
   return (
     <div>
       <div id="header">
-        <div className="webcam-controller" style={{ display: 'none' }}>
-          <p>{userData.name}</p>
-          <div
-            id="stopVideo"
-            className="controller_buttons"
-            onClick={toggleVideo}
-          >
-            <i className="fa fa-video-camera"></i>
+        <section>
+          <div className="webcam-controller" style={{ display: 'none' }}>
+            <p>{userData.name}</p>
+            <div
+              id="stopVideo"
+              className="controller_buttons"
+              onClick={toggleVideo}
+            >
+              <i className="fa fa-video-camera"></i>
+            </div>
+            <div
+              id="muteButton"
+              className="controller_buttons"
+              onClick={toggleMute}
+            >
+              <i className="fa fa-microphone"></i>
+            </div>
           </div>
-          <div
-            id="muteButton"
-            className="controller_buttons"
-            onClick={toggleMute}
-          >
-            <i className="fa fa-microphone"></i>
+          <div id="nav">
+            <ul>
+              <li className="button-three tooltip">
+                <a id="how-to" onClick={togglePopup}>
+                  <i className="fas fa-question"></i>
+                  <span className="tooltipText">how to play</span>
+                  {/* {' '}
+                How To Play{' '} */}
+                </a>
+              </li>
+
+              <li className="button-four tooltip">
+                <a id="map" onClick={togglePopup}>
+                  <i className="fas fa-map"></i>
+                  <span className="tooltipText">map</span>
+                  {/* {' '} */}
+                  {/* Map{' '} */}
+                </a>
+              </li>
+
+              <li className="button-two tooltip">
+                <Link to="/">
+                  {' '}
+                  <i className="fas fa-door-open"></i>{' '}
+                  <span className="tooltipText">leave room</span>
+                </Link>
+              </li>
+            </ul>
           </div>
-        </div>
-        <div id="nav">
-          <ul>
-            <li className="button-two">
-              <Link to="/"> Switch Room </Link>
-            </li>
-
-            <li className="button-three">
-              <a id="how-to" onClick={togglePopup}>
-                {' '}
-                How To Play{' '}
-              </a>
-            </li>
-
-            <li className="button-four">
-              <a id="map" onClick={togglePopup}>
-                {' '}
-                Map{' '}
-              </a>
-              {/* <a href="assets/potentialcropped.png">Map</a> */}
-            </li>
-          </ul>
-        </div>
+        </section>
       </div>
 
       {isOpen && (
@@ -188,8 +196,10 @@ const Office = () => {
           handleClose={togglePopup}
         />
       )}
-      <NameDisplay />
-      <NameList />
+      <div className="top-panel">
+        <NameDisplay />
+        <NameList roomKey={userData.roomKey}/>
+      </div>
     </div>
   );
 };

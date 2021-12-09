@@ -94,7 +94,7 @@ export default class MainScene extends Phaser.Scene {
     // LEAVE ROOM (not socket disconnection)
     this.socket.on('leftRoom', arg => {
       //remove all coworker avatars
-      this.sprite.destroy();
+      if (this.sprite) this.sprite.destroy();
       scene.coworkers.clear(true, true);
     });
 
@@ -179,71 +179,6 @@ export default class MainScene extends Phaser.Scene {
     coworker.employeeId = employeeInfo.employeeId;
     scene.coworkers.add(coworker);
   }
-  // Add overlap for a pair of players
-  // addEmployeeOverlap(scene, coworker) {
-  // if (!coworker.collider) {
-  //   coworker.collider = scene.physics.add.overlap(
-  //     scene.sprite.getAt(5),
-  //     coworker.getAt(5),
-  //     scene.employeeOverlap,
-  //     null,
-  //     this
-  //   );
-  // }
-  // }
-  //callback for overlap
-  // employeeOverlap(employee, coworker) {
-  // console.log('overlap');
-  // const employeeBounds = employee.getBounds();
-  // const coworkerBounds = coworker.getBounds();
-  // if (
-  //   !this.overlappingSprites[coworker.employeeId] &&
-  //   Phaser.Geom.Intersects.RectangleToRectangle(
-  //     employeeBounds,
-  //     coworkerBounds
-  //   )
-  // ) {
-  //   console.log(employeeBounds);
-  //   console.log(coworkerBounds);
-  //   this.overlappingSprites[coworker.employeeId] = coworker;
-  //   const showId =
-  //     this.socket.id === coworker.employeeId
-  //       ? employee.employeeId
-  //       : coworker.employeeId;
-  //   const showVideo = document.querySelector(`#${CSS.escape(showId)}`);
-  //   // console.dir(showVideo);
-  //   if (showVideo) {
-  //     showVideo.style.display = 'inline';
-  //     showVideo.muted = false;
-  //   }
-  // }
-  // }
-
-  // checkOverlap(scene) {
-  // const spriteBounds = scene.sprite.getAt(5).getBounds();
-  // Object.keys(scene.overlappingSprites).forEach(employeeId => {
-  //   const coworker = scene.overlappingSprites[employeeId];
-  //   const coworkerBounds = coworker.getAt(5).getBounds();
-  //   // https://phaser.io/examples/v3/view/geom/intersects/get-rectangle-intersection
-  //   // https://photonstorm.github.io/phaser3-docs/Phaser.Geom.Intersects.html
-  //   if (
-  //     !Phaser.Geom.Intersects.RectangleToRectangle(
-  //       spriteBounds,
-  //       coworkerBounds
-  //     )
-  //   ) {
-  //     delete scene.overlappingSprites[employeeId];
-  //     // console.log('NO LONGER OVERLAPPING');
-  //     const hideVideo = document.querySelector(
-  //       `#${CSS.escape(coworker.employeeId)}`
-  //     );
-  //     if (hideVideo) {
-  //       hideVideo.style.display = 'none';
-  //       hideVideo.muted = true;
-  //     }
-  //   }
-  // });
-  // }
 
   testOverlap(scene, coworker) {
     // check if circles on my sprite and coworker's sprite is overlapping
@@ -259,17 +194,22 @@ export default class MainScene extends Phaser.Scene {
     if (overlapping) {
       this.overlappingSprites[coworker.employeeId] = coworker;
       const showVideo = document.querySelector(
-        `#${CSS.escape(coworker.employeeId)}`
+        `div#${CSS.escape(coworker.employeeId)}`
       );
+      const nameElement = document.querySelector(
+        `div#${CSS.escape(coworker.employeeId)} span`
+      );
+      // console.log(nameElement);
       if (showVideo) {
-        showVideo.style.display = 'inline';
+        showVideo.style.display = 'flex';
         showVideo.muted = false;
+        nameElement.innerText === '' ? nameElement.innerText = coworker.employeeName : null;
       }
     } else {
       //if not overlapping -> remove from overlappingSprite and hide video
       delete this.overlappingSprites[coworker.employeeId];
       const hideVideo = document.querySelector(
-        `#${CSS.escape(coworker.employeeId)}`
+        `div#${CSS.escape(coworker.employeeId)}`
       );
       if (hideVideo) {
         hideVideo.style.display = 'none';

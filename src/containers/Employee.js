@@ -15,6 +15,7 @@ class Employee extends Phaser.GameObjects.Container {
     scene.physics.world.enable(this); //now we can use this.body
 
     this.employeeId = employeeInfo.employeeId;
+    this.employeeName = employeeInfo.name;
     this.roomKey = employeeInfo.roomKey;
 
     // All animation setup!

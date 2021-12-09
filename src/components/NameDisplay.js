@@ -2,14 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { socket } from '../socket';
 
 const NameDisplay = () => {
-
   const [names, setNames] = useState([]);
 
   // componentDidMount
-  const updateNames = (data) => {
+  const updateNames = data => {
     const { coworkerName } = data;
-    setNames([...names, coworkerName])
-  }
+    setNames([...names, coworkerName]);
+  };
 
   useEffect(() => {
     socket.on('newEmployee', updateNames);
@@ -17,15 +16,10 @@ const NameDisplay = () => {
     socket.on('coworker disconnected', updateNames);
 
     return () => {
-      socket.off('newEmployee',updateNames)
-      socket.off('coworker disconnected',updateNames)
-    }
-
+      socket.off('newEmployee', updateNames);
+      socket.off('coworker disconnected', updateNames);
+    };
   }, []);
-
-
-
-
 
   // Timer to remove message
   useEffect(() => {
@@ -38,7 +32,7 @@ const NameDisplay = () => {
   }, [names.length])
 
   return (
-    <div>
+    <React.Fragment>
       {names.map((name, index) => {
         return (
           <div className="nameJoined" key={index}>
@@ -46,7 +40,7 @@ const NameDisplay = () => {
           </div>
         );
       })}
-    </div>
+    </React.Fragment>
   );
 };
 

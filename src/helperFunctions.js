@@ -9,7 +9,6 @@ export const hidePanels = () => {
 export const showPanels = () => {
   document.getElementById('mygame').style.display = 'block';
   document.querySelector('.webcam-panel').style.display = 'flex';
-
 };
 
 // For webcam.js + Peer
@@ -34,19 +33,31 @@ export const addVideo = (stream, hide, socketId, name = '') => {
   const webcamPanel = document.querySelector('.webcam-panel');
   const webcamController = document.querySelector('.webcam-controller');
 
+  const videoContainer = document.createElement('div');
   const videoElement = document.createElement('video');
+  const nameElement = document.createElement('span');
+  nameElement.innerText = name;
+  nameElement.classList.add('peerjs-name');
+  videoContainer.appendChild(nameElement);
+
   videoElement.addEventListener('loadedmetadata', function (e) {
     videoElement.play();
   });
+
+  videoContainer.setAttribute('id', socketId);
+  videoContainer.classList.add('peerjs-video');
+  videoContainer.appendChild(videoElement);
+
   videoElement.srcObject = stream;
   videoElement.setAttribute('id', socketId);
   videoElement.muted = true;
-  webcamPanel.appendChild(videoElement);
+  webcamPanel.appendChild(videoContainer);
 
-  videoElement.style.display = hide ? 'none' : 'inline';
+  videoContainer.style.display = hide ? 'none' : 'flex';
+  videoContainer.style.position = 'relative';
   if (hide) console.log('coworker stream created', stream);
   else {
-    // show the controller my stream is loaded
+    // show the controller when my stream is loaded
     webcamController.style.display = 'flex';
     console.log('my stream created', stream);
   }
