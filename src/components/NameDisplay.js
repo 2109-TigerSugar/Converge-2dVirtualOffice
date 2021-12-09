@@ -22,14 +22,14 @@ const NameDisplay = () => {
   }, []);
 
   // Timer to remove message
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     if(names.length != 0) {
-  //       setNames(names.slice(1))
-  //     }
-  //   }, 7000);
-  //   return () => clearTimeout(timer);
-  // }, [names.length])
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if(names.length != 0) {
+        setNames(names.slice(1))
+      }
+    }, 7000);
+    return () => clearTimeout(timer);
+  }, [names.length])
 
   return (
     <React.Fragment>

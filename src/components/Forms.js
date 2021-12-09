@@ -84,17 +84,14 @@ export const JoinOrCreateForm = props => {
     //Correct hair color and skin color
     if (typeof userData.hairColor !== 'number') {
       userData.hairColor = Number('0x' + userData.hairColor.slice(1));
-      console.log('Hair in valid: ' + userData.hairColor);
     }
 
     if (typeof userData.skinColor !== 'number') {
       userData.skinColor = Number('0x' + userData.skinColor.slice(1));
-      console.log('Skin in valid: ' + userData.skinColor);
     }
 
     if (typeof userData.proximityColor !== 'number') {
       userData.proximityColor = Number('0x' + userData.proximityColor.slice(1));
-      console.log('Skin in valid: ' + userData.proximityColor);
     }
 
     // user data is saved on local storage
