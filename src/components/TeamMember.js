@@ -6,15 +6,22 @@ import React from 'react';
 //Custom Avatar
 
 const TeamMember = props => {
-  const { imageSrc, name, linkedIn, github, avatarSrc } = props;
+  console.log(props);
+  const { imageSrc, name, linkedIn, github, avatarSrc } = props.info;
   return (
     <div className="team-member">
       <div className="member-photo">
-        <img src={imageSrc} />
+        <img src={imageSrc || ''} />
       </div>
-      <div className="member-name">FirstName LastName</div>
-      <a href="#" className="fa fa-linkedin" />
-      <a href="#" className="fa fa-github" />
+      <div className="member-name">{name}</div>
+      <ul className="member-button-list">
+        <li>
+          <a href="#" className="fa fa-linkedin" />
+        </li>
+        <li>
+          <a href="#" className="fa fa-github" />
+        </li>
+      </ul>
       <div className="member-avatar">
         <img src="assets/kelsey-avatar.png" />
       </div>
