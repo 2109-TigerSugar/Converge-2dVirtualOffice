@@ -481,7 +481,6 @@ form button:hover {
 }
 /* name display on join */
 .nameJoined {
-
   background-color: #4d9de0;
   padding: 10px 10px;
   border-radius: 10%;
@@ -504,4 +503,26 @@ form button:hover {
 
 .background__red {
   background-color: #e15554;
+}
+
+.nameList {
+  background-color: #4d9de0;
+  padding: 10px 10px;
+  border-radius: 10%;
+  box-shadow: -3px 3px 3px #2f8dda;
+  font-family: monospace;
+  font-size: 15px;
+  align-items: center;
+  color: white;
+  border-radius: 7px;
+  position: absolute;
+  top: 150px;
+  left: 10px;
+  width: 200px;
+  text-align: center;
+  padding-top: 10px;
+}
+
+.nameListTitle {
+  font-size: 20px;
 }

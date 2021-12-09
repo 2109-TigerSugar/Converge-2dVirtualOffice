@@ -65,6 +65,7 @@ module.exports = io => {
         employeeInfo: roomInfo.employees[socket.id],
         numEmployees: roomInfo.numEmployees,
         coworkerName: roomInfo.employees[socket.id].name + ' joined',
+        employeeName: roomInfo.employees[socket.id].name
       });
     });
 

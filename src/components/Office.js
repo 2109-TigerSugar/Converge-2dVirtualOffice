@@ -6,6 +6,7 @@ import runWebRTC from '../webcam';
 import { hidePanels, showPanels } from '../helperFunctions';
 import NameDisplay from './NameDisplay';
 import { useLocation } from 'react-router';
+import NameList from './NameList';
 
 const Office = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -187,6 +188,7 @@ const Office = () => {
         />
       )}
       <NameDisplay />
+      <NameList />
     </div>
   );
 };
