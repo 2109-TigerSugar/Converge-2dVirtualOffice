@@ -11,6 +11,7 @@ import NameList from './NameList';
 const Office = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [mapOpen, setMapOpen] = useState(false);
+  const [showCircle, setShowCircle] = useState(true);
   const { state: userData } = useLocation();
 
   const toggleVideo = () => {
@@ -65,6 +66,20 @@ const Office = () => {
         break;
     }
   };
+
+  const toggleCircle = () => {
+    setShowCircle(!showCircle)
+
+    if(window.game) {
+      const mainScene = window.game.scene.scenes[0]
+      mainScene.sprite.list[5].setVisible(showCircle)
+      mainScene.coworkers.getChildren().forEach(coworker => {
+        coworker.list[5].setVisible(showCircle);
+      })
+    }
+
+    console.log(showCircle)
+  }
 
   useEffect(() => {
     showPanels();
@@ -135,22 +150,28 @@ const Office = () => {
           </div>
           <div id="nav">
             <ul>
-              <li className="button-three tooltip">
-                <a id="how-to" onClick={togglePopup}>
-                  <i className="fas fa-question"></i>
-                  <span className="tooltipText">how to play</span>
-                  {/* {' '}
-                How To Play{' '} */}
-                </a>
+              <li
+                className="button-three tooltip"
+                onClick={toggleCircle}
+              >
+                <i className="fas fa-circle"></i>
+                <span className="tooltipText">Proximity</span>
+              </li>
+              <li
+                className="button-three tooltip"
+                onClick={togglePopup}
+              >
+                <i className="fas fa-question" id="how-to"></i>
+                <span className="tooltipText">how to play</span>
               </li>
 
-              <li className="button-four tooltip">
-                <a id="map" onClick={togglePopup}>
-                  <i className="fas fa-map"></i>
-                  <span className="tooltipText">map</span>
-                  {/* {' '} */}
-                  {/* Map{' '} */}
-                </a>
+              <li
+                className="button-four tooltip"
+                id="map"
+                onClick={togglePopup}
+              >
+                <i className="fas fa-map" id="map"></i>
+                <span className="tooltipText">map</span>
               </li>
 
               <li className="button-two tooltip">
@@ -198,7 +219,7 @@ const Office = () => {
       )}
       <div className="top-panel">
         <NameDisplay />
-        <NameList roomKey={userData.roomKey}/>
+        <NameList roomKey={userData.roomKey} />
       </div>
     </div>
   );

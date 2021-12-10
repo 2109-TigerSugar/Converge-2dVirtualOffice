@@ -193,26 +193,32 @@ export default class MainScene extends Phaser.Scene {
     //if overlapping -> add to overlappingSprite and show video
     if (overlapping) {
       this.overlappingSprites[coworker.employeeId] = coworker;
-      const showVideo = document.querySelector(
+      const showVideoContainer = document.querySelector(
         `div#${CSS.escape(coworker.employeeId)}`
+      );
+      const showVideo = document.querySelector(
+        `video#${CSS.escape(coworker.employeeId)}`
       );
       const nameElement = document.querySelector(
         `div#${CSS.escape(coworker.employeeId)} span`
       );
       // console.log(nameElement);
-      if (showVideo) {
-        showVideo.style.display = 'flex';
+      if (showVideoContainer) {
+        showVideoContainer.style.display = 'flex';
         showVideo.muted = false;
         nameElement.innerText === '' ? nameElement.innerText = coworker.employeeName : null;
       }
     } else {
       //if not overlapping -> remove from overlappingSprite and hide video
       delete this.overlappingSprites[coworker.employeeId];
-      const hideVideo = document.querySelector(
+      const hideVideoContainer = document.querySelector(
         `div#${CSS.escape(coworker.employeeId)}`
       );
-      if (hideVideo) {
-        hideVideo.style.display = 'none';
+      const hideVideo = document.querySelector(
+        `video#${CSS.escape(coworker.employeeId)}`
+      );
+      if (hideVideoContainer) {
+        hideVideoContainer.style.display = 'none';
         hideVideo.muted = true;
       }
     }
