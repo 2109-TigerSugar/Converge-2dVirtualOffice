@@ -84,7 +84,6 @@ const runWebRTC = async (socket, myName) => {
         `div#${CSS.escape(socketId)}`
       );
       videoToRemove.forEach(video => video.remove());
-      callList[socketId] && callList[socketId].close();
       delete callList[socketId];
     });
   });

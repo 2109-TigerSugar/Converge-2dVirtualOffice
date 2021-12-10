@@ -11,7 +11,6 @@ import NameList from './NameList';
 const Office = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [mapOpen, setMapOpen] = useState(false);
-  const [showCircle, setShowCircle] = useState(true);
   const { state: userData } = useLocation();
 
   const toggleVideo = () => {
@@ -68,17 +67,16 @@ const Office = () => {
   };
 
   const toggleCircle = () => {
-    setShowCircle(!showCircle);
 
     if (window.game) {
       const mainScene = window.game.scene.scenes[0];
-      mainScene.sprite.list[5].setVisible(showCircle);
+      let current =  mainScene.sprite.list[5].visible;
+      mainScene.sprite.list[5].setVisible(!current);
       mainScene.coworkers.getChildren().forEach(coworker => {
-        coworker.list[5].setVisible(showCircle);
+        coworker.list[5].setVisible(!current);
       });
     }
 
-    console.log(showCircle);
   };
 
   useEffect(() => {
@@ -86,10 +84,7 @@ const Office = () => {
 
     //starts peerjs code for video
     (async () => {
-      // if (!window.peer) {
-      //   console.log('need to make peer')
-      //   window.peer = await makePeer(socket.id);
-      // }
+
       await runWebRTC(socket, userData.name);
     })();
     // when the user refreshes the page, make them join the room again if key exists
