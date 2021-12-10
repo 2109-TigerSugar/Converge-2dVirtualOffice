@@ -135,22 +135,22 @@ const Office = () => {
           </div>
           <div id="nav">
             <ul>
-              <li className="button-three tooltip">
-                <a id="how-to" onClick={togglePopup}>
-                  <i className="fas fa-question"></i>
-                  <span className="tooltipText">how to play</span>
-                  {/* {' '}
-                How To Play{' '} */}
-                </a>
+              <li
+                className="button-three tooltip"
+                id="how-to"
+                onClick={togglePopup}
+              >
+                <i className="fas fa-question" id="how-to"></i>
+                <span className="tooltipText">how to play</span>
               </li>
 
-              <li className="button-four tooltip">
-                <a id="map" onClick={togglePopup}>
-                  <i className="fas fa-map"></i>
-                  <span className="tooltipText">map</span>
-                  {/* {' '} */}
-                  {/* Map{' '} */}
-                </a>
+              <li
+                className="button-four tooltip"
+                id="map"
+                onClick={togglePopup}
+              >
+                <i className="fas fa-map" id="map"></i>
+                <span className="tooltipText">map</span>
               </li>
 
               <li className="button-two tooltip">
@@ -198,7 +198,7 @@ const Office = () => {
       )}
       <div className="top-panel">
         <NameDisplay />
-        <NameList roomKey={userData.roomKey}/>
+        <NameList roomKey={userData.roomKey} />
       </div>
     </div>
   );

@@ -58,7 +58,7 @@ const runWebRTC = async (socket, myName) => {
       let timer = setInterval(() => {
         // call the new employee
         let call = peer.call(socketId, stream);
-        if (call || count >= 10 || peer.connections[socketId]) {
+        if (call || count >= 10) {
           //will only call 10 times max
           clearInterval(timer);
           call.on('stream', remoteStream => {
