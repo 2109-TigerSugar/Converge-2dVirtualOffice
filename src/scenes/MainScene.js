@@ -92,7 +92,7 @@ export default class MainScene extends Phaser.Scene {
     });
 
     // LEAVE ROOM (not socket disconnection)
-    this.socket.on('leftRoom', arg => {
+    this.socket.on('leftRoom', (arg) => {
       //remove all coworker avatars
       if (this.sprite) this.sprite.destroy();
       scene.coworkers.clear(true, true);
@@ -144,7 +144,7 @@ export default class MainScene extends Phaser.Scene {
 
       //iterates over children and add overlap
       //stange bug causing the callback to happen twice at each of the overlap
-      this.coworkers.children.iterate(coworker =>
+      this.coworkers.children.iterate((coworker) =>
         // scene.addEmployeeOverlap(scene, coworker)
         scene.testOverlap(scene, coworker)
       );
@@ -203,7 +203,9 @@ export default class MainScene extends Phaser.Scene {
       if (showVideo) {
         showVideo.style.display = 'flex';
         showVideo.muted = false;
-        nameElement.innerText === '' ? nameElement.innerText = coworker.employeeName : null;
+        nameElement.innerText === ''
+          ? (nameElement.innerText = coworker.employeeName)
+          : null;
       }
     } else {
       //if not overlapping -> remove from overlappingSprite and hide video

@@ -45,7 +45,7 @@ video {
   border-radius: 10px;
   background-color: rgba(55, 55, 55, 0.9);
   padding: 0 0.5rem;
-  color: rgb(244, 244, 244)
+  color: rgb(244, 244, 244);
 }
 
 #mygame {
@@ -128,7 +128,10 @@ video {
   color: var(--theme-color);
   margin-top: 1rem;
 }
-
+.tagline {
+  font-family: 'Press Start 2P', cursive;
+  text-align: right;
+}
 .nameLogo img {
   height: 4rem;
   margin-left: 0;
@@ -304,12 +307,23 @@ form button:hover {
   height: 75px;
 }
 
-#instructions {
-  position: absolute;
-  top: 80%;
-  left: 40%;
+.instructions-video {
+  float: left;
 }
 
+.box video {
+  width: 400px;
+  height: 400px;
+  border-radius: 20%;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+.box img {
+  width: 400px;
+  height: 300px;
+  border-radius: 20%;
+  margin-bottom: 65px;
+}
 #close-icon {
   content: 'x';
   cursor: pointer;
@@ -338,7 +352,6 @@ form button:hover {
 
 .box {
   position: relative;
-  width: 60%;
   margin: 0 auto;
   height: auto;
   max-height: 70vh;
@@ -377,7 +390,10 @@ form button:hover {
   padding: 10px;
   font-size: 12px;
 }
-
+.map img {
+  width: 500px;
+  height: 400px;
+}
 /*header styling*/
 #header {
   position: absolute;
@@ -484,8 +500,6 @@ form button:hover {
 
 .about {
   margin-top: 100px;
-  margin-left: 25%;
-  margin-right: 40%;
   text-align: center;
   font-family: monospace;
   color: var(--theme-color);
@@ -501,12 +515,23 @@ form button:hover {
   right: 600px;
 }
 
-.about-left {
-  float: left;
+.about-left img {
   width: 350px;
   font-size: 30px;
+  border-radius: 30%;
 }
 
+.about-right img {
+  width: 400px;
+  height: 400px;
+  font-size: 30px;
+  border-radius: 30%;
+}
+.intro {
+  padding: 40px;
+  color: #143e88;
+  font-family: 'Press Start 2P', cursive;
+}
 /*****team*****/
 .team {
   margin-top: 8vh;

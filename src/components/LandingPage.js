@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
 import { hidePanels } from '../helperFunctions';
 import { JoinOrCreateForm } from './Forms';
+import { Link } from 'react-router-dom';
 
 const LandingPage = () => {
   const [formType, setFormType] = useState('');
   const [isActive, setActive] = useState(true);
 
   hidePanels();
-  const handleClick = e => {
+  const handleClick = (e) => {
     let chosen = e.target.id;
     formType !== chosen ? setFormType(chosen) : setFormType('');
     setActive(!isActive);
   };
 
-  const clickBack = form => {
+  const clickBack = (form) => {
     setFormType(form);
     setActive(true);
   };
@@ -25,21 +26,25 @@ const LandingPage = () => {
       <div className="companyName">
         <div className="nameLogo">
           <h1>
+            {' '}
             <img src="../assets/convergemockup.png" />
             Converge
           </h1>
+          <p className="tagline">continue connecting</p>
         </div>
         <p>
-          A virtual office where your whole team can converge to work together
-          to do cool things!{' '}
+          A virtual office using proximity video chat. Converge takes away the
+          unnatural feeling of video conference meetings and allows teams to
+          connect in a more meaningful way.
         </p>
         <p>
           Create an office and invite your team, or join with a key from a
           previous invite.
         </p>
       </div>
+
       <div className="button-hero">
-        <img src="../assets/potentialcropped.png" />
+        <img src="../assets/work.gif" />
         <div className="buttonsAndForm">
           <div className={isActive ? 'buttons' : 'noButtons'}>
             <button onClick={handleClick} type="button" id="create">

@@ -173,17 +173,15 @@ const Office = () => {
         <Popup
           content={
             <>
-              <b>Instructions</b>
-              <div>
-                <div id="arrows-container">
-                  <img className="arrows" src="assets/keys.png" />
-                </div>
-                <div id="arrow-instructions">
-                  <p>Walk around your office with your arrow keys!</p>
-                </div>
-                <div id="coworker-container">
-                  <img className="coworkers" src="assets/coworkers.png" />
-                </div>
+              <div className="instructions">
+                <video autoPlay muted loop>
+                  <source src="assets/howto.mp4" type="video/mp4" />
+                </video>
+
+                <img src="assets/instruction2.jpg" />
+                <video autoPlay muted loop>
+                  <source src="assets/walkaway.mp4" type="video/mp4" />
+                </video>
               </div>
             </>
           }
@@ -194,7 +192,9 @@ const Office = () => {
         <Popup
           content={
             <>
-              <img src="assets/mapcrop.png" style={{ width: '100%' }}></img>
+              <div className="map">
+                <img src="assets/mapclick.png"></img>
+              </div>
             </>
           }
           handleClose={togglePopup}

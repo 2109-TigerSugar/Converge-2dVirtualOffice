@@ -14,7 +14,7 @@ const initialUserData = {
   proximityColor: '#000000',
 };
 
-export const JoinOrCreateForm = props => {
+export const JoinOrCreateForm = (props) => {
   // to make the form controlled, have a state to keep track of input values
   const [userData, setUserData] = useState(initialUserData);
   const [err, setErr] = useState(''); //if we need to show an error
@@ -41,18 +41,18 @@ export const JoinOrCreateForm = props => {
     return () => setUserData(initialUserData);
   }, [props.formType]);
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     setUserData({ ...userData, [event.target.name]: event.target.value });
     setErr('');
   };
 
-  const handleSubmit = event => {
+  const handleSubmit = (event) => {
     event.preventDefault();
 
     // pressing create
     if (props.formType === 'create') {
       socket.emit('isKeyUnique', userData.roomKey);
-      socket.once('roomUniqueCheck', unique => {
+      socket.once('roomUniqueCheck', (unique) => {
         // key is unique so user will join the room
         if (unique) validKey(userData);
         // key is not unique, cannot create room with same key
@@ -66,7 +66,7 @@ export const JoinOrCreateForm = props => {
     // pressing join bottom
     if (props.formType === 'join') {
       socket.emit('doesKeyExist', userData.roomKey);
-      socket.once('roomExistCheck', exists => {
+      socket.once('roomExistCheck', (exists) => {
         // room is created, user can join room
         if (exists) validKey(userData);
         else {
@@ -79,7 +79,7 @@ export const JoinOrCreateForm = props => {
     }
   };
 
-  const validKey = userData => {
+  const validKey = (userData) => {
     if (window.location.pathname === '/office') return;
     //Correct hair color and skin color
     if (typeof userData.hairColor !== 'number') {

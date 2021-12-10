@@ -19,7 +19,7 @@ class Employee extends Phaser.GameObjects.Container {
     this.roomKey = employeeInfo.roomKey;
 
     // All animation setup!
-    this.list.forEach(sprite => {
+    this.list.forEach((sprite) => {
       if (sprite.type === 'Sprite') {
         const spriteName = sprite.texture.key;
 
@@ -82,7 +82,7 @@ class Employee extends Phaser.GameObjects.Container {
   }
 
   animate(direction) {
-    this.list.forEach(sprite => {
+    this.list.forEach((sprite) => {
       if (sprite.type === 'Sprite') {
         //Left Or Right
         if (direction === 'left' || direction === 'right') {
