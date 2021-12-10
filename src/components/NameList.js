@@ -1,27 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { socket } from '../socket';
 
-const NameList = ({roomKey}) => {
+const NameList = ({ roomKey }) => {
   const [currentEmployees, setCurrentEmployees] = useState([]);
 
-
-  // useEffect(() => {
-  socket.on('currentEmployees', function (data) {
-    const { employees } = data;
-
+  const currEmployees = ({ employees }) => {
     let idArr = Object.keys(employees);
     let names = [];
     idArr.forEach(element => {
       names.push(employees[element].name);
     });
-
     setCurrentEmployees([...currentEmployees, ...names]);
-  });
+  };
 
-  // },[]);
-
-  socket.on('coworker disconnected', function (data) {
-    const { coworkerName } = data;
+  const coworkerDisconnected = ({ coworkerName }) => {
     currentEmployees.forEach((name, index) => {
       let nameString = name + ' left';
       if (nameString === coworkerName) {
@@ -29,13 +21,25 @@ const NameList = ({roomKey}) => {
         setCurrentEmployees([...currentEmployees]);
       }
     });
-  });
+  };
 
-  socket.on('newEmployee', function (data) {
-    const { employeeName } = data;
-    setCurrentEmployees([...currentEmployees, employeeName]);
-  });
+  const newEmployee = (data) => {
+    console.log(data)
+    setCurrentEmployees([...currentEmployees, data.employeeName]);
+    console.log(currentEmployees);
+  };
 
+  // useEffect(() => {
+    socket.on('currentEmployees', currEmployees);
+    socket.on('coworker disconnected', coworkerDisconnected);
+    socket.on('newEmployee', newEmployee);
+
+    // return () => {
+    //   socket.off('currentEmployees', currEmployees);
+    //   socket.off('coworker disconnected', coworkerDisconnected);
+    //   socket.off('newEmployee', newEmployee);
+    // };
+  // }, []);
 
   return (
     <div className="nameList">

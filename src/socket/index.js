@@ -15,7 +15,3 @@ socket.on('connect', () => {
   if (buttons) buttons.style.display = 'flex';
 
 });
-
-// socket.on('newEmployee', ({ employeeInfo }) => {
-//   console.log('current peer', window.peer);
-// });
