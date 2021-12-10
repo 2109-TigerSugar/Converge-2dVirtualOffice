@@ -68,18 +68,18 @@ const Office = () => {
   };
 
   const toggleCircle = () => {
-    setShowCircle(!showCircle)
+    setShowCircle(!showCircle);
 
-    if(window.game) {
-      const mainScene = window.game.scene.scenes[0]
-      mainScene.sprite.list[5].setVisible(showCircle)
+    if (window.game) {
+      const mainScene = window.game.scene.scenes[0];
+      mainScene.sprite.list[5].setVisible(showCircle);
       mainScene.coworkers.getChildren().forEach(coworker => {
         coworker.list[5].setVisible(showCircle);
-      })
+      });
     }
 
-    console.log(showCircle)
-  }
+    console.log(showCircle);
+  };
 
   useEffect(() => {
     showPanels();
@@ -150,16 +150,14 @@ const Office = () => {
           </div>
           <div id="nav">
             <ul>
-              <li
-                className="button-three tooltip"
-                onClick={toggleCircle}
-              >
+              <li className="button-three tooltip" onClick={toggleCircle}>
                 <i className="fas fa-circle"></i>
                 <span className="tooltipText">Proximity</span>
               </li>
               <li
                 className="button-three tooltip"
                 onClick={togglePopup}
+                id="how-to"
               >
                 <i className="fas fa-question" id="how-to"></i>
                 <span className="tooltipText">how to play</span>
@@ -190,17 +188,15 @@ const Office = () => {
         <Popup
           content={
             <>
-              <b>Instructions</b>
-              <div>
-                <div id="arrows-container">
-                  <img className="arrows" src="assets/keys.png" />
-                </div>
-                <div id="arrow-instructions">
-                  <p>Walk around your office with your arrow keys!</p>
-                </div>
-                <div id="coworker-container">
-                  <img className="coworkers" src="assets/coworkers.png" />
-                </div>
+              <div className="instructions">
+                <video autoPlay muted loop>
+                  <source src="assets/howto.mp4" type="video/mp4" />
+                </video>
+
+                <img src="assets/instruction2.jpg" />
+                <video autoPlay muted loop>
+                  <source src="assets/walkaway.mp4" type="video/mp4" />
+                </video>
               </div>
             </>
           }
@@ -211,7 +207,9 @@ const Office = () => {
         <Popup
           content={
             <>
-              <img src="assets/mapcrop.png" style={{ width: '100%' }}></img>
+              <div className="map">
+                <img src="assets/mapclick.png"></img>
+              </div>
             </>
           }
           handleClose={togglePopup}
