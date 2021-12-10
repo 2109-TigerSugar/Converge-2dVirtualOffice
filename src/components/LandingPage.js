@@ -7,13 +7,13 @@ const LandingPage = () => {
   const [isActive, setActive] = useState(true);
 
   hidePanels();
-  const handleClick = e => {
+  const handleClick = (e) => {
     let chosen = e.target.id;
     formType !== chosen ? setFormType(chosen) : setFormType('');
     setActive(!isActive);
   };
 
-  const clickBack = form => {
+  const clickBack = (form) => {
     setFormType(form);
     setActive(true);
   };
@@ -39,7 +39,7 @@ const LandingPage = () => {
         </p>
       </div>
       <div className="button-hero">
-        <img src="../assets/potentialcropped.png" />
+        <img src="../assets/work.gif" />
         <div className="buttonsAndForm">
           <div className={isActive ? 'buttons' : 'noButtons'}>
             <button onClick={handleClick} type="button" id="create">

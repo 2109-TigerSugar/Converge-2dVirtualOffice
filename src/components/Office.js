@@ -48,7 +48,7 @@ const Office = () => {
     }
   };
 
-  const togglePopup = event => {
+  const togglePopup = (event) => {
     let id = event.target.id;
     switch (id) {
       case 'how-to':
@@ -80,7 +80,7 @@ const Office = () => {
     // when the user refreshes the page, make them join the room again if key exists
     if (userData && userData.roomKey) {
       socket.emit('doesKeyExist', userData.roomKey);
-      socket.once('roomExistCheck', exists => {
+      socket.once('roomExistCheck', (exists) => {
         if (exists) {
           setTimeout(() => {
             socket.emit('joinRoom', userData); //
@@ -105,7 +105,7 @@ const Office = () => {
         window.peer.destroy();
       }
       let allWebCams = document.querySelectorAll(`div.peerjs-video`);
-      if (allWebCams) allWebCams.forEach(video => video.remove());
+      if (allWebCams) allWebCams.forEach((video) => video.remove());
 
       // leave the room when going office page unmounts
       socket.emit('leaveRoom', userData.roomKey);
@@ -135,22 +135,26 @@ const Office = () => {
           </div>
           <div id="nav">
             <ul>
-              <li className="button-three tooltip">
-                <a id="how-to" onClick={togglePopup}>
-                  <i className="fas fa-question"></i>
-                  <span className="tooltipText">how to play</span>
-                  {/* {' '}
+              <li
+                className="button-three tooltip"
+                id="how-to"
+                onClick={togglePopup}
+              >
+                <i className="fas fa-question" id="how-to"></i>
+                <span className="tooltipText">how to play</span>
+                {/* {' '}
                 How To Play{' '} */}
-                </a>
               </li>
 
-              <li className="button-four tooltip">
-                <a id="map" onClick={togglePopup}>
-                  <i className="fas fa-map"></i>
-                  <span className="tooltipText">map</span>
-                  {/* {' '} */}
-                  {/* Map{' '} */}
-                </a>
+              <li
+                className="button-four tooltip"
+                id="map"
+                onClick={togglePopup}
+              >
+                <i className="fas fa-map" id="map"></i>
+                <span className="tooltipText">map</span>
+                {/* {' '} */}
+                {/* Map{' '} */}
               </li>
 
               <li className="button-two tooltip">
@@ -169,17 +173,15 @@ const Office = () => {
         <Popup
           content={
             <>
-              <b>Instructions</b>
-              <div>
-                <div id="arrows-container">
-                  <img className="arrows" src="assets/keys.png" />
-                </div>
-                <div id="arrow-instructions">
-                  <p>Walk around your office with your arrow keys!</p>
-                </div>
-                <div id="coworker-container">
-                  <img className="coworkers" src="assets/coworkers.png" />
-                </div>
+              <div className="instructions">
+                <video autoPlay muted loop>
+                  <source src="assets/howto.mp4" type="video/mp4" />
+                </video>
+
+                <img src="assets/instruction2.jpg" />
+                <video autoPlay muted loop>
+                  <source src="assets/walkaway.mp4" type="video/mp4" />
+                </video>
               </div>
             </>
           }
@@ -190,7 +192,9 @@ const Office = () => {
         <Popup
           content={
             <>
-              <img src="assets/mapcrop.png" style={{ width: '100%' }}></img>
+              <div className="map">
+                <img src="assets/mapclick.png"></img>
+              </div>
             </>
           }
           handleClose={togglePopup}
@@ -198,7 +202,7 @@ const Office = () => {
       )}
       <div className="top-panel">
         <NameDisplay />
-        <NameList roomKey={userData.roomKey}/>
+        <NameList roomKey={userData.roomKey} />
       </div>
     </div>
   );
