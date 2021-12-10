@@ -39,7 +39,7 @@ const LandingPage = () => {
         </p>
       </div>
       <div className="button-hero">
-        <img src="../assets/potentialcropped.png" />
+        <img src="../assets/work2.gif" />
         <div className="buttonsAndForm">
           <div className={isActive ? 'buttons' : 'noButtons'}>
             <button onClick={handleClick} type="button" id="create">
