@@ -498,39 +498,30 @@ form button:hover {
 
 /*****about*****/
 
-.about {
-  margin-top: 100px;
-  text-align: center;
-  font-family: monospace;
-  color: var(--theme-color);
-}
-
-.sample {
-  width: 400px;
-  height: 400px;
-  border-radius: 200px;
-  float: right;
-  position: fixed;
-  top: 250px;
-  right: 600px;
-}
-
-.about-left img {
+/* .about-left img {
   width: 350px;
   font-size: 30px;
   border-radius: 30%;
+} */
+.about {
+  margin-top: 8vh;
+
+  text-align: center;
+  font-family: monospace;
+}
+.about-gif img {
+  width: 200px;
+  height: 200px;
 }
 
-.about-right img {
-  width: 400px;
-  height: 400px;
-  font-size: 30px;
-  border-radius: 30%;
+.about video {
+  width: 300px;
+  height: 300px;
 }
-.intro {
-  padding: 40px;
-  color: #143e88;
-  font-family: 'Press Start 2P', cursive;
+
+#team-container img {
+  width: 400px;
+  height: 300px;
 }
 /*****team*****/
 .team {
@@ -568,7 +559,13 @@ form button:hover {
   height: 40%;
   object-fit: fill;
 }
-
+.team-member > .member-video > video {
+  background-color: gray;
+  margin-top: 5%;
+  width: 400px;
+  height: 400px;
+  object-fit: fill;
+}
 .team-member > .member-name {
   margin-top: 2%;
   font-size: 24px;
