@@ -11,6 +11,7 @@ import NameList from './NameList';
 const Office = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [mapOpen, setMapOpen] = useState(false);
+  const [showCircle, setShowCircle] = useState(true);
   const { state: userData } = useLocation();
 
   const toggleVideo = () => {
@@ -65,6 +66,20 @@ const Office = () => {
         break;
     }
   };
+
+  const toggleCircle = () => {
+    setShowCircle(!showCircle)
+
+    if(window.game) {
+      const mainScene = window.game.scene.scenes[0]
+      mainScene.sprite.list[5].setVisible(showCircle)
+      mainScene.coworkers.getChildren().forEach(coworker => {
+        coworker.list[5].setVisible(showCircle);
+      })
+    }
+
+    console.log(showCircle)
+  }
 
   useEffect(() => {
     showPanels();
@@ -137,7 +152,13 @@ const Office = () => {
             <ul>
               <li
                 className="button-three tooltip"
-                id="how-to"
+                onClick={toggleCircle}
+              >
+                <i className="fas fa-circle"></i>
+                <span className="tooltipText">Proximity</span>
+              </li>
+              <li
+                className="button-three tooltip"
                 onClick={togglePopup}
               >
                 <i className="fas fa-question" id="how-to"></i>

@@ -133,6 +133,7 @@ function getChildren(scene, employeeInfo) {
   const circle = scene.add.circle(0, 0, 160);
   circle.setStrokeStyle(2, proximityColor);
   circle.employeeId = employeeInfo.employeeId;
+  circle.setVisible(false);
 
   //return all sprites in children array
   return [body, eye, hair, outfitStyle, userName, circle];
