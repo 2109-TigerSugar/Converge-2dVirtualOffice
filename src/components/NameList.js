@@ -24,9 +24,7 @@ const NameList = ({ roomKey }) => {
   };
 
   const newEmployee = (data) => {
-    console.log(data)
     setCurrentEmployees([...currentEmployees, data.employeeName]);
-    console.log(currentEmployees);
   };
 
   // useEffect(() => {
