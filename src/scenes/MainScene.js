@@ -177,6 +177,11 @@ export default class MainScene extends Phaser.Scene {
     const coworker = new Employee(scene, employeeInfo);
 
     coworker.employeeId = employeeInfo.employeeId;
+    setTimeout(() => {
+      let circleVisibility = scene.sprite.list[5].visible;
+      coworker.list[5].setVisible(circleVisibility);
+    }, 50);
+
     scene.coworkers.add(coworker);
   }
 
@@ -206,7 +211,9 @@ export default class MainScene extends Phaser.Scene {
       if (showVideoContainer) {
         showVideoContainer.style.display = 'flex';
         showVideo.muted = false;
-        nameElement.innerText === '' ? nameElement.innerText = coworker.employeeName : null;
+        nameElement.innerText === ''
+          ? (nameElement.innerText = coworker.employeeName)
+          : null;
       }
     } else {
       //if not overlapping -> remove from overlappingSprite and hide video

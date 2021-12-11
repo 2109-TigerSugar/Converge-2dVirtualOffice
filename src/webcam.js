@@ -49,7 +49,7 @@ const runWebRTC = async (socket, myName) => {
       call.on('stream', remoteStream => {
         if (callList[call.peer] === undefined) {
           addVideo(remoteStream, true, call.peer);
-          callList[call.peer] = call;
+          callList[call.peer] = true;
         }
       });
     });
@@ -67,7 +67,7 @@ const runWebRTC = async (socket, myName) => {
           call.on('stream', remoteStream => {
             if (callList[socketId] === undefined) {
               addVideo(remoteStream, true, socketId, employeeInfo.name);
-              callList[socketId] = call;
+              callList[socketId] = true;
             }
           });
           console.log('timer stopped');
@@ -84,15 +84,14 @@ const runWebRTC = async (socket, myName) => {
         `div#${CSS.escape(socketId)}`
       );
       videoToRemove.forEach(video => video.remove());
-      callList[socketId] && callList[socketId].close();
       delete callList[socketId];
     });
   });
 
-  peer.on('error', err => {
-    console.log('peer connection error', err);
-    peer.reconnect();
-  });
+  // peer.on('error', err => {
+  //   console.log('peer connection error', err);
+  //   peer.reconnect();
+  // });
 };
 
 export default runWebRTC;

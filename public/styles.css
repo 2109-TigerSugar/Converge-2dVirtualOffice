@@ -24,7 +24,7 @@ body {
   position: absolute;
   margin-left: 10vw;
   width: 80vw;
-  height: 8vh;
+  height: 10vh;
   top: 140px;
   justify-content: center;
   z-index: 1;
@@ -304,12 +304,23 @@ form button:hover {
   height: 75px;
 }
 
-#instructions {
-  position: absolute;
-  top: 80%;
-  left: 40%;
+.instructions-video {
+  float: left;
 }
 
+.box video {
+  width: 400px;
+  height: 400px;
+  border-radius: 20%;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+.box img {
+  width: 400px;
+  height: 300px;
+  border-radius: 20%;
+  margin-bottom: 65px;
+}
 #close-icon {
   content: 'x';
   cursor: pointer;
@@ -338,7 +349,6 @@ form button:hover {
 
 .box {
   position: relative;
-  width: 60%;
   margin: 0 auto;
   height: auto;
   max-height: 70vh;
@@ -442,7 +452,11 @@ form button:hover {
   font-family: monospace;
   font-size: 20px;
 }
-
+.map img {
+  text-align: center;
+  height: 600px;
+  width: 600px;
+}
 /*map button*/
 .button-four {
   background-color: #e1bc29;
@@ -527,7 +541,6 @@ form button:hover {
 }
 .about img {
   width: 85%;
-  /* height: 200px; */
   border-radius: 30%;
 }
 
