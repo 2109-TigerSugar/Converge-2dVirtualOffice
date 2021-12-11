@@ -4,7 +4,6 @@ import { hidePanels } from '../helperFunctions';
 const About = () => {
   hidePanels();
   return (
-
     <div className="aboutpagebg">
       <div className="about">
         <h1 id="about-header">
@@ -12,7 +11,6 @@ const About = () => {
           <img src="https://i.pinimg.com/originals/6e/3f/47/6e3f47bf33153bd352d684a4d0ddea12.gif" />
           <p>remote working made human</p>
         </h1>
-
         <br />
         <br />
         <br />
