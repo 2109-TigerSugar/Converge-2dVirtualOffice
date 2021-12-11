@@ -4,7 +4,6 @@ import { hidePanels } from '../helperFunctions';
 const About = () => {
   hidePanels();
   return (
-
     <div className="aboutpagebg">
       <div className="about">
         <h1 id="about-header">
