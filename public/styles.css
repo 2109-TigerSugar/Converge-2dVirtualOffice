@@ -497,33 +497,51 @@ form button:hover {
 /*****about*****/
 
 .about {
-  margin-top: 100px;
-  text-align: center;
+  width: 90%;
+  padding: 10px;
+  margin-left: 100px;
   font-family: monospace;
-  color: var(--theme-color);
+  color: #143e88;
+  font-size: 18px;
+  border-radius: 20%;
+  background-color: #c9ada7;
 }
 
-.about {
-  margin-top: 8vh;
-  margin-left: 5vw;
+.column {
+  float: left;
+  width: 20%;
+  padding: 30px;
+}
+.column p {
+  background-color: #c9ada7;
+  padding: 10px;
+  border-radius: 20%;
+}
+.column-text {
+  float: left;
+  width: 22%;
+  padding: 10px;
+}
+.row::after {
+  content: '';
+  clear: both;
+  display: table;
+}
+#about-header {
   text-align: center;
-  font-family: monospace;
+}
+#about-header p {
+  text-align: center;
+  font-size: 16px;
 }
 #about-header img {
   width: 300px;
-  height: 300px;
+  height: 200px;
+  text-align: right;
 }
-#about-container img {
-  width: 300px;
-  height: 300px;
-}
-#about-container video {
-  width: 300px;
-  height: 300px;
-}
-#about-header {
-  font-size: 30px;
-  margin-bottom: 2vh;
+.about img {
+  width: 85%;
+  border-radius: 30%;
 }
 
 /*****team*****/
