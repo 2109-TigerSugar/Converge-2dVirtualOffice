@@ -80,7 +80,6 @@ const runWebRTC = async (socket, myName) => {
           });
           console.log('timer stopped');
         } else {
-          console.log(peer);
           console.log(`calling again (${count})`, socketId);
           count++;
         }

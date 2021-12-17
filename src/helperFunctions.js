@@ -81,7 +81,6 @@ export const callMissed = (missedCalls, stream, peer, callList) => {
         });
         console.log('timer stopped');
       } else {
-        console.log(peer);
         console.log(`calling again (${count})`, socketId);
         count++;
       }
