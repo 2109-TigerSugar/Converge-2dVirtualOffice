@@ -75,7 +75,6 @@ const runWebRTC = async (socket, myName) => {
             if (callList[socketId] === undefined) {
               addVideo(remoteStream, true, socketId, employeeInfo.name);
               callList[socketId] = true;
-              console.log(callList);
             }
           });
           console.log('timer stopped');
@@ -98,7 +97,6 @@ const runWebRTC = async (socket, myName) => {
       videoToRemove.forEach((video) => video.remove());
       delete callList[socketId];
       peer.connections[socketId].forEach((conn) => conn.close());
-      console.log(peer.connections);
     });
   });
 
