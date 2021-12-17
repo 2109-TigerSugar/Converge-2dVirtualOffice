@@ -12,7 +12,7 @@ export const showPanels = () => {
 };
 
 // For webcam.js + Peer
-export const createPeer = socketId => {
+export const createPeer = (socketId) => {
   const peer = new Peer(socketId, {
     config: {
       iceServers: [
@@ -61,4 +61,30 @@ export const addVideo = (stream, hide, socketId, name = '') => {
     webcamController.style.display = 'flex';
     console.log('my stream created', stream);
   }
+};
+
+export const callMissed = (missedCalls, stream, peer, callList) => {
+  missedCalls.forEach((socketId) => {
+    let count = 0;
+    let timer = setInterval(() => {
+      if (peer.destroyed) return;
+      // call the new employee
+      let call = peer.call(socketId, stream);
+      if (call || count >= 10) {
+        //will only call 10 times max
+        clearInterval(timer);
+        call.on('stream', (remoteStream) => {
+          if (callList[socketId] === undefined) {
+            addVideo(remoteStream, true, socketId);
+            callList[socketId] = true;
+          }
+        });
+        console.log('timer stopped');
+      } else {
+        console.log(peer);
+        console.log(`calling again (${count})`, socketId);
+        count++;
+      }
+    }, 500);
+  });
 };
